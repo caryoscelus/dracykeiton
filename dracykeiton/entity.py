@@ -19,14 +19,15 @@
 """
 
 from savable import Savable
+from priorityqueue import PriorityQueue
 
 import functools
 
 class DynamicProperty(Savable):
     """Stores dynamic property and modifiers associated with it."""
-    def __init__(self, empty=None):
-        self.getters = []
-        self.setters = []
+    def __init__(self, empty=None, priorities=(), default=None):
+        self.getters = PriorityQueue(*priorities, default=default)
+        self.setters = PriorityQueue(*priorities, default=default)
         self.mod_names = {}
         self._value = empty
     
@@ -46,17 +47,20 @@ class DynamicProperty(Savable):
             value = mod(value)
         self._value = value
     
-    def add_set_mod(self, f):
-        self.setters.append(f)
+    def add_set_mod(self, f, priority=None):
+        self.setters.add(f, priority)
     
-    def add_get_mod(self, f):
-        self.getters.append(f)
+    def add_get_mod(self, f, priority=None):
+        self.getters.add(f, priority)
 
 class Entity(Savable):
     """Base entity, including dynamic property mechanism."""
     def __init__(self):
         super(Entity, self).__init__()
         self._props = {}
+        # TODO: fix this
+        self._priorities = ('early', 'normal', 'late')
+        self._default = 'normal'
     
     def __getattr__(self, name):
         if name in self._props:
@@ -73,19 +77,19 @@ class Entity(Savable):
     
     def dynamic_property(self, name, empty=None):
         """Define new dynamic property called name"""
-        self._props[name] = DynamicProperty(empty)
+        self._props[name] = DynamicProperty(empty=empty, priorities=self._priorities, default=self._default)
     
     def no_set(self, prop):
         """Forbid setting prop"""
         self.add_set_mod(prop, no_set_mod(self, prop))
     
-    def add_set_mod(self, prop, mod):
+    def add_set_mod(self, prop, mod, priority=None):
         """Add setter mod"""
-        self._props[prop].add_set_mod(mod)
+        self._props[prop].add_set_mod(mod, priority)
     
-    def add_get_mod(self, prop, mod):
+    def add_get_mod(self, prop, mod, priority=None):
         """Add getter mod"""
-        self._props[prop].add_get_mod(mod)
+        self._props[prop].add_get_mod(mod, priority)
 
 def property_mod(f):
     """Decorator for property mod.

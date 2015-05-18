@@ -19,6 +19,7 @@
 
 import pytest
 
+from savable import Savable
 from entity import Entity, property_mod
 
 def test_base_entity():
@@ -124,6 +125,17 @@ class RobustEntity(HpEntity):
 class Monster(XpEntity, RobustEntity):
     pass
 
+class HpBooster(Savable):
+    def enable(self, target):
+        target.add_get_mod('maxhp', self.maxhp_booster(), 'early')
+    
+    def disable(self, target):
+        pass
+    
+    @property_mod
+    def maxhp_booster(self, value):
+        return value+1
+
 def test_entity_monster():
     monster = Monster()
     monster.xp = 0
@@ -147,3 +159,8 @@ def test_entity_monster():
     monster.hp = 10
     monster.robust = 0.5
     assert monster.maxhp == 5
+    #assert monster.hp == 5
+    
+    booster = HpBooster()
+    booster.enable(monster)
+    assert monster.maxhp == 5.5
