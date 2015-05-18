@@ -111,7 +111,17 @@ class HpEntity(LivingEntity):
             self.living = 'dead'
         return value
 
-class Monster(HpEntity, XpEntity):
+class RobustEntity(HpEntity):
+    def __init__(self):
+        super(RobustEntity, self).__init__()
+        self.dynamic_property('robust', 1)
+        self.add_get_mod('maxhp', self.__robust_hp())
+    
+    @property_mod
+    def __robust_hp(self, value):
+        return self.robust * value
+
+class Monster(XpEntity, RobustEntity):
     pass
 
 def test_entity_monster():
@@ -132,3 +142,8 @@ def test_entity_monster():
     assert monster.hp == 10
     monster.hp -= 11
     assert monster.living == 'dead'
+    monster.living = 'alive'
+    assert monster.living == 'alive'
+    monster.hp = 10
+    monster.robust = 0.5
+    assert monster.maxhp == 5

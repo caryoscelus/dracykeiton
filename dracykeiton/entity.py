@@ -24,11 +24,11 @@ import functools
 
 class DynamicProperty(Savable):
     """Stores dynamic property and modifiers associated with it."""
-    def __init__(self):
+    def __init__(self, empty=None):
         self.getters = []
         self.setters = []
         self.mod_names = {}
-        self._value = None
+        self._value = empty
     
     def __str__(self):
         return str(self.value)
@@ -71,9 +71,9 @@ class Entity(Savable):
         else:
             raise AttributeError('{} has no property {}'.format(self, name))
     
-    def dynamic_property(self, name):
+    def dynamic_property(self, name, empty=None):
         """Define new dynamic property called name"""
-        self._props[name] = DynamicProperty()
+        self._props[name] = DynamicProperty(empty)
     
     def no_set(self, prop):
         """Forbid setting prop"""
