@@ -17,6 +17,8 @@
 
 """Tests for entity.py"""
 
+import pytest
+
 from entity import Entity, property_mod
 
 def test_base_entity():
@@ -50,12 +52,8 @@ def test_entity_subclass():
     foo.bar = 5
     assert foo.bar == 4
     assert foo.bar == 4
-    try:
+    with pytest.raises(AttributeError):
         foo.foo = 5
-    except AttributeError:
-        pass
-    else:
-        raise AttributeError('access should not be granted')
 
 
 import math
@@ -126,12 +124,8 @@ def test_entity_monster():
     assert monster.level == 3
     
     assert monster.living == 'unborn'
-    try:
+    with pytest.raises(TypeError):
         monster.living = False
-    except TypeError:
-        pass
-    else:
-        raise TypeError('monster.living cannot be False')
     
     monster.maxhp = 10
     monster.hp = 12
