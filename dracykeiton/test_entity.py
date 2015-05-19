@@ -23,9 +23,9 @@
 import pytest
 
 from savable import Savable
-from entity import Entity, property_mod
+from entity import Entity, simplenode, ReadOnlyNode, DependencyError
 
-def test_base_entity():
+def test_entity_property():
     entity = Entity()
     entity.dynamic_property('n')
     assert entity.n is None
@@ -38,27 +38,51 @@ def test_entity_subclass():
             super(Foo, self).__init__()
             self.dynamic_property('foo')
             self.no_set('foo')
-            self.add_get_mod('foo', self.get3())
-            self.dynamic_property('bar')
-            self.add_get_mod('bar', self.get4())
+            self.add_get_node('foo', self.get3())
         
-        def get3(self):
-            def g(value):
-                return 3
-            return g
-        
-        @property_mod
-        def get4(self, value):
-            return 4
+        @simplenode
+        def get3(self, value):
+            return 3
     
     foo = Foo()
     assert foo.foo == 3
-    foo.bar = 5
-    assert foo.bar == 4
-    assert foo.bar == 4
     with pytest.raises(AttributeError):
         foo.foo = 5
 
+def test_processing_node():
+    entity = Entity()
+    entity.dynamic_property('abc')
+    entity.abc = 4
+    class FooNode(ReadOnlyNode):
+        def process(self, abc, value):
+            return value+abc
+    node = FooNode()
+    with pytest.raises(TypeError):
+        node(entity, 5)
+    node.depends('abc')
+    assert node(entity, 5) == 9
+
+def test_dependencies():
+    entity = Entity()
+    entity.dynamic_property('foo')
+    entity.dynamic_property('bar')
+    class BarNode(ReadOnlyNode):
+        def __init__(self):
+            super(BarNode, self).__init__()
+            self.depends('bar')
+        def process(self, bar, value):
+            return value
+    
+    class FooNode(ReadOnlyNode):
+        def __init__(self):
+            super(FooNode, self).__init__()
+            self.depends('foo')
+        def process(self, foo, value):
+            return value
+    
+    entity.add_get_node('foo', BarNode())
+    with pytest.raises(DependencyError):
+        entity.add_get_node('bar', BarNode())
 
 import math
 
@@ -70,11 +94,11 @@ class LevelEntity(Entity):
 class XpEntity(LevelEntity):
     def __init__(self):
         super(XpEntity, self).__init__()
-        self.dynamic_property('xp')
+        self.dynamic_property('xp', 0)
         self.no_set('level')
-        self.add_get_mod('level', self.xp_to_level())
+        self.add_get_node('level', self.xp_to_level())
     
-    @property_mod
+    @simplenode
     def xp_to_level(self, value):
         return math.log(self.xp / 100 + 1, 2)
 
@@ -82,16 +106,16 @@ class LivingEntity(Entity):
     def __init__(self):
         super(LivingEntity, self).__init__()
         self.dynamic_property('living')
-        self.add_set_mod('living', self.ensure_correct())
-        self.add_get_mod('living', self.default_unborn())
+        self.add_set_node('living', self.ensure_correct())
+        self.add_get_node('living', self.default_unborn())
     
-    @property_mod
+    @simplenode
     def ensure_correct(self, value):
         if not value in ('unborn', 'alive', 'dead'):
             raise TypeError('living property cannnot equal "{}"'.format(value))
         return value
     
-    @property_mod
+    @simplenode
     def default_unborn(self, value):
         if value is None:
             return 'unborn'
@@ -100,16 +124,16 @@ class LivingEntity(Entity):
 class HpEntity(LivingEntity):
     def __init__(self):
         super(HpEntity, self).__init__()
-        self.dynamic_property('hp')
-        self.dynamic_property('maxhp')
-        self.add_set_mod('hp', self.hp_cap())
-        self.add_set_mod('hp', self.check_dying())
+        self.dynamic_property('hp', 0)
+        self.dynamic_property('maxhp', 0)
+        self.add_set_node('hp', self.hp_cap())
+        self.add_set_node('hp', self.check_dying())
     
-    @property_mod
+    @simplenode
     def hp_cap(self, value):
         return min(value, self.maxhp)
     
-    @property_mod
+    @simplenode
     def check_dying(self, value):
         if value <= 0:
             self.living = 'dead'
@@ -119,9 +143,9 @@ class RobustEntity(HpEntity):
     def __init__(self):
         super(RobustEntity, self).__init__()
         self.dynamic_property('robust', 1)
-        self.add_get_mod('maxhp', self.__robust_hp())
+        self.add_get_node('maxhp', self.__robust_hp())
     
-    @property_mod
+    @simplenode
     def __robust_hp(self, value):
         return self.robust * value
 
@@ -130,12 +154,12 @@ class Monster(XpEntity, RobustEntity):
 
 class HpBooster(Savable):
     def enable(self, target):
-        target.add_get_mod('maxhp', self.maxhp_booster(), 'early')
+        target.add_get_node('maxhp', self.maxhp_booster(), 'early')
     
     def disable(self, target):
         pass
     
-    @property_mod
+    @simplenode
     def maxhp_booster(self, value):
         return value+1
 
