@@ -23,7 +23,7 @@
 import pytest
 
 from savable import Savable
-from entity import Entity, simplenode, ReadOnlyNode, DependencyError
+from entity import Entity, simplenode, ReadOnlyNode, DependencyError, EntityMod
 
 def test_entity_property():
     entity = Entity()
@@ -83,6 +83,26 @@ def test_dependencies():
     entity.add_get_node('foo', BarNode())
     with pytest.raises(DependencyError):
         entity.add_get_node('bar', BarNode())
+
+def test_mod():
+    class FooMod(EntityMod):
+        def enable(self, target):
+            target.dynamic_property('n')
+            target.add_get_node('n', self.get5())
+        
+        def disable(self, target):
+            target.remove_property('n')
+        
+        @simplenode
+        def get5(self, value):
+            return 5
+    mod = FooMod()
+    entity = Entity()
+    entity.add_mod(mod)
+    assert entity.n == 5
+    entity.remove_mod(mod)
+    with pytest.raises(AttributeError):
+        entity.n
 
 import math
 

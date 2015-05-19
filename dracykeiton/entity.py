@@ -85,6 +85,11 @@ class Entity(Savable):
         self._props[name] = DynamicProperty(empty=empty, priorities=self._priorities, default=self._default)
         self.__get_depends_on[name] = {}
     
+    def remove_property(self, name):
+        """Remove dynamic property. To use in mod.disable()"""
+        del self._props[name]
+        del self.__get_depends_on[name]
+    
     def add_mod(self, mod):
         """Add mod to this entity"""
         self.__mods.add(mod)
@@ -123,7 +128,13 @@ class Entity(Savable):
 class DependencyError(Exception):
     pass
 
-class ProcessingNode():
+class EntityMod(Savable):
+    def enable(self, target):
+        pass
+    def disable(self, target):
+        pass
+
+class ProcessingNode(Savable):
     def __init__(self):
         super(ProcessingNode, self).__init__()
         self._depends = set()
