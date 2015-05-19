@@ -126,7 +126,7 @@ class HpEntity(LivingEntity):
         super(HpEntity, self).__init__()
         self.dynamic_property('hp', 0)
         self.dynamic_property('maxhp', 0)
-        self.add_set_node('hp', self.hp_cap())
+        self.add_get_node('hp', self.hp_cap())
         self.add_set_node('hp', self.check_dying())
     
     @simplenode
@@ -186,7 +186,7 @@ def test_entity_monster():
     monster.hp = 10
     monster.robust = 0.5
     assert monster.maxhp == 5
-    #assert monster.hp == 5
+    assert monster.hp == 5
     
     booster = HpBooster()
     booster.enable(monster)
