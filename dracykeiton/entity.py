@@ -80,6 +80,9 @@ class Entity(Savable):
         else:
             raise AttributeError('{} has no property {}'.format(self, name))
     
+    def __str__(self):
+        return 'Entity {}'.format({name:getattr(self, name) for name in self._props})
+    
     def dynamic_property(self, name, empty=None):
         """Define new dynamic property called name"""
         self._props[name] = DynamicProperty(empty=empty, priorities=self._priorities, default=self._default)
