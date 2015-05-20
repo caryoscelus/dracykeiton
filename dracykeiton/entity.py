@@ -135,7 +135,7 @@ class EntityMod(Savable):
     def enable(self, target):
         pass
     def disable(self, target):
-        pass
+        raise NotImplementedError
 
 class ProcessingNode(Savable):
     def __init__(self):
