@@ -32,9 +32,9 @@ class ControllableEntity(Entity):
         self.dynamic_property('available_actions', empty=set())
 
 class Controller(Savable):
-    def __init__(self):
+    def __init__(self, *args):
         super(Controller, self).__init__()
-        self._entities = set()
+        self._entities = set(args)
     
     def add_entity(self, entity):
         self._entities.add(entity)
