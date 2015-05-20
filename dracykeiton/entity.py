@@ -21,12 +21,12 @@
 """Contains Entity which is the base class for all entities and it's properties
 """
 
-from savable import Savable
+from compat import *
 from priorityqueue import PriorityQueue
 
 import functools
 
-class DynamicProperty(Savable):
+class DynamicProperty(object):
     """Stores dynamic property and modifiers associated with it."""
     def __init__(self, empty=None, priorities=(), default=None):
         self.getters = PriorityQueue(*priorities, default=default)
@@ -56,7 +56,7 @@ class DynamicProperty(Savable):
     def add_get_node(self, f, priority=None):
         self.getters.add(f, priority)
 
-class Entity(Savable):
+class Entity(object):
     """Base entity, including dynamic property mechanism."""
     def __init__(self):
         super(Entity, self).__init__()
@@ -131,13 +131,13 @@ class Entity(Savable):
 class DependencyError(Exception):
     pass
 
-class EntityMod(Savable):
+class EntityMod(object):
     def enable(self, target):
         pass
     def disable(self, target):
         raise NotImplementedError
 
-class ProcessingNode(Savable):
+class ProcessingNode(object):
     def __init__(self):
         super(ProcessingNode, self).__init__()
         self._depends = set()

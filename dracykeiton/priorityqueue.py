@@ -29,9 +29,9 @@
 
 """
 
-from savable import Savable
+from compat import *
 
-class PriorityQueue(Savable):
+class PriorityQueue(object):
     def __init__(self, *priorities, default=None):
         super(PriorityQueue, self).__init__()
         if not priorities:

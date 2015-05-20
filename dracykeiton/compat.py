@@ -18,17 +18,14 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""Ren'py compatibility layer. Exports Savable and HAS_RENPY.
+"""Ren'py compatibility layer.
 
-If renpy is present, Savable is object from renpy.store, otherwise
-just a regular object (which means it won't be actually savable).
-In future this module may actually provide savable baseclass if
-Ren'py is unavailable.
+If renpy is present, import some standard types and functions. Also
+exports HAS_RENPY boolean variable.
 """
 
 try:
-    from renpy.store import object as Savable
+    from renpy.store import object, list, dict, set, range, sorted
     HAS_RENPY = True
 except ImportError:
-    from builtins import object as Savable
     HAS_RENPY = False

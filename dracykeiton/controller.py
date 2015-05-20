@@ -23,7 +23,7 @@
 
 import functools
 
-from savable import Savable
+from compat import *
 from entity import Entity
 
 class ControllableEntity(Entity):
@@ -31,7 +31,7 @@ class ControllableEntity(Entity):
         super(ControllableEntity, self).__init__()
         self.dynamic_property('available_actions', empty=set())
 
-class Controller(Savable):
+class Controller(object):
     def __init__(self, *args):
         super(Controller, self).__init__()
         self._entities = set(args)
@@ -48,7 +48,7 @@ class Controller(Savable):
     def act(self):
         return None
 
-class Action(Savable):
+class Action(object):
     def act(self):
         pass
 

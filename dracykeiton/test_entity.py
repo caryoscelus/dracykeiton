@@ -22,7 +22,7 @@
 
 import pytest
 
-from savable import Savable
+from compat import *
 from entity import Entity, simplenode, ReadOnlyNode, DependencyError, EntityMod
 
 def test_entity_property():
@@ -172,7 +172,7 @@ class RobustEntity(HpEntity):
 class Monster(XpEntity, RobustEntity):
     pass
 
-class HpBooster(Savable):
+class HpBooster(object):
     def enable(self, target):
         target.add_get_node('maxhp', self.maxhp_booster(), 'early')
     
