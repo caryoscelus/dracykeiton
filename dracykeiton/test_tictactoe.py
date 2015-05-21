@@ -20,7 +20,6 @@
 
 """Tic-tac-toe as a test"""
 
-import curry
 from entity import Entity, EntityMod
 from controller import Controller
 from turnman import Turnman, SimpleSideTurnman
@@ -34,8 +33,7 @@ class Board(EntityMod):
         target.dynamic_property('board')
         target.board = [[None for x in range(self.w)] for y in range(self.h)]
         target.dynamic_method('mark_tile')
-        target.mark_tile = Board.mark_tile
-    @curry.curry
+        target.mark_tile = type(self).mark_tile
     def mark_tile(self, x, y, side):
         self.board[y][x] = side
 
@@ -54,7 +52,7 @@ class TTTAI(Controller):
     def act(self):
         if len(self.entities) != 1:
             raise TypeError('TTTAI controller can only control single side')
-        return [self.world.mark_tile(1, 1, tuple(self.entities)[0].side)]
+        self.world.mark_tile(1, 1, tuple(self.entities)[0].side)
 
 def test_tictactoe():
     board = TicTacToe()

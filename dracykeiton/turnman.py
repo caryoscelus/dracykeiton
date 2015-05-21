@@ -39,15 +39,8 @@ class Turnman(object):
             self.queue = self.back_queue
             self.back_queue = []
         side = self.queue.pop(0)
-        self.process_side(side)
+        side.act()
         self.back_queue.append(side)
-    
-    def process_side(self, side):
-        actions = side.act()
-        if actions is None:
-            raise NotImplementedError('asynchronous controllers are not supported yet')
-        for action in actions:
-            action()
 
 class SimpleSideTurnman(Turnman):
     pass
