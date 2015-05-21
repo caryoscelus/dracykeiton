@@ -60,7 +60,8 @@ class Entity(object):
     """Base entity, including dynamic property mechanism."""
     def __init__(self):
         super(Entity, self).__init__()
-        self._props = {}
+        self._props = dict()
+        self.__methods = set()
         # TODO: fix this
         self._priorities = ('early', 'normal', 'late')
         self._default = 'normal'
@@ -77,6 +78,8 @@ class Entity(object):
             super(Entity, self).__setattr__(name, value)
         elif name in self._props:
             self._props[name].value = value
+        elif name in self.__methods:
+            super(Entity, self).__setattr__(name, functools.partial(value, self))
         else:
             super(Entity, self).__setattr__(name, value)
             #raise AttributeError('{} has no property {}'.format(self, name))
@@ -85,7 +88,7 @@ class Entity(object):
         return 'Entity {}'.format({name:getattr(self, name) for name in self._props})
     
     def dynamic_method(self, name):
-        pass
+        self.__methods.add(name)
     
     def dynamic_property(self, name, empty=None):
         """Define new dynamic property called name"""

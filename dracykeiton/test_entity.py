@@ -104,6 +104,14 @@ def test_mod():
     with pytest.raises(AttributeError):
         entity.n
 
+def test_dynamic_method():
+    e = Entity()
+    e.dynamic_property('n')
+    e.n = 5
+    e.dynamic_method('method')
+    e.method = lambda self: self.n
+    assert e.method() == 5
+
 import math
 
 class LevelEntity(Entity):
