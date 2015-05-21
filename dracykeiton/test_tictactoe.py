@@ -20,6 +20,8 @@
 
 """Tic-tac-toe as a test"""
 
+import copy
+
 from entity import Entity, EntityMod
 from controller import Controller
 from turnman import Turnman, SimpleSideTurnman
@@ -52,7 +54,9 @@ class TTTAI(Controller):
     def act(self):
         if len(self.entities) != 1:
             raise TypeError('TTTAI controller can only control single side')
-        self.world.mark_tile(1, 1, tuple(self.entities)[0].side)
+        side = tuple(self.entities)[0].side
+        enemy = 'x' if side == 'o' else 'o'
+        self.world.mark_tile(1, 1, side)
 
 def test_tictactoe():
     board = TicTacToe()
