@@ -23,18 +23,18 @@
 NOTE: this is for testing purposes only; can be insecure
 
 >>> from entity import Entity
->>> from controller import SimpleAction
+>>> import curry
 >>> e = Entity()
 >>> e.dynamic_property('n')
->>> @SimpleAction
+>>> @curry.curry
 ... def action(target):
 ...     target.n = 7
->>> c = ConsoleController()
+>>> c = ConsoleController(None)
 >>> c.get_action = lambda entity: action
 >>> c.add_entity(e)
 >>> l = c.act()
 Entity {'n': None}
->>> l[0][1].act(l[0][0])
+>>> l[0][1](l[0][0])()
 >>> print(e)
 Entity {'n': 7}
 """
@@ -44,7 +44,7 @@ from controller import Controller
 class ConsoleController(Controller):
     def act(self):
         r = []
-        for entity in self._entities:
+        for entity in self.entities:
             print(entity)
             action = self.get_action(entity)
             r.append((entity, action))

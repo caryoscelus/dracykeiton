@@ -20,21 +20,22 @@
 
 """tests for controller.py"""
 
-from controller import Controller, ControllableEntity, simpleaction
+import curry
+from controller import Controller, ControllableEntity
 
 def test_controller():
-    controller = Controller()
+    controller = Controller(None)
     entity = ControllableEntity()
     controller.add_entity(entity)
 
 class CustomController(Controller):
     def __init__(self):
-        super(CustomController, self).__init__()
+        super(CustomController, self).__init__(None)
     
     def act(self):
-        return ((entity, self.n1_action()) for entity in self._entities)
+        return ((entity, self.n1_action()) for entity in self.entities)
     
-    @simpleaction
+    @curry.curry
     def n1_action(self, target):
         target.n += 1
 
@@ -44,5 +45,5 @@ def test_custom_controller():
     entity.dynamic_property('n', empty=0)
     controller.add_entity(entity)
     for (e, action) in controller.act():
-        action.act(e)
+        action(e)
     assert entity.n == 1

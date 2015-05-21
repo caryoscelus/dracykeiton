@@ -78,10 +78,14 @@ class Entity(object):
         elif name in self._props:
             self._props[name].value = value
         else:
-            raise AttributeError('{} has no property {}'.format(self, name))
+            super(Entity, self).__setattr__(name, value)
+            #raise AttributeError('{} has no property {}'.format(self, name))
     
     def __str__(self):
         return 'Entity {}'.format({name:getattr(self, name) for name in self._props})
+    
+    def dynamic_method(self, name):
+        pass
     
     def dynamic_property(self, name, empty=None):
         """Define new dynamic property called name"""

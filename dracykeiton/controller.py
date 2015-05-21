@@ -31,38 +31,27 @@ class ControllableEntity(Entity):
         super(ControllableEntity, self).__init__()
         self.dynamic_property('available_actions', empty=set())
 
+class WorldEntity(Entity):
+    def observe(self, observer):
+        return self
+
 class Controller(object):
-    def __init__(self, *args):
+    def __init__(self, world, *args):
         super(Controller, self).__init__()
-        self._entities = set(args)
+        self.entities = set(args)
+        self.world = world
+    
+    def set_world(self, world):
+        self.world = world
     
     def add_entity(self, entity):
-        self._entities.add(entity)
+        self.entities.add(entity)
     
     def remove_entity(self, entity):
-        self._entities.remove(entity)
+        self.entities.remove(entity)
     
     def start_acting(self):
         pass
     
     def act(self):
         return None
-
-class Action(object):
-    def act(self):
-        pass
-
-class SimpleAction(Action):
-    def __init__(self, f):
-        super(SimpleAction, self).__init__()
-        self.f = f
-    
-    def act(self, *args, **kwargs):
-        self.f(*args, **kwargs)
-
-def simpleaction(f):
-    """Decorator"""
-    @functools.wraps(f)
-    def wrap(*args, **kwargs):
-        return SimpleAction(functools.partial(f, *args, **kwargs))
-    return wrap
