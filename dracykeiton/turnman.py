@@ -38,6 +38,15 @@ class Turnman(object):
         if not self.queue:
             self.queue = self.back_queue
             self.back_queue = []
+            try:
+                self.world.big_turn()
+            except AttributeError:
+                pass
+        else:
+            try:
+                self.world.small_turn()
+            except AttributeError:
+                pass
         side = self.queue.pop(0)
         side.act()
         self.back_queue.append(side)
