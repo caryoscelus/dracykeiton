@@ -67,10 +67,13 @@ class Entity(object):
         self._default = 'normal'
         self.__mods = set()
         self.__get_depends_on = {}
-        self.init()
+        self._init()
     
-    def init(self):
+    def _init(self):
         pass
+    
+    def _uninit(self):
+        raise NotImplementedError
     
     def __getattr__(self, name):
         if name in self._props:
@@ -94,15 +97,14 @@ class Entity(object):
     @classmethod
     def enable(cl, target):
         for attr in cl.__dict__:
-            if attr[:2] != '__':
+            if attr[0] != '_':
                 target.dynamic_method(attr)
                 setattr(target, attr, cl.__dict__[attr])
-        cl.init(target)
-        target.__mods.add(cl)
+        cl._init(target)
     
     @classmethod
     def disable(cl, target):
-        raise NotImplementedError
+        cl._uninit(target)
     
     def dynamic_method(self, name):
         self.__methods.add(name)
@@ -119,15 +121,16 @@ class Entity(object):
     
     def add_mod(self, mod):
         """Add mod to this entity"""
-        self.__mods.add(mod)
-        mod.enable(self)
+        if not mod in self.__mods:
+            self.__mods.add(mod)
+            mod.enable(self)
     
     def remove_mod(self, mod):
         """Remove mod from this entity.
         mod should have correct disable method.
         """
-        self.__mods.remove(mod)
         mod.disable(self)
+        self.__mods.remove(mod)
     
     def no_set(self, prop):
         """Forbid setting prop"""

@@ -86,15 +86,12 @@ def test_dependencies():
 
 def test_mod():
     class Foo(Entity):
-        def init(self):
+        def _init(self):
             self.dynamic_property('n')
             self.add_get_node('n', self.get5())
-        #def enable(self, target):
-            #target.dynamic_property('n')
-            #target.add_get_node('n', self.get5())
         
-        #def disable(self, target):
-            #target.remove_property('n')
+        def _uninit(self):
+            self.remove_property('n')
         
         @simplenode
         def get5(self, value):
@@ -102,10 +99,9 @@ def test_mod():
     entity = Entity()
     entity.add_mod(Foo)
     assert entity.n == 5
-    with pytest.raises(NotImplementedError):
-        entity.remove_mod(Foo)
-    #with pytest.raises(AttributeError):
-        #entity.n
+    entity.remove_mod(Foo)
+    with pytest.raises(AttributeError):
+        entity.n
 
 def test_dynamic_method():
     e = Entity()

@@ -27,7 +27,7 @@ from controller import Controller
 from turnman import Turnman, SimpleSideTurnman
 
 class Board(Entity):
-    def init(self):
+    def _init(self):
         self.dynamic_property('w')
         self.dynamic_property('h')
         self.w = 3
@@ -38,8 +38,7 @@ class Board(Entity):
         self.board[y][x] = side
 
 class TicTacToe(Entity):
-    def __init__(self):
-        super(TicTacToe, self).__init__()
+    def _init(self):
         self.add_mod(Board)
 
 class Player(Entity):

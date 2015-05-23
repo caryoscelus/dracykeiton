@@ -29,11 +29,9 @@ from controller import Controller
 from turnman import Turnman
 
 class HpEntity(Entity):
-    def init(self):
+    def _init(self):
         self.dynamic_property('hp', empty=0)
         self.dynamic_property('maxhp', empty=0)
-        #self.dynamic_method('full_hp')
-        #self.dynamic_method('hurt')
     
     def full_hp(self):
         self.hp = self.maxhp
@@ -42,11 +40,9 @@ class HpEntity(Entity):
         self.hp -= damage
 
 class ActionPointEntity(Entity):
-    def init(self):
+    def _init(self):
         self.dynamic_property('ap', empty=0)
         self.dynamic_property('maxap', empty=0)
-        #target.dynamic_method('spend_ap')
-        #target.dynamic_method('restore_ap')
     
     def spend_ap(self, ap):
         if self.ap < ap:
@@ -59,16 +55,15 @@ class ActionPointEntity(Entity):
         self.ap = self.maxap
 
 class HitEnemyAction(Entity):
-    def init(self):
+    def _init(self):
         self.dynamic_property('hit_damage', empty=0)
-        #self.dynamic_method('hit')
     
     def hit(self, enemy):
         if self.spend_ap(2):
             enemy.hurt(self.hit_damage)
 
 class Goblin(Entity):
-    def init(self):
+    def _init(self):
         self.add_mod(HpEntity)
         self.add_mod(ActionPointEntity)
         self.add_mod(HitEnemyAction)
