@@ -23,9 +23,9 @@
 from entity import Entity
 
 class ActionPointEntity(Entity):
-    def _init(self):
-        self.dynamic_property('ap', empty=0)
-        self.dynamic_property('maxap', empty=0)
+    def _init(self, maxap=0):
+        self.dynamic_property('ap', 0)
+        self.dynamic_property('maxap', maxap)
     
     def spend_ap(self, ap):
         if self.ap < ap:

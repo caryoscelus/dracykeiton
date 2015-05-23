@@ -32,12 +32,9 @@ from hp import HpEntity, HittingEntity
 
 class Goblin(Entity):
     def _init(self):
-        self.add_mod(HpEntity)
-        self.add_mod(ActionPointEntity)
-        self.add_mod(HittingEntity)
-        self.maxap = 4
-        self.hit_damage = 3
-        self.maxhp = 5
+        self.add_mod(HpEntity, 5)
+        self.add_mod(ActionPointEntity, 4)
+        self.add_mod(HittingEntity, 3)
 
 class SimpleField(Entity):
     def __init__(self, *args):

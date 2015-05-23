@@ -95,12 +95,12 @@ class Entity(object):
         return 'Entity {}'.format({name:getattr(self, name) for name in self._props})
     
     @classmethod
-    def enable(cl, target):
+    def enable(cl, target, *args, **kwargs):
         for attr in cl.__dict__:
             if attr[0] != '_':
                 target.dynamic_method(attr)
                 setattr(target, attr, cl.__dict__[attr])
-        cl._init(target)
+        cl._init(target, *args, **kwargs)
     
     @classmethod
     def disable(cl, target):
@@ -119,11 +119,11 @@ class Entity(object):
         del self._props[name]
         del self.__get_depends_on[name]
     
-    def add_mod(self, mod):
+    def add_mod(self, mod, *args, **kwargs):
         """Add mod to this entity"""
         if not mod in self.__mods:
             self.__mods.add(mod)
-            mod.enable(self)
+            mod.enable(self, *args, **kwargs)
     
     def remove_mod(self, mod):
         """Remove mod from this entity.
