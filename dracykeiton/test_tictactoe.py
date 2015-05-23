@@ -22,27 +22,25 @@
 
 import copy
 
-from entity import Entity, EntityMod
+from entity import Entity
 from controller import Controller
 from turnman import Turnman, SimpleSideTurnman
 
-class Board(EntityMod):
-    def __init__(self, w, h):
-        super(Board, self).__init__()
-        self.w = w
-        self.h = h
-    def enable(self, target):
-        target.dynamic_property('board')
-        target.board = [[None for x in range(self.w)] for y in range(self.h)]
-        target.dynamic_method('mark_tile')
-        target.mark_tile = type(self).mark_tile
+class Board(Entity):
+    def init(self):
+        self.dynamic_property('w')
+        self.dynamic_property('h')
+        self.w = 3
+        self.h = 3
+        self.dynamic_property('board')
+        self.board = [[None for x in range(self.w)] for y in range(self.h)]
     def mark_tile(self, x, y, side):
         self.board[y][x] = side
 
 class TicTacToe(Entity):
     def __init__(self):
         super(TicTacToe, self).__init__()
-        self.add_mod(Board(3, 3))
+        self.add_mod(Board)
 
 class Player(Entity):
     def __init__(self, side):

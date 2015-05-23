@@ -23,7 +23,7 @@
 import pytest
 
 from compat import *
-from entity import Entity, simplenode, ReadOnlyNode, DependencyError, EntityMod
+from entity import Entity, simplenode, ReadOnlyNode, DependencyError
 
 def test_entity_property():
     entity = Entity()
@@ -85,24 +85,27 @@ def test_dependencies():
         entity.add_get_node('bar', BarNode())
 
 def test_mod():
-    class FooMod(EntityMod):
-        def enable(self, target):
-            target.dynamic_property('n')
-            target.add_get_node('n', self.get5())
+    class Foo(Entity):
+        def init(self):
+            self.dynamic_property('n')
+            self.add_get_node('n', self.get5())
+        #def enable(self, target):
+            #target.dynamic_property('n')
+            #target.add_get_node('n', self.get5())
         
-        def disable(self, target):
-            target.remove_property('n')
+        #def disable(self, target):
+            #target.remove_property('n')
         
         @simplenode
         def get5(self, value):
             return 5
-    mod = FooMod()
     entity = Entity()
-    entity.add_mod(mod)
+    entity.add_mod(Foo)
     assert entity.n == 5
-    entity.remove_mod(mod)
-    with pytest.raises(AttributeError):
-        entity.n
+    with pytest.raises(NotImplementedError):
+        entity.remove_mod(Foo)
+    #with pytest.raises(AttributeError):
+        #entity.n
 
 def test_dynamic_method():
     e = Entity()

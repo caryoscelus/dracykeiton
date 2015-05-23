@@ -67,6 +67,10 @@ class Entity(object):
         self._default = 'normal'
         self.__mods = set()
         self.__get_depends_on = {}
+        self.init()
+    
+    def init(self):
+        pass
     
     def __getattr__(self, name):
         if name in self._props:
@@ -86,6 +90,19 @@ class Entity(object):
     
     def __str__(self):
         return 'Entity {}'.format({name:getattr(self, name) for name in self._props})
+    
+    @classmethod
+    def enable(cl, target):
+        for attr in cl.__dict__:
+            if attr[:2] != '__':
+                target.dynamic_method(attr)
+                setattr(target, attr, cl.__dict__[attr])
+        cl.init(target)
+        target.__mods.add(cl)
+    
+    @classmethod
+    def disable(cl, target):
+        raise NotImplementedError
     
     def dynamic_method(self, name):
         self.__methods.add(name)
@@ -137,12 +154,6 @@ class Entity(object):
 
 class DependencyError(Exception):
     pass
-
-class EntityMod(object):
-    def enable(self, target):
-        pass
-    def disable(self, target):
-        raise NotImplementedError
 
 class ProcessingNode(object):
     def __init__(self):

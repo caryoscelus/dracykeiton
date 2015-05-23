@@ -24,22 +24,16 @@
 import copy
 import random
 
-from entity import Entity, EntityMod
+from entity import Entity
 from controller import Controller
 from turnman import Turnman
 
-class HpEntity(EntityMod):
-    def __init__(self, maxhp=1):
-        self.default_maxhp = maxhp
-    
-    def enable(self, target):
-        target.dynamic_property('hp', empty=0)
-        target.dynamic_property('maxhp')
-        target.maxhp = self.default_maxhp
-        target.dynamic_method('full_hp')
-        target.full_hp = type(self).full_hp
-        target.dynamic_method('hurt')
-        target.hurt = type(self).hurt
+class HpEntity(Entity):
+    def init(self):
+        self.dynamic_property('hp', empty=0)
+        self.dynamic_property('maxhp', empty=0)
+        #self.dynamic_method('full_hp')
+        #self.dynamic_method('hurt')
     
     def full_hp(self):
         self.hp = self.maxhp
@@ -47,18 +41,12 @@ class HpEntity(EntityMod):
     def hurt(self, damage):
         self.hp -= damage
 
-class ActionPointEntity(EntityMod):
-    def __init__(self, ap=0):
-        super(ActionPointEntity, self).__init__()
-        self.default_ap = ap
-    
-    def enable(self, target):
-        target.dynamic_property('ap', empty=0)
-        target.dynamic_property('maxap', empty=self.default_ap)
-        target.dynamic_method('spend_ap')
-        target.spend_ap = type(self).spend_ap
-        target.dynamic_method('restore_ap')
-        target.restore_ap = type(self).restore_ap
+class ActionPointEntity(Entity):
+    def init(self):
+        self.dynamic_property('ap', empty=0)
+        self.dynamic_property('maxap', empty=0)
+        #target.dynamic_method('spend_ap')
+        #target.dynamic_method('restore_ap')
     
     def spend_ap(self, ap):
         if self.ap < ap:
@@ -70,28 +58,25 @@ class ActionPointEntity(EntityMod):
     def restore_ap(self):
         self.ap = self.maxap
 
-class HitEnemyAction(EntityMod):
-    def __init__(self, hit=0):
-        self.default_hit = hit
-    
-    def enable(self, target):
-        target.dynamic_property('hit_damage')
-        target.hit_damage = self.default_hit
-        target.dynamic_method('hit')
-        target.hit = type(self).hit
+class HitEnemyAction(Entity):
+    def init(self):
+        self.dynamic_property('hit_damage', empty=0)
+        #self.dynamic_method('hit')
     
     def hit(self, enemy):
         if self.spend_ap(2):
             enemy.hurt(self.hit_damage)
 
 class Goblin(Entity):
-    def __init__(self):
-        super(Goblin, self).__init__()
-        self.add_mod(HpEntity(4))
-        self.add_mod(ActionPointEntity(3))
-        self.add_mod(HitEnemyAction(2))
+    def init(self):
+        self.add_mod(HpEntity)
+        self.add_mod(ActionPointEntity)
+        self.add_mod(HitEnemyAction)
+        self.maxap = 4
+        self.hit_damage = 3
+        self.maxhp = 5
 
-class SimpleField(EntityMod):
+class SimpleField(Entity):
     def __init__(self, *args):
         super(SimpleField, self).__init__()
         self.sides = {side : [] for side in args}
@@ -134,7 +119,6 @@ class AIBattleController(Controller):
         enemies = self.world.sides[side]
         enemy = enemies[0]
         for entity in self.entities:
-            assert entity.hit_damage == 2
             hp = enemy.hp
             entity.hit(enemy)
             assert enemy.hp != hp
@@ -155,5 +139,6 @@ def test_battle():
     turnman.add_side(left_side)
     turnman.add_side(right_side)
     turnman.turn()
-    hurted = [entity for entity in right_side.entities if entity.hp < 4]
+    hurted = [entity for entity in right_side.entities if entity.hp < 5]
     assert hurted != []
+    assert hurted[0].hp == -1
