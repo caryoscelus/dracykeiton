@@ -27,46 +27,14 @@ import random
 from entity import Entity
 from controller import Controller
 from turnman import Turnman
-
-class HpEntity(Entity):
-    def _init(self):
-        self.dynamic_property('hp', empty=0)
-        self.dynamic_property('maxhp', empty=0)
-    
-    def full_hp(self):
-        self.hp = self.maxhp
-    
-    def hurt(self, damage):
-        self.hp -= damage
-
-class ActionPointEntity(Entity):
-    def _init(self):
-        self.dynamic_property('ap', empty=0)
-        self.dynamic_property('maxap', empty=0)
-    
-    def spend_ap(self, ap):
-        if self.ap < ap:
-            return False
-        else:
-            self.ap -= ap
-            return True
-    
-    def restore_ap(self):
-        self.ap = self.maxap
-
-class HitEnemyAction(Entity):
-    def _init(self):
-        self.dynamic_property('hit_damage', empty=0)
-    
-    def hit(self, enemy):
-        if self.spend_ap(2):
-            enemy.hurt(self.hit_damage)
+from ap import ActionPointEntity
+from hp import HpEntity, HittingEntity
 
 class Goblin(Entity):
     def _init(self):
         self.add_mod(HpEntity)
         self.add_mod(ActionPointEntity)
-        self.add_mod(HitEnemyAction)
+        self.add_mod(HittingEntity)
         self.maxap = 4
         self.hit_damage = 3
         self.maxhp = 5
