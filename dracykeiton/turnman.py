@@ -28,9 +28,11 @@ class Turnman(object):
         self.queue = []
         self.back_queue = []
         self.world = world
+        self.sides = []
     
     def add_side(self, controller):
         self.queue.append(controller)
+        self.sides.append(controller)
     
     def turn(self):
         if not self.queue and not self.back_queue:
