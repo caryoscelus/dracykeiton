@@ -37,19 +37,9 @@ class Goblin(Entity):
         self.add_mod(HittingEntity, 3)
 
 class SimpleField(Entity):
-    def __init__(self, *args):
-        super(SimpleField, self).__init__()
-        self.sides = {side : [] for side in args}
-    
-    def enable(self, target):
-        target.dynamic_property('sides')
-        target.sides = copy.deepcopy(self.sides)
-        target.dynamic_method('spawn')
-        target.spawn = type(self).spawn
-        target.dynamic_method('get_enemies')
-        target.get_enemies = type(self).get_enemies
-        target.dynamic_method('small_turn')
-        target.small_turn = type(self).small_turn
+    def _init(self, *args):
+        self.sides = dict({side : [] for side in args})
+        self.dynamic_property('sides')
     
     def spawn(self, side, entity):
         self.sides[side].append(entity)
@@ -64,9 +54,8 @@ class SimpleField(Entity):
                 entity.restore_ap()
 
 class Battlefield(Entity):
-    def __init__(self):
-        super(Battlefield, self).__init__()
-        self.add_mod(SimpleField('left', 'right'))
+    def _init(self):
+        self.add_mod(SimpleField, 'left', 'right')
 
 class AIBattleController(Controller):
     def __init__(self, world, side):
