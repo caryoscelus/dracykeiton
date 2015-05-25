@@ -50,6 +50,9 @@ class PriorityQueue(object):
         self.default = default
         self.store = {p : [] for p in priorities}
     
+    def __len__(self):
+        return len([x for x in self])
+    
     def __iter__(self):
         for p in self.priorities:
             for value in self.store[p]:
