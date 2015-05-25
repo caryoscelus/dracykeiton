@@ -103,3 +103,9 @@ def test_battle():
     hurted = [entity for entity in right_side.entities if entity.hp < 5]
     assert hurted != []
     assert hurted[0].hp == -1
+
+def test_battle_pickle():
+    import pickle
+    turnman = prepare_battle()
+    s = pickle.dumps(turnman)
+    turnman1 = pickle.loads(s)

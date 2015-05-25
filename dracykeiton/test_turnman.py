@@ -36,3 +36,7 @@ def test_turnman():
     player.add_entity(player_c)
     enemy.add_entity(enemy_c)
 
+def test_pickle():
+    import pickle
+    turnman = Turnman(Entity())
+    pickle.dumps(turnman)
