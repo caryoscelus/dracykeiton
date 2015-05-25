@@ -31,11 +31,18 @@ class DynamicProperty(object):
     def __init__(self, empty=None, priorities=(), default=None):
         self.getters = PriorityQueue(*priorities, default=default)
         self.setters = PriorityQueue(*priorities, default=default)
-        self.mod_names = {}
         self._value = empty
     
     def __str__(self):
         return str(self.value)
+    
+    def __getstate__(self):
+        # we expect somebody else to add all the nodes since we can't
+        # store them from here
+        if self.getters or self.setters:
+            self_copy = DynamicProperty(self._value)
+            return self_copy.__getstate__()
+        return self.__dict__
     
     @property
     def value(self):
