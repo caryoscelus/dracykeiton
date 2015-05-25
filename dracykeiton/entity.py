@@ -86,6 +86,8 @@ class Entity(object):
         raise NotImplementedError
     
     def __getattr__(self, name):
+        if name == '_props':
+            raise AttributeError('_props not present!')
         if name in self._props:
             return self._props[name].value
         raise AttributeError('{} has no attribute/property {}'.format(self, name))
