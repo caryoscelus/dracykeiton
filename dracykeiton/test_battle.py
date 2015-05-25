@@ -29,31 +29,38 @@ from controller import Controller
 from turnman import Turnman
 from ap import ActionPointEntity
 from hp import HpEntity, HittingEntity
+from unbound import unbound
 
 class Goblin(Entity):
+    @unbound
     def _init(self):
         self.add_mod(HpEntity, 5)
         self.add_mod(ActionPointEntity, 4)
         self.add_mod(HittingEntity, 3)
 
 class SimpleField(Entity):
+    @unbound
     def _init(self, *args):
         self.sides = dict({side : [] for side in args})
         self.dynamic_property('sides')
     
+    @unbound
     def spawn(self, side, entity):
         self.sides[side].append(entity)
         entity.full_hp()
     
+    @unbound
     def get_enemies(self, side):
         return set(s for s in self.sides.keys() if s != side)
     
+    @unbound
     def small_turn(self):
         for side in self.sides:
             for entity in self.sides[side]:
                 entity.restore_ap()
 
 class Battlefield(Entity):
+    @unbound
     def _init(self):
         self.add_mod(SimpleField, 'left', 'right')
 
@@ -72,7 +79,7 @@ class AIBattleController(Controller):
             entity.hit(enemy)
             assert enemy.hp != hp
 
-def test_battle():
+def prepare_battle():
     battlefield = Battlefield()
     left_side = AIBattleController(battlefield, 'left')
     right_side = AIBattleController(battlefield, 'right')
@@ -87,7 +94,12 @@ def test_battle():
     turnman = Turnman(battlefield)
     turnman.add_side(left_side)
     turnman.add_side(right_side)
+    return turnman
+
+def test_battle():
+    turnman = prepare_battle()
     turnman.turn()
+    right_side = turnman.sides[1]
     hurted = [entity for entity in right_side.entities if entity.hp < 5]
     assert hurted != []
     assert hurted[0].hp == -1

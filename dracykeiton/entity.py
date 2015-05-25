@@ -20,11 +20,12 @@
 
 """Contains Entity which is the base class for all entities and it's properties
 """
+import functools
+import collections
 
 from compat import *
 from priorityqueue import PriorityQueue
-
-import functools
+from unbound import unbound, fix_methods
 
 class DynamicProperty(object):
     """Stores dynamic property and modifiers associated with it."""
@@ -67,11 +68,14 @@ class Entity(object):
         self._default = 'normal'
         self.__mods = set()
         self.__get_depends_on = {}
+        fix_methods(self)
         self._init()
     
+    @unbound
     def _init(self):
         pass
     
+    @unbound
     def _uninit(self):
         raise NotImplementedError
     

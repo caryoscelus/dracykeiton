@@ -21,8 +21,10 @@
 """Hit point system"""
 
 from entity import Entity, simplenode
+from unbound import unbound
 
 class LivingEntity(Entity):
+    @unbound
     def _init(self):
         self.dynamic_property('living', 'unborn')
         self.add_set_node('living', self.ensure_correct())
@@ -34,21 +36,26 @@ class LivingEntity(Entity):
         return value
 
 class HpEntity(Entity):
+    @unbound
     def _init(self, maxhp=0):
         self.add_mod(LivingEntity)
         self.dynamic_property('hp', 0)
         self.dynamic_property('maxhp', maxhp)
     
+    @unbound
     def full_hp(self):
         self.hp = self.maxhp
     
+    @unbound
     def hurt(self, damage):
         self.hp -= damage
 
 class HittingEntity(Entity):
+    @unbound
     def _init(self, hit_damage=0):
         self.dynamic_property('hit_damage', hit_damage)
     
+    @unbound
     def hit(self, enemy):
         if self.spend_ap(2):
             enemy.hurt(self.hit_damage)

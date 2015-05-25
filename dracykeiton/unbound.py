@@ -18,25 +18,21 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""Action point system"""
+"""Python 2 compatibility: method unbinding helper functions
+"""
 
-from entity import Entity
-from unbound import unbound
+import functools
+import collections
 
-class ActionPointEntity(Entity):
-    @unbound
-    def _init(self, maxap=0):
-        self.dynamic_property('ap', 0)
-        self.dynamic_property('maxap', maxap)
-    
-    @unbound
-    def spend_ap(self, ap):
-        if self.ap < ap:
-            return False
-        else:
-            self.ap -= ap
-            return True
-    
-    @unbound
-    def restore_ap(self):
-        self.ap = self.maxap
+class unbound(object):
+    def __init__(self, f):
+        self.f = f
+        functools.update_wrapper(self, f)
+    def __call__(self, *args, **kwargs):
+        return self.f(*args, **kwargs)
+
+def fix_methods(self):
+    for name in dir(self):
+        method = getattr(self, name)
+        if isinstance(method, unbound):
+            setattr(self, name, functools.partial(method, self))
