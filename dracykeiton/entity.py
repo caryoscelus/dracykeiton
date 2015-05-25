@@ -106,9 +106,17 @@ class Entity(object):
     def __str__(self):
         return 'Entity {}'.format({name:getattr(self, name) for name in self._props})
     
+    def __getstate__(self):
+        self_copy = self.__dict__.copy()
+        for name in self.__methods:
+            del self_copy[name]
+        return self_copy
+    
     def __setstate__(self, state):
         self.__dict__.update(state)
         self._init()
+        for mod in self.__mods:
+            mod.enable(self)
     
     @classmethod
     def enable(cl, target, *args, **kwargs):
