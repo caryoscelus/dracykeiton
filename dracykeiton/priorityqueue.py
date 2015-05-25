@@ -32,8 +32,11 @@
 from compat import *
 
 class PriorityQueue(object):
-    def __init__(self, *priorities, default=None):
+    def __init__(self, *priorities, **kwargs):
         super(PriorityQueue, self).__init__()
+        default = None
+        if 'default' in kwargs:
+            default = kwargs['default']
         if not priorities:
             if not default:
                 default = 'default'
