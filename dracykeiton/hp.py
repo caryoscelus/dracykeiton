@@ -21,7 +21,7 @@
 """Hit point system"""
 
 from entity import Entity, simplenode
-from unbound import unbound
+from compat import *
 
 class LivingEntity(Entity):
     @unbound

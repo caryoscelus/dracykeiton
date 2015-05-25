@@ -21,7 +21,7 @@
 """Action point system"""
 
 from entity import Entity
-from unbound import unbound
+from compat import *
 
 class ActionPointEntity(Entity):
     @unbound

@@ -29,7 +29,7 @@ from controller import Controller
 from turnman import Turnman
 from ap import ActionPointEntity
 from hp import HpEntity, HittingEntity
-from unbound import unbound
+from compat import *
 
 class Goblin(Entity):
     @unbound

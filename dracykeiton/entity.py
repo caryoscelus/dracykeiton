@@ -25,7 +25,6 @@ import collections
 
 from compat import *
 from priorityqueue import PriorityQueue
-from unbound import unbound, fix_methods
 
 class DynamicProperty(object):
     """Stores dynamic property and modifiers associated with it."""

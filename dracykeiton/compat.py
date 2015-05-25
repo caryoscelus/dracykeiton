@@ -18,14 +18,36 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""Ren'py compatibility layer.
+"""Compatibility layer.
 
-If renpy is present, import some standard types and functions. Also
-exports HAS_RENPY boolean variable.
+If Ren'Py is present, import some standard types/functions from renpy.store.
+
+If python2, define unbinding helper methods, else they are empty.
 """
 
 try:
     from renpy.store import object, list, dict, set, range, sorted
-    HAS_RENPY = True
 except ImportError:
-    HAS_RENPY = False
+    pass
+
+import sys
+if sys.version_info.major < 3:
+    import functools
+    import collections
+    class unbound(object):
+        def __init__(self, f):
+            self.f = f
+            functools.update_wrapper(self, f)
+        def __call__(self, *args, **kwargs):
+            return self.f(*args, **kwargs)
+
+    def fix_methods(self):
+        for name in dir(self):
+            method = getattr(self, name)
+            if isinstance(method, unbound):
+                setattr(self, name, functools.partial(method, self))
+else:
+    def unbound(f):
+        return f
+    def fix_methods(self):
+        pass
