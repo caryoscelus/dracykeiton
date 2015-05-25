@@ -20,7 +20,8 @@
 
 """Test whether pickling is working correct for our classes"""
 
-from entity import DynamicProperty, simplenode
+from compat import *
+from entity import DynamicProperty, simplenode, Entity
 import pickle
 
 def test_pickle_property():
@@ -37,3 +38,19 @@ def test_pickle_property():
     assert p.value == 1
     assert p1.value == 0
     assert p._value == p1._value
+
+class FooEntity(Entity):
+    def _init(self):
+        self.dynamic_property('n', 5)
+        self.add_get_node('n', self.get1())
+    
+    @simplenode
+    def get1(self, value):
+        return value+1
+
+def test_pickle_entity():
+    entity = FooEntity()
+    s = pickle.dumps(entity)
+    entity1 = pickle.loads(s)
+    assert entity.n == 6
+    assert entity1.n == 6

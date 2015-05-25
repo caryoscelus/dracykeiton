@@ -106,6 +106,10 @@ class Entity(object):
     def __str__(self):
         return 'Entity {}'.format({name:getattr(self, name) for name in self._props})
     
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        self._init()
+    
     @classmethod
     def enable(cl, target, *args, **kwargs):
         for attr in cl.__dict__:
