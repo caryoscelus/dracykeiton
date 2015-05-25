@@ -135,6 +135,8 @@ class Entity(object):
     
     def dynamic_property(self, name, empty=None):
         """Define new dynamic property called name"""
+        if name in self._props:
+            return
         self._props[name] = DynamicProperty(empty=empty, priorities=self._priorities, default=self._default)
         self.__get_depends_on[name] = {}
     
