@@ -86,10 +86,12 @@ def test_dependencies():
 
 def test_mod():
     class Foo(Entity):
+        @unbound
         def _init(self):
             self.dynamic_property('n')
             self.add_get_node('n', self.get5())
         
+        @unbound
         def _uninit(self):
             self.remove_property('n')
         

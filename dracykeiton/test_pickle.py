@@ -23,6 +23,7 @@
 from compat import *
 from entity import DynamicProperty, simplenode, Entity
 import pickle
+import dill
 
 def test_pickle_property():
     p = DynamicProperty(empty=0)
@@ -40,6 +41,7 @@ def test_pickle_property():
     assert p._value == p1._value
 
 class FooEntity(Entity):
+    @unbound
     def _init(self):
         self.dynamic_property('n', 5)
         self.add_get_node('n', self.get1())

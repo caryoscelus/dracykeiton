@@ -38,5 +38,6 @@ def test_turnman():
 
 def test_pickle():
     import pickle
+    import dill
     turnman = Turnman(Entity())
     pickle.dumps(turnman)

@@ -22,11 +22,13 @@
 
 import copy
 
+from compat import *
 from entity import Entity
 from controller import Controller
 from turnman import Turnman, SimpleSideTurnman
 
 class Board(Entity):
+    @unbound
     def _init(self):
         self.dynamic_property('w')
         self.dynamic_property('h')
@@ -34,18 +36,19 @@ class Board(Entity):
         self.h = 3
         self.dynamic_property('board')
         self.board = [[None for x in range(self.w)] for y in range(self.h)]
+    @unbound
     def mark_tile(self, x, y, side):
         self.board[y][x] = side
 
 class TicTacToe(Entity):
+    @unbound
     def _init(self):
         self.add_mod(Board)
 
 class Player(Entity):
-    def __init__(self, side):
-        super(Player, self).__init__()
+    @unbound
+    def _init(self):
         self.dynamic_property('side')
-        self.side = side
 
 class TTTAI(Controller):
     def act(self):
@@ -58,9 +61,11 @@ class TTTAI(Controller):
 def test_tictactoe():
     board = TicTacToe()
     turnman = SimpleSideTurnman(board)
-    en_x = Player('x')
+    en_x = Player()
+    en_x.side = 'x'
     pl_x = TTTAI(board, en_x)
-    en_o = Player('o')
+    en_o = Player()
+    en_o.side = 'o'
     pl_o = TTTAI(board, en_o)
     turnman.add_side(pl_x)
     turnman.add_side(pl_o)
