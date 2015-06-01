@@ -38,6 +38,8 @@ def test_turnman():
 
 def test_pickle():
     import pickle
-    import dill
+    from sys import version_info
+    if version_info.major < 3:
+        import dill
     turnman = Turnman(Entity())
     pickle.dumps(turnman)
