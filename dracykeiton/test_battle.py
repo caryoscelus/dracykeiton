@@ -106,6 +106,9 @@ def test_battle():
 
 def test_battle_pickle():
     import pickle
+    import sys
+    if sys.version_info.major < 3:
+        import dill
     turnman = prepare_battle()
     s = pickle.dumps(turnman)
     turnman1 = pickle.loads(s)
