@@ -47,7 +47,7 @@ class SimpleField(Entity):
     @unbound
     def spawn(self, side, entity):
         self.sides[side].append(entity)
-        entity.full_hp()
+        entity.be_born()
     
     @unbound
     def get_enemies(self, side):
