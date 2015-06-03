@@ -74,13 +74,3 @@ class HpEntity(Entity):
     def check_if_born(self, target, value):
         if value == 'alive':
             self.full_hp()
-
-class HittingEntity(Entity):
-    @unbound
-    def _init(self, hit_damage=0):
-        self.dynamic_property('hit_damage', hit_damage)
-    
-    @unbound
-    def hit(self, enemy):
-        if self.spend_ap(2):
-            enemy.hurt(self.hit_damage)

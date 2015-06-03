@@ -28,7 +28,8 @@ from entity import Entity, listener
 from controller import Controller
 from turnman import Turnman
 from ap import ActionPointEntity
-from hp import HpEntity, HittingEntity
+from hp import HpEntity
+from hit import HittingEntity
 from compat import *
 
 class Goblin(Entity):
@@ -96,7 +97,6 @@ class AIBattleController(Controller):
         for entity in self.entities:
             hp = enemy.hp
             entity.hit(enemy)
-            assert enemy.hp != hp
 
 def prepare_battle():
     battlefield = Battlefield()
