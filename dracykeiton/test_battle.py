@@ -42,11 +42,19 @@ class SimpleField(Entity):
     @unbound
     def _init(self, *args):
         self.dynamic_property('sides', dict({side : [] for side in args}))
+        # for saving/loading purpose
+        for side in self.sides:
+            for entity in self.sides[side]:
+                self.reg_entity(entity)
     
     @unbound
     def spawn(self, side, entity):
         self.sides[side].append(entity)
         entity.be_born()
+        self.reg_entity(entity)
+    
+    @unbound
+    def reg_entity(self, entity):
         entity.add_listener_node('living', self.remove_dead())
     
     @unbound
