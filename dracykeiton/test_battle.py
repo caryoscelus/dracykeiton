@@ -127,4 +127,10 @@ def test_battle_pickle():
     turnman = prepare_battle()
     s = pickle.dumps(turnman)
     turnman1 = pickle.loads(s)
+    goblin = turnman.world.sides['left'][0]
+    goblin1 = turnman1.world.sides['left'][0]
+    assert len(goblin1._listeners['living']) == len(goblin._listeners['living'])
+    
     turnman1.turn()
+    turnman.turn()
+    assert len(turnman.world.sides['right']) == len(turnman1.world.sides['right'])
