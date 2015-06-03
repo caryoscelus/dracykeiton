@@ -23,11 +23,11 @@
 from compat import *
 from entity import DynamicProperty, simplenode, Entity
 
-import pickle
-
 from sys import version_info
-if version_info.major < 3:
-    import dill
+if version_info.major >= 3:
+    import pickle
+else:
+    import dill as pickle
 
 def test_pickle_property():
     p = DynamicProperty(empty=0)
