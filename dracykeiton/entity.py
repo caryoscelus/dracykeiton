@@ -24,6 +24,7 @@ import functools
 import collections
 
 from compat import *
+import classpatch
 from priorityqueue import PriorityQueue
 
 class DynamicProperty(object):
@@ -77,6 +78,9 @@ class Entity(object):
         self._get_depends_on = {}
         fix_methods(self)
         self._init()
+        mods = classpatch.get(type(self), 'mod')
+        for mod in mods:
+            self.add_mod(mod)
     
     @unbound
     def _init(self):
