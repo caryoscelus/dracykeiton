@@ -20,7 +20,7 @@
 
 """Hit point system"""
 
-from entity import Entity, simplenode
+from entity import Entity, simplenode, listener
 from compat import *
 
 class LivingEntity(Entity):
@@ -34,6 +34,10 @@ class LivingEntity(Entity):
         if not value in ('unborn', 'alive', 'dead'):
             raise TypeError('living property cannnot equal "{}"'.format(value))
         return value
+    
+    @unbound
+    def die(self, msg='no reason'):
+        self.living = 'dead'
 
 class HpEntity(Entity):
     @unbound
@@ -41,6 +45,7 @@ class HpEntity(Entity):
         self.add_mod(LivingEntity)
         self.dynamic_property('hp', 0)
         self.dynamic_property('maxhp', maxhp)
+        self.add_listener_node('hp', self.check_hp())
     
     @unbound
     def full_hp(self):
@@ -49,6 +54,11 @@ class HpEntity(Entity):
     @unbound
     def hurt(self, damage):
         self.hp -= damage
+    
+    @listener
+    def check_hp(self, target, value):
+        if self.hp <= 0:
+            self.die('hp = {}'.format(self.hp))
 
 class HittingEntity(Entity):
     @unbound
