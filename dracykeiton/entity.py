@@ -69,12 +69,12 @@ class Entity(object):
         super(Entity, self).__init__()
         self._props = dict()
         self._listeners = dict()
-        self.__methods = set()
+        self._methods = set()
         # TODO: fix this
         self._priorities = ('early', 'normal', 'late')
         self._default = 'normal'
-        self.__mods = set()
-        self.__get_depends_on = {}
+        self._mods = set()
+        self._get_depends_on = {}
         fix_methods(self)
         self._init()
     
@@ -99,7 +99,7 @@ class Entity(object):
         elif name in self._props:
             self._props[name].value = value
             self.notify_listeners(name)
-        elif name in self.__methods:
+        elif name in self._methods:
             super(Entity, self).__setattr__(name, functools.partial(value, self))
         else:
             super(Entity, self).__setattr__(name, value)
@@ -111,7 +111,7 @@ class Entity(object):
     def __getstate__(self):
         self_copy = self.__dict__.copy()
         # can't save methods, but they'll be restored by mods
-        for name in self.__methods:
+        for name in self._methods:
             del self_copy[name]
         # will be restored by mods as well
         del self_copy['_listeners']
@@ -121,7 +121,7 @@ class Entity(object):
         self.__dict__.update(state)
         self._init()
         self._listeners = dict({prop:list() for prop in self._props})
-        for mod in self.__mods:
+        for mod in self._mods:
             mod.enable(self)
     
     @classmethod
@@ -137,25 +137,25 @@ class Entity(object):
         cl._uninit(target)
     
     def dynamic_method(self, name):
-        self.__methods.add(name)
+        self._methods.add(name)
     
     def dynamic_property(self, name, empty=None):
         """Define new dynamic property called name"""
         if name in self._props:
             return
         self._props[name] = DynamicProperty(empty=empty, priorities=self._priorities, default=self._default)
-        self.__get_depends_on[name] = dict()
+        self._get_depends_on[name] = dict()
         self._listeners[name] = list()
     
     def remove_property(self, name):
         """Remove dynamic property. To use in mod.disable()"""
         del self._props[name]
-        del self.__get_depends_on[name]
+        del self._get_depends_on[name]
     
     def add_mod(self, mod, *args, **kwargs):
         """Add mod to this entity"""
-        if not mod in self.__mods:
-            self.__mods.add(mod)
+        if not mod in self._mods:
+            self._mods.add(mod)
             mod.enable(self, *args, **kwargs)
     
     def remove_mod(self, mod):
@@ -163,7 +163,7 @@ class Entity(object):
         mod should have correct disable method.
         """
         mod.disable(self)
-        self.__mods.remove(mod)
+        self._mods.remove(mod)
     
     def no_set(self, prop):
         """Forbid setting prop"""
@@ -184,9 +184,9 @@ class Entity(object):
             raise DependencyError('circular dependency on {}'.format(prop))
     
     def inc_get_dependency(self, dependency, dependant):
-        if not dependant in self.__get_depends_on[dependency]:
-            self.__get_depends_on[dependency][dependant] = 0
-        self.__get_depends_on[dependency][dependant] += 1
+        if not dependant in self._get_depends_on[dependency]:
+            self._get_depends_on[dependency][dependant] = 0
+        self._get_depends_on[dependency][dependant] += 1
     
     def add_listener_node(self, prop, listener):
         self._listeners[prop].append(listener)
