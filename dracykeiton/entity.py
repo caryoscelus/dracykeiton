@@ -68,6 +68,7 @@ class Entity(object):
     def __init__(self):
         super(Entity, self).__init__()
         self._props = dict()
+        self._listeners = dict()
         self.__methods = set()
         # TODO: fix this
         self._priorities = ('early', 'normal', 'late')
@@ -97,6 +98,7 @@ class Entity(object):
             super(Entity, self).__setattr__(name, value)
         elif name in self._props:
             self._props[name].value = value
+            self.notify_listeners(name)
         elif name in self.__methods:
             super(Entity, self).__setattr__(name, functools.partial(value, self))
         else:
@@ -108,13 +110,17 @@ class Entity(object):
     
     def __getstate__(self):
         self_copy = self.__dict__.copy()
+        # can't save methods, but they'll be restored by mods
         for name in self.__methods:
             del self_copy[name]
+        # will be restored by mods as well
+        del self_copy['_listeners']
         return self_copy
     
     def __setstate__(self, state):
         self.__dict__.update(state)
         self._init()
+        self._listeners = dict({prop:list() for prop in self._props})
         for mod in self.__mods:
             mod.enable(self)
     
@@ -138,7 +144,8 @@ class Entity(object):
         if name in self._props:
             return
         self._props[name] = DynamicProperty(empty=empty, priorities=self._priorities, default=self._default)
-        self.__get_depends_on[name] = {}
+        self.__get_depends_on[name] = dict()
+        self._listeners[name] = list()
     
     def remove_property(self, name):
         """Remove dynamic property. To use in mod.disable()"""
@@ -180,6 +187,13 @@ class Entity(object):
         if not dependant in self.__get_depends_on[dependency]:
             self.__get_depends_on[dependency][dependant] = 0
         self.__get_depends_on[dependency][dependant] += 1
+    
+    def add_listener_node(self, prop, listener):
+        self._listeners[prop].append(listener)
+    
+    def notify_listeners(self, prop):
+        for listener in self._listeners[prop]:
+            listener(self, getattr(self, prop))
 
 class DependencyError(Exception):
     pass
@@ -197,6 +211,19 @@ class ProcessingNode(object):
     
     def __call__(self, target, value):
         return value
+
+class ListenerNode(ProcessingNode):
+    def __init__(self, f):
+        super(ListenerNode, self).__init__()
+        self.f = f
+    
+    def __call__(self, target, value):
+        self.f(target, value)
+
+def listener(f):
+    def wrap(*args, **kwargs):
+        return ListenerNode(functools.partial(f, *args, **kwargs))
+    return wrap
 
 class ReadOnlyNode(ProcessingNode):
     """Processing node with only limited read access"""
