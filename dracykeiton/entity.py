@@ -78,9 +78,7 @@ class Entity(object):
         self._get_depends_on = {}
         fix_methods(self)
         self._init()
-        mods = classpatch.get(type(self), 'mod')
-        for mod in mods:
-            self.add_mod(mod)
+        self._load_patchmods()
     
     @unbound
     def _init(self):
@@ -89,6 +87,11 @@ class Entity(object):
     @unbound
     def _uninit(self):
         raise NotImplementedError
+    
+    def _load_patchmods(self):
+        mods = classpatch.get(type(self), 'mod')
+        for mod in mods:
+            self.add_mod(mod)
     
     def __getattr__(self, name):
         if name == '_props':
@@ -125,6 +128,7 @@ class Entity(object):
         self.__dict__.update(state)
         self._init()
         self._listeners = dict({prop:list() for prop in self._props})
+        self._load_patchmods()
         for mod in self._mods:
             mod.enable(self)
     

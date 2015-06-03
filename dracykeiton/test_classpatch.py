@@ -33,7 +33,25 @@ class PatchEntity(Entity):
     def _init(self):
         self.dynamic_property('n', 5)
 
+class AnotherPatchEntity(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('m', 7)
+
+classpatch.register(FooEntity, 'mod', PatchEntity)
+
 def test_simple():
-    classpatch.register(FooEntity, 'mod', PatchEntity)
     entity = FooEntity()
     assert entity.n == 5
+
+def test_pickle():
+    import sys
+    if sys.version_info.major >= 3:
+        import pickle
+    else:
+        import dill as pickle
+    entity = FooEntity()
+    classpatch.register(FooEntity, 'mod', AnotherPatchEntity)
+    entity1 = pickle.loads(pickle.dumps(entity))
+    assert entity1.n == 5
+    assert entity1.m == 7
