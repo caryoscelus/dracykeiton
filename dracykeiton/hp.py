@@ -38,6 +38,15 @@ class LivingEntity(Entity):
     @unbound
     def die(self, msg='no reason'):
         self.living = 'dead'
+    
+    @unbound
+    def be_born(self):
+        if self.living == 'unborn':
+            self.living = 'alive'
+        elif self.living == 'dead':
+            raise TypeError('dead cannot be born, try some black magic instead!')
+        elif self.living == 'alive':
+            raise TypeError('cannot be born twice!')
 
 class HpEntity(Entity):
     @unbound
@@ -46,6 +55,7 @@ class HpEntity(Entity):
         self.dynamic_property('hp', 0)
         self.dynamic_property('maxhp', maxhp)
         self.add_listener_node('hp', self.check_hp())
+        self.add_listener_node('living', self.check_if_born())
     
     @unbound
     def full_hp(self):
@@ -59,6 +69,11 @@ class HpEntity(Entity):
     def check_hp(self, target, value):
         if self.hp <= 0:
             self.die('hp = {}'.format(self.hp))
+    
+    @listener
+    def check_if_born(self, target, value):
+        if value == 'alive':
+            self.full_hp()
 
 class HittingEntity(Entity):
     @unbound
