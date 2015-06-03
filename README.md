@@ -15,8 +15,14 @@ to create a battle engine for a specific Ren'Py project.
     pyvenv env
     # ..and python 2
     virtualenv env2
+    
+    # install py.test
+    source env/bin/activate && pip install pytest && deactivate
+    source env2/bin/activate && pip install pytest && deactivate
+    
     # install git hooks
     ln -s `pwd`/githooks/pre-commit .git/hooks/
+    
     # launching tests
     ./run-all-tests.sh
 
