@@ -103,6 +103,7 @@ def test_battle():
     hurted = [entity for entity in right_side.entities if entity.hp < 5]
     assert hurted != []
     assert hurted[0].hp == -1
+    assert hurted[0].living == 'dead'
 
 def test_battle_pickle():
     import pickle
