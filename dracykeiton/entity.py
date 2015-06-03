@@ -192,8 +192,15 @@ class Entity(object):
         self._listeners[prop].append(listener)
     
     def notify_listeners(self, prop):
+        """Notify listeners of prop, including those who depend on it.
+        
+        NOTE: this may lead to some listener getting notified more than once if
+        it's dependency of multiple dependencies.
+        """
         for listener in self._listeners[prop]:
             listener(self, getattr(self, prop))
+        for dep in self._get_depends_on[prop]:
+            self.notify_listeners(dep)
 
 class DependencyError(Exception):
     pass
