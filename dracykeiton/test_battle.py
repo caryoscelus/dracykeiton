@@ -24,7 +24,7 @@
 import copy
 import random
 
-from entity import Entity
+from entity import Entity, listener
 from controller import Controller
 from turnman import Turnman
 from ap import ActionPointEntity
@@ -41,13 +41,20 @@ class Goblin(Entity):
 class SimpleField(Entity):
     @unbound
     def _init(self, *args):
-        self.sides = dict({side : [] for side in args})
         self.dynamic_property('sides')
+        self.sides = dict({side : [] for side in args})
     
     @unbound
     def spawn(self, side, entity):
         self.sides[side].append(entity)
         entity.be_born()
+        entity.add_listener_node('living', self.remove_dead())
+    
+    @unbound
+    def unspawn(self, entity):
+        for side in self.sides:
+            if entity in self.sides[side]:
+                self.sides[side].remove(entity)
     
     @unbound
     def get_enemies(self, side):
@@ -58,6 +65,11 @@ class SimpleField(Entity):
         for side in self.sides:
             for entity in self.sides[side]:
                 entity.restore_ap()
+    
+    @listener
+    def remove_dead(self, target, value):
+        if value == 'dead':
+            self.unspawn(target)
 
 class Battlefield(Entity):
     @unbound
@@ -104,6 +116,9 @@ def test_battle():
     assert hurted != []
     assert hurted[0].hp == -1
     assert hurted[0].living == 'dead'
+    turnman.turn()
+    l_side = turnman.world.sides['left']
+    assert len(l_side) == 1
 
 def test_battle_pickle():
     import pickle
