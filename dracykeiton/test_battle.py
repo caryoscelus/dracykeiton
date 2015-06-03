@@ -41,8 +41,7 @@ class Goblin(Entity):
 class SimpleField(Entity):
     @unbound
     def _init(self, *args):
-        self.dynamic_property('sides')
-        self.sides = dict({side : [] for side in args})
+        self.dynamic_property('sides', dict({side : [] for side in args}))
     
     @unbound
     def spawn(self, side, entity):
@@ -128,3 +127,4 @@ def test_battle_pickle():
     turnman = prepare_battle()
     s = pickle.dumps(turnman)
     turnman1 = pickle.loads(s)
+    turnman1.turn()
