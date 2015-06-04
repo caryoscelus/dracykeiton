@@ -29,6 +29,7 @@ class Turnman(object):
         self.back_queue = []
         self.world = world
         self.sides = []
+        self.turn_prepared = False
     
     def add_side(self, controller):
         self.queue.append(controller)
@@ -37,21 +38,28 @@ class Turnman(object):
     def turn(self):
         if not self.queue and not self.back_queue:
             raise IndexError('cannot process turn when there are no sides')
-        if not self.queue:
-            self.queue = self.back_queue
-            self.back_queue = []
-            try:
-                self.world.big_turn()
-            except AttributeError:
-                pass
-        else:
-            try:
-                self.world.small_turn()
-            except AttributeError:
-                pass
+        if not self.turn_prepared:
+            self.turn_prepared = True
+            if not self.queue:
+                self.queue = self.back_queue
+                self.back_queue = []
+                try:
+                    self.world.big_turn()
+                except AttributeError:
+                    pass
+            else:
+                try:
+                    self.world.small_turn()
+                except AttributeError:
+                    pass
         side = self.queue.pop(0)
-        side.act()
+        r = side.act()
+        if not r:
+            self.queue.insert(0, side)
+            return False
         self.back_queue.append(side)
+        self.turn_prepared = False
+        return True
 
 class SimpleSideTurnman(Turnman):
     pass

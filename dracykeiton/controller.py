@@ -50,8 +50,5 @@ class Controller(object):
     def remove_entity(self, entity):
         self.entities.remove(entity)
     
-    def start_acting(self):
-        pass
-    
     def act(self):
-        return None
+        return False
