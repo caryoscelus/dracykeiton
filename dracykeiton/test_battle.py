@@ -55,10 +55,10 @@ class AIBattleController(Controller):
             hp = enemy.hp
             entity.hit(enemy)
 
-def prepare_battle():
+def prepare_battle(left_c, right_c):
     battlefield = Battlefield()
-    left_side = AIBattleController(battlefield, 'left')
-    right_side = AIBattleController(battlefield, 'right')
+    left_side = left_c(battlefield, 'left')
+    right_side = right_c(battlefield, 'right')
     for i in range(2):
         goblin = Goblin()
         left_side.add_entity(goblin)
@@ -73,7 +73,7 @@ def prepare_battle():
     return turnman
 
 def test_battle():
-    turnman = prepare_battle()
+    turnman = prepare_battle(AIBattleController, AIBattleController)
     turnman.turn()
     right_side = turnman.sides[1]
     hurted = [entity for entity in right_side.entities if entity.hp < 5]
@@ -90,7 +90,7 @@ def test_battle_pickle():
         import pickle
     else:
         import dill as pickle
-    turnman = prepare_battle()
+    turnman = prepare_battle(AIBattleController, AIBattleController)
     s = pickle.dumps(turnman)
     turnman1 = pickle.loads(s)
     goblin = turnman.world.sides['left'][0]
