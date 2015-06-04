@@ -24,13 +24,15 @@
 import copy
 import random
 
+from compat import *
+
 from entity import Entity, listener
 from controller import Controller
 from turnman import Turnman
 from ap import ActionPointEntity
 from hp import HpEntity
 from hit import HittingEntity
-from compat import *
+from battlefield import Battlefield
 
 class Goblin(Entity):
     @unbound
@@ -38,51 +40,6 @@ class Goblin(Entity):
         self.add_mod(HpEntity, 5)
         self.add_mod(ActionPointEntity, 4)
         self.add_mod(HittingEntity, 3)
-
-class SimpleField(Entity):
-    @unbound
-    def _init(self, *args):
-        self.dynamic_property('sides', dict({side : [] for side in args}))
-        # for saving/loading purpose
-        for side in self.sides:
-            for entity in self.sides[side]:
-                self.reg_entity(entity)
-    
-    @unbound
-    def spawn(self, side, entity):
-        self.sides[side].append(entity)
-        entity.be_born()
-        self.reg_entity(entity)
-    
-    @unbound
-    def reg_entity(self, entity):
-        entity.add_listener_node('living', self.remove_dead())
-    
-    @unbound
-    def unspawn(self, entity):
-        for side in self.sides:
-            if entity in self.sides[side]:
-                self.sides[side].remove(entity)
-    
-    @unbound
-    def get_enemies(self, side):
-        return set(s for s in self.sides.keys() if s != side)
-    
-    @unbound
-    def small_turn(self):
-        for side in self.sides:
-            for entity in self.sides[side]:
-                entity.restore_ap()
-    
-    @listener
-    def remove_dead(self, target, value):
-        if value == 'dead':
-            self.unspawn(target)
-
-class Battlefield(Entity):
-    @unbound
-    def _init(self):
-        self.add_mod(SimpleField, 'left', 'right')
 
 class AIBattleController(Controller):
     def __init__(self, world, side):
