@@ -54,6 +54,7 @@ class AIBattleController(Controller):
         for entity in self.entities:
             hp = enemy.hp
             entity.hit(enemy)
+        return True
 
 def prepare_battle(left_c, right_c):
     battlefield = Battlefield()

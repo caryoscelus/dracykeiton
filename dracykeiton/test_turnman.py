@@ -20,6 +20,7 @@
 
 """"""
 
+from compat import *
 from controller import Controller
 from turnman import Turnman
 from entity import Entity
@@ -30,7 +31,7 @@ def test_turnman():
     enemy = Controller(None)
     turnman.add_side(player)
     turnman.add_side(enemy)
-    #turnman.turn()
+    turnman.turn()
     player_c = Entity()
     enemy_c = Entity()
     player.add_entity(player_c)
@@ -43,3 +44,39 @@ def test_pickle():
         import dill
     turnman = Turnman(Entity())
     pickle.dumps(turnman)
+
+class EmptyController(Controller):
+    def act(self):
+        return False
+
+class PassController(Controller):
+    def act(self):
+        return True
+
+class Counter(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('small', 0)
+        self.dynamic_property('big', 0)
+    @unbound
+    def big_turn(self):
+        self.big += 1
+    @unbound
+    def small_turn(self):
+        self.small += 1
+
+def test_empty_controller():
+    turnman = Turnman(Counter())
+    acting = PassController(None)
+    empty = EmptyController(None)
+    turnman.add_side(acting)
+    turnman.add_side(empty)
+    turnman.turn()
+    assert turnman.world.big == 0
+    assert turnman.world.small == 1
+    turnman.turn()
+    assert turnman.world.small == 2
+    turnman.turn()
+    turnman.turn()
+    assert turnman.world.small == 2
+    assert turnman.world.big == 0
