@@ -32,7 +32,7 @@ from turnman import Turnman
 from ap import ActionPointEntity
 from hp import HpEntity
 from hit import HittingEntity
-from battlefield import Battlefield
+from battlefield import Battlefield, Side
 
 class Goblin(Entity):
     @unbound
@@ -42,48 +42,51 @@ class Goblin(Entity):
         self.add_mod(HittingEntity, 3)
 
 class AIBattleController(Controller):
-    def __init__(self, world, side):
-        super(AIBattleController, self).__init__(world)
-        self.side = side
-    
     def act(self):
-        enemy_sides = self.world.get_enemies(self.side)
-        side = random.choice(tuple(enemy_sides))
-        enemies = self.world.sides[side]
-        enemy = enemies[0]
-        for entity in self.entities:
-            hp = enemy.hp
-            entity.hit(enemy)
+        for side in self.entities:
+            enemy_sides = self.world.get_enemies(side)
+            if not enemy_sides:
+                return True
+            enemy_side = self.world.sides[random.choice(tuple(enemy_sides))]
+            if not enemy_side.members:
+                return True
+            enemy = enemy_side.members[0]
+            for entity in side.members:
+                hp = enemy.hp
+                entity.hit(enemy)
+                assert enemy.hp != hp
         return True
 
 def prepare_battle(left_c, right_c):
+    """Prepare battle with given side controllers"""
     battlefield = Battlefield()
-    left_side = left_c(battlefield, 'left')
-    right_side = right_c(battlefield, 'right')
+    left_side = Side()
+    right_side = Side()
+    battlefield.add_side('left', left_side)
+    battlefield.add_side('right', right_side)
+    left_controller = left_c(battlefield)
+    left_controller.add_entity(left_side)
+    right_controller = right_c(battlefield)
+    right_controller.add_entity(right_side)
     for i in range(2):
         goblin = Goblin()
-        left_side.add_entity(goblin)
         battlefield.spawn('left', goblin)
     for i in range(3):
         goblin = Goblin()
-        right_side.add_entity(goblin)
         battlefield.spawn('right', goblin)
     turnman = Turnman(battlefield)
-    turnman.add_side(left_side)
-    turnman.add_side(right_side)
+    turnman.add_side(left_controller)
+    turnman.add_side(right_controller)
     return turnman
 
 def test_battle():
     turnman = prepare_battle(AIBattleController, AIBattleController)
     turnman.turn()
-    right_side = turnman.sides[1]
-    hurted = [entity for entity in right_side.entities if entity.hp < 5]
-    assert hurted != []
-    assert hurted[0].hp == -1
-    assert hurted[0].living == 'dead'
+    right_side = turnman.world.sides['right'].members
+    assert len(right_side) == 2
     turnman.turn()
-    l_side = turnman.world.sides['left']
-    assert len(l_side) == 1
+    left_side = turnman.world.sides['left'].members
+    assert len(left_side) == 1
 
 def test_battle_pickle():
     import sys
@@ -94,10 +97,10 @@ def test_battle_pickle():
     turnman = prepare_battle(AIBattleController, AIBattleController)
     s = pickle.dumps(turnman)
     turnman1 = pickle.loads(s)
-    goblin = turnman.world.sides['left'][0]
-    goblin1 = turnman1.world.sides['left'][0]
+    goblin = turnman.world.sides['left'].members[0]
+    goblin1 = turnman1.world.sides['left'].members[0]
     assert len(goblin1._listeners['living']) == len(goblin._listeners['living'])
     
     turnman1.turn()
     turnman.turn()
-    assert len(turnman.world.sides['right']) == len(turnman1.world.sides['right'])
+    assert len(turnman.world.sides['right'].members) == len(turnman1.world.sides['right'].members)

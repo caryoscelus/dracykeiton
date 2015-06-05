@@ -24,18 +24,29 @@
 from compat import *
 from entity import Entity, listener
 
+class Side(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('members', [])
+
 class SimpleField(Entity):
     @unbound
     def _init(self, *args):
-        self.dynamic_property('sides', dict({side : [] for side in args}))
+        self.dynamic_property('sides', dict({side : Side() for side in args}))
         # for saving/loading purpose
         for side in self.sides:
-            for entity in self.sides[side]:
+            for entity in self.sides[side].members:
                 self.reg_entity(entity)
     
     @unbound
+    def add_side(self, name, side):
+        self.sides[name] = side
+        for entity in side.members:
+            self.reg_entity(entity)
+    
+    @unbound
     def spawn(self, side, entity):
-        self.sides[side].append(entity)
+        self.sides[side].members.append(entity)
         entity.be_born()
         self.reg_entity(entity)
     
@@ -46,17 +57,19 @@ class SimpleField(Entity):
     @unbound
     def unspawn(self, entity):
         for side in self.sides:
-            if entity in self.sides[side]:
-                self.sides[side].remove(entity)
+            if entity in self.sides[side].members:
+                self.sides[side].members.remove(entity)
     
     @unbound
     def get_enemies(self, side):
-        return set(s for s in self.sides.keys() if s != side)
+        # UGH
+        name = [n for n in self.sides.keys() if self.sides[n] == side][0]
+        return set(s for s in self.sides.keys() if s != name)
     
     @unbound
     def small_turn(self):
         for side in self.sides:
-            for entity in self.sides[side]:
+            for entity in self.sides[side].members:
                 entity.restore_ap()
     
     @listener
