@@ -62,9 +62,7 @@ class SimpleField(Entity):
     
     @unbound
     def get_enemies(self, side):
-        # UGH
-        name = [n for n in self.sides.keys() if self.sides[n] == side][0]
-        return set(s for s in self.sides.keys() if s != name)
+        return set(s for s in self.sides.keys() if self.sides[s] != side)
     
     @unbound
     def big_turn(self):
