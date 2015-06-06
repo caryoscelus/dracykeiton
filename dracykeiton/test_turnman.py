@@ -51,7 +51,7 @@ class EmptyController(Controller):
 
 class PassController(Controller):
     def act(self):
-        return True
+        return None
 
 class Counter(Entity):
     @unbound
@@ -71,12 +71,12 @@ def test_empty_controller():
     empty = EmptyController(None)
     turnman.add_side(acting)
     turnman.add_side(empty)
-    turnman.turn()
+    turnman.step()
     assert turnman.world.big == 0
     assert turnman.world.small == 1
-    turnman.turn()
+    turnman.step()
     assert turnman.world.small == 2
-    turnman.turn()
-    turnman.turn()
+    turnman.step()
+    turnman.step()
     assert turnman.world.small == 2
     assert turnman.world.big == 0

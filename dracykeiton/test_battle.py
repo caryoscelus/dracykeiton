@@ -46,16 +46,16 @@ class AIBattleController(Controller):
         for side in self.entities:
             enemy_sides = self.world.get_enemies(side)
             if not enemy_sides:
-                return True
+                continue
             enemy_side = self.world.sides[random.choice(tuple(enemy_sides))]
             if not enemy_side.members:
-                return True
+                continue
             enemy = enemy_side.members[0]
             for entity in side.members:
-                hp = enemy.hp
-                entity.hit(enemy)
-                assert enemy.hp != hp
-        return True
+                action = entity.hit(enemy)
+                if action:
+                    return action
+        return None
 
 def prepare_battle(left_c, right_c):
     """Prepare battle with given side controllers"""
@@ -83,7 +83,7 @@ def test_battle():
     turnman = prepare_battle(AIBattleController, AIBattleController)
     turnman.turn()
     right_side = turnman.world.sides['right'].members
-    assert len(right_side) == 2
+    assert len(right_side) == 1
     turnman.turn()
     left_side = turnman.world.sides['left'].members
     assert len(left_side) == 1
