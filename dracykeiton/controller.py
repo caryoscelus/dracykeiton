@@ -58,6 +58,29 @@ class Controller(object):
         """
         return None
 
+class ProxyController(Controller):
+    """Controller which is controlled from outside"""
+    def __init__(self, *args, **kwargs):
+        super(ProxyController, self).__init__(*args, **kwargs)
+        self._end_turn = False
+        self._next_action = None
+    
+    def end_turn(self):
+        self._end_turn = True
+    
+    def do_action(self, action):
+        self._next_action = action
+    
+    def act(self):
+        if self._end_turn:
+            self._end_turn = False
+            return None
+        if self._next_action:
+            action = self._next_action
+            self._next_action = None
+            return action
+        return False
+
 def action(f):
     """Decorator making callable which checks if action is possible.
     
