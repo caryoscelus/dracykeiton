@@ -36,6 +36,11 @@ class Turnman(object):
         self.sides.append(controller)
     
     def turn(self):
+        r = False
+        while not r:
+            r = self.step()
+    
+    def step(self):
         if not self.queue and not self.back_queue:
             raise IndexError('cannot process turn when there are no sides')
         if not self.turn_prepared:
@@ -54,7 +59,11 @@ class Turnman(object):
                     pass
         side = self.queue.pop(0)
         r = side.act()
-        if not r:
+        if r:
+            # action is present
+            r()
+        if not r is None:
+            # either action or idle, but anyway, turn is not over yet
             self.queue.insert(0, side)
             return False
         self.back_queue.append(side)
