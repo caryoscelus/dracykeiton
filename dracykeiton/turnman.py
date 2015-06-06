@@ -38,6 +38,7 @@ class Turnman(object):
     def start(self):
         try:
             self.world.big_turn()
+            self.turn_prepared = True
         except AttributeError:
             pass
     
