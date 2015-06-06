@@ -115,6 +115,9 @@ class Entity(object):
     def __str__(self):
         return 'Entity {}'.format({name:getattr(self, name) for name in self._props})
     
+    def __repr__(self):
+        return str(self)
+    
     def __getstate__(self):
         self_copy = self.__dict__.copy()
         # can't save methods, but they'll be restored by mods
