@@ -37,8 +37,9 @@ class Turnman(object):
     
     def turn(self):
         r = False
-        while not r:
+        while r == False:
             r = self.step()
+        return r
     
     def step(self):
         if not self.queue and not self.back_queue:
@@ -65,7 +66,10 @@ class Turnman(object):
         if not r is None:
             # either action or idle, but anyway, turn is not over yet
             self.queue.insert(0, side)
-            return False
+            if r:
+                return False
+            else:
+                return None
         self.back_queue.append(side)
         self.turn_prepared = False
         return True
