@@ -25,6 +25,8 @@ If Ren'Py is present, import some standard types/functions from renpy.store.
 If python2, define unbinding helper methods, else they are empty.
 """
 
+from __future__ import print_function
+
 try:
     from renpy.store import object, list, dict, set, range, sorted
 except ImportError:

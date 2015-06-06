@@ -21,6 +21,7 @@
 """
 """
 
+from compat import *
 import functools
 
 def curry(f):
@@ -29,8 +30,13 @@ def curry(f):
     >>> cint = curry(int)
     >>> cint(base=2)('101')
     5
+    >>> pprint = curry(print)('*')
+    >>> pprint(1)
+    * 1
+    >>> pprint.__name__
+    'print'
     """
     @functools.wraps(f)
     def wrap(*args, **kwargs):
-        return functools.partial(f, *args, **kwargs)
+        return functools.update_wrapper(functools.partial(f, *args, **kwargs), f)
     return wrap
