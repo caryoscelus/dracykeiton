@@ -22,6 +22,7 @@
 
 from compat import *
 from entity import Entity
+from controller import action
 from ap import LivingActingEntity, ActionPointEntity
 
 class HittingEntity(Entity):
@@ -31,7 +32,10 @@ class HittingEntity(Entity):
         self.add_mod(LivingActingEntity)
         self.dynamic_property('hit_damage', hit_damage)
     
-    @unbound
+    @action
     def hit(self, enemy):
-        if self.spend_ap(2):
-            enemy.hurt(self.hit_damage)
+        enemy.hurt(self.hit_damage)
+    
+    @unbound
+    def can_hit(self, enemy):
+        return self.spend_ap(2)
