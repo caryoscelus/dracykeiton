@@ -21,7 +21,7 @@
 """tests for controller.py"""
 
 import curry
-from controller import Controller, ControllableEntity
+from controller import Controller, ControllableEntity, ProxyController
 
 def test_controller():
     controller = Controller(None)
@@ -47,3 +47,19 @@ def test_custom_controller():
     for (e, action) in controller.act():
         action(e)
     assert entity.n == 1
+
+def test_proxy_controller():
+    controller = ProxyController(None)
+    assert controller.act() == False
+    controller.end_turn()
+    assert controller.act() == None
+    assert controller.act() == False
+    class Foo():
+        def __init__(self):
+            self.t = None
+        def foo(self):
+            self.t = True
+    foo = Foo()
+    controller.do_action(foo.foo)
+    controller.act()()
+    assert foo.t is True
