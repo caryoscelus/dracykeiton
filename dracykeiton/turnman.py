@@ -35,6 +35,12 @@ class Turnman(object):
         self.queue.append(controller)
         self.sides.append(controller)
     
+    def start(self):
+        try:
+            self.world.big_turn()
+        except AttributeError:
+            pass
+    
     def turn(self):
         r = False
         while r == False:
