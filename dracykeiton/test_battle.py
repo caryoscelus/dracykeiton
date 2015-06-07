@@ -27,12 +27,13 @@ import random
 from compat import *
 
 from entity import Entity, listener
-from controller import Controller
+from controller import Controller, UserController
 from turnman import Turnman
 from ap import ActionPointEntity
 from hp import HpEntity
 from hit import HittingEntity
 from battlefield import Battlefield, Side
+from battleuimanager import BattleUIManager
 
 class Goblin(Entity):
     @unbound
@@ -104,3 +105,21 @@ def test_battle_pickle():
     turnman1.turn()
     turnman.turn()
     assert len(turnman.world.sides['right'].members) == len(turnman1.world.sides['right'].members)
+
+def test_battle_ui_manager():
+    turnman = prepare_battle(UserController, AIBattleController)
+    manager = BattleUIManager(turnman)
+    turnman.start()
+    user_controller = turnman.sides[0]
+    enemy_controller = turnman.sides[1]
+    user_side = tuple(user_controller.entities)[0]
+    enemy_side = tuple(enemy_controller.entities)[0]
+    goblin0 = user_side.members[0]
+    enemy0 = enemy_side.members[0]
+    manager.clicked(user_side, goblin0)
+    manager.clicked(enemy_side, enemy0)
+    assert enemy0.hp == 2
+    manager.clicked(enemy_side, enemy0)
+    assert enemy0.hp == -1
+    manager.end_turn()
+    assert goblin0.hp == -1
