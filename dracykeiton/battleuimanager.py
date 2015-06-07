@@ -20,6 +20,9 @@
 
 """"""
 
+from compat import *
+from controller import UserController
+
 class BattleUIManager(object):
     # We expect two-side battle with only one side controlled by user!
     def __init__(self, turnman):

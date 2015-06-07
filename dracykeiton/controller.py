@@ -81,6 +81,9 @@ class ProxyController(Controller):
             return action
         return False
 
+class UserController(ProxyController):
+    pass
+
 def action(f):
     """Decorator making callable which checks if action is possible.
     
