@@ -220,3 +220,31 @@ def test_entity_monster():
     booster = HpBooster()
     booster.enable(monster)
     assert monster.maxhp == 5.5
+
+class FooEntity(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('a', 1)
+
+class BarEntity(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('b', 2)
+    
+    @unbound
+    def sum(self):
+        return self.a+self.b
+
+def test_entity_patch():
+    import classpatch
+    from sys import version_info
+    if version_info.major >= 3:
+        import pickle
+    else:
+        import dill as pickle
+    entity = FooEntity()
+    classpatch.register(FooEntity, 'mod', BarEntity)
+    with pytest.raises(AttributeError):
+        entity.b
+    reloaded = pickle.loads(pickle.dumps(entity))
+    assert reloaded.sum() == 3
