@@ -83,31 +83,3 @@ class ProxyController(Controller):
 
 class UserController(ProxyController):
     pass
-
-def action(f):
-    """Decorator making callable which checks if action is possible.
-    
-    If it's possible, return curry, else return None. Checker method
-    should have same name prefixed with can_
-    
-    >>> class Foo(Entity):
-    ...     @action
-    ...     def bar(self, n):
-    ...         print(n)
-    ...     def can_bar(self, n):
-    ...         return n > 0
-    >>> foo = Foo()
-    >>> foo.bar(5).__name__
-    'bar'
-    >>> foo.bar(5)()
-    5
-    >>> print(foo.bar(0))
-    None
-    """
-    @functools.wraps(f)
-    def wrap(self, *args, **kwargs):
-        if getattr(self, 'can_{}'.format(f.__name__))(*args, **kwargs):
-            return curry.curry(f)(self, *args, **kwargs)
-        else:
-            return None
-    return wrap

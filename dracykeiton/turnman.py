@@ -21,8 +21,9 @@
 """"""
 
 from compat import *
+from action import ActionProcessor
 
-class Turnman(object):
+class Turnman(ActionProcessor):
     def __init__(self, world):
         super(Turnman, self).__init__()
         self.queue = []
@@ -69,7 +70,7 @@ class Turnman(object):
         r = side.act()
         if r:
             # action is present
-            r()
+            self.process(r)
         if not r is None:
             # either action or idle, but anyway, turn is not over yet
             self.queue.insert(0, side)

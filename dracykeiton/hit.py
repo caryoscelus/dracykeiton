@@ -22,7 +22,7 @@
 
 from compat import *
 from entity import Entity
-from controller import action
+from action import action
 from ap import LivingActingEntity, ActionPointEntity
 
 class HittingEntity(Entity):
