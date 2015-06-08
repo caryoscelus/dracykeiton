@@ -29,8 +29,9 @@ from __future__ import print_function
 
 try:
     from renpy.store import object, list, dict, set, range, sorted
+    HAS_RENPY = True
 except ImportError:
-    pass
+    HAS_RENPY = False
 
 import sys
 if sys.version_info.major < 3:
@@ -48,6 +49,9 @@ if sys.version_info.major < 3:
             method = getattr(self, name)
             if isinstance(method, unbound):
                 setattr(self, name, functools.partial(method, self))
+    
+    if HAS_RENPY:
+        import dill
 else:
     def unbound(f):
         return f
