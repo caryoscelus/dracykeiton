@@ -65,7 +65,11 @@ class DynamicProperty(object):
         self.getters.add(f, priority)
 
 class Entity(object):
-    """Base entity, including dynamic property mechanism."""
+    """Base entity, including dynamic property and modding mechanism.
+    
+    Do not create class hierarchy. All entity classes should inherit this
+    directly and use .req_mod() for dependencies.
+    """
     def __init__(self):
         super(Entity, self).__init__()
         self._props = dict()
@@ -91,7 +95,7 @@ class Entity(object):
     def _load_patchmods(self):
         mods = classpatch.get(type(self), 'mod')
         for mod in mods:
-            self.add_mod(mod)
+            self.req_mod(mod)
     
     def __getattr__(self, name):
         if name == '_props':
@@ -163,7 +167,8 @@ class Entity(object):
         del self._props[name]
         del self._get_depends_on[name]
     
-    def add_mod(self, mod, *args, **kwargs):
+    # TODO: mod dep counting
+    def req_mod(self, mod, *args, **kwargs):
         """Add mod to this entity"""
         if not mod in self._mods:
             self._mods.add(mod)

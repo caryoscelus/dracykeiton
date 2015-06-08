@@ -99,7 +99,7 @@ def test_mod():
         def get5(self, value):
             return 5
     entity = Entity()
-    entity.add_mod(Foo)
+    entity.req_mod(Foo)
     assert entity.n == 5
     entity.remove_mod(Foo)
     with pytest.raises(AttributeError):

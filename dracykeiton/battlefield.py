@@ -82,4 +82,4 @@ class SimpleField(Entity):
 class Battlefield(Entity):
     @unbound
     def _init(self):
-        self.add_mod(SimpleField, 'left', 'right')
+        self.req_mod(SimpleField, 'left', 'right')

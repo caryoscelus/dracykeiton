@@ -38,9 +38,9 @@ from battleuimanager import BattleUIManager
 class Goblin(Entity):
     @unbound
     def _init(self):
-        self.add_mod(HpEntity, 5)
-        self.add_mod(ActionPointEntity, 4)
-        self.add_mod(HittingEntity, 3)
+        self.req_mod(HpEntity, 5)
+        self.req_mod(ActionPointEntity, 4)
+        self.req_mod(HittingEntity, 3)
 
 class AIBattleController(Controller):
     def act(self):

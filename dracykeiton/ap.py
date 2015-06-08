@@ -32,8 +32,8 @@ class ActingEntity(Entity):
 class LivingActingEntity(Entity):
     @unbound
     def _init(self):
-        self.add_mod(ActingEntity)
-        self.add_mod(LivingEntity)
+        self.req_mod(ActingEntity)
+        self.req_mod(LivingEntity)
         self.add_get_node('can_act', self.check_if_alive())
     
     @simplenode
@@ -43,7 +43,7 @@ class LivingActingEntity(Entity):
 class ActionPointEntity(Entity):
     @unbound
     def _init(self, maxap=0):
-        self.add_mod(ActingEntity)
+        self.req_mod(ActingEntity)
         self.dynamic_property('ap', 0)
         self.dynamic_property('maxap', maxap)
     

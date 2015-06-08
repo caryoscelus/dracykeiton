@@ -51,7 +51,7 @@ class LivingEntity(Entity):
 class HpEntity(Entity):
     @unbound
     def _init(self, maxhp=0):
-        self.add_mod(LivingEntity)
+        self.req_mod(LivingEntity)
         self.dynamic_property('hp', 0)
         self.dynamic_property('maxhp', maxhp)
         self.add_listener_node('hp', self.check_hp())

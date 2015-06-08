@@ -43,7 +43,7 @@ class Board(Entity):
 class TicTacToe(Entity):
     @unbound
     def _init(self):
-        self.add_mod(Board)
+        self.req_mod(Board)
 
 class Player(Entity):
     @unbound
