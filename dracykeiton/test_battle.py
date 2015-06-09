@@ -64,7 +64,7 @@ class AIBattleController(Controller):
                     return action
         return None
 
-def prepare_battle(left_c, right_c):
+def prepare_battle(left_c, right_c, turnman):
     """Prepare battle with given side controllers"""
     battlefield = Battlefield()
     left_side = Side()
@@ -81,13 +81,13 @@ def prepare_battle(left_c, right_c):
     for i in range(3):
         goblin = Goblin()
         battlefield.spawn('right', goblin)
-    turnman = Turnman(battlefield)
+    turnman = turnman(battlefield)
     turnman.add_side(left_controller)
     turnman.add_side(right_controller)
     return turnman
 
 def test_battle():
-    turnman = prepare_battle(AIBattleController, AIBattleController)
+    turnman = prepare_battle(AIBattleController, AIBattleController, Turnman)
     turnman.turn()
     right_side = turnman.world.sides['right'].members
     assert len(right_side) == 1
@@ -101,7 +101,7 @@ def test_battle_pickle():
         import pickle
     else:
         import dill as pickle
-    turnman = prepare_battle(AIBattleController, AIBattleController)
+    turnman = prepare_battle(AIBattleController, AIBattleController, Turnman)
     s = pickle.dumps(turnman)
     turnman1 = pickle.loads(s)
     goblin = turnman.world.sides['left'].members[0]
@@ -113,7 +113,7 @@ def test_battle_pickle():
     assert len(turnman.world.sides['right'].members) == len(turnman1.world.sides['right'].members)
 
 def test_battle_ui_manager():
-    turnman = prepare_battle(UserController, AIBattleController)
+    turnman = prepare_battle(UserController, AIBattleController, Turnman)
     manager = BattleUIManager(turnman)
     turnman.start()
     user_controller = turnman.sides[0]
