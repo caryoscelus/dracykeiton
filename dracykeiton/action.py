@@ -65,6 +65,6 @@ class SimpleEffectProcessor(ActionProcessor):
     def process(self, a):
         super(SimpleEffectProcessor, self).process(a)
         if a.__name__ in self._effects:
-            self._effects[a.__name__]()
+            self._effects[a.__name__](a)
     def add_effect(self, target, effect):
         self._effects[target] = effect

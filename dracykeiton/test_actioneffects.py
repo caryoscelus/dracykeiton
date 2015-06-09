@@ -40,7 +40,7 @@ class FooEntity(Entity):
 class Effector(object):
     def __init__(self):
         self.e = 0
-    def effect(self):
+    def effect(self, eff):
         self.e += 1
 
 def test_effect():
