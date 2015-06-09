@@ -21,8 +21,8 @@
 """"""
 
 from compat import *
-from controller import Controller
-from turnman import Turnman
+from controller import Controller, ProxyController
+from turnman import Turnman, LockableTurnman
 from entity import Entity
 
 def test_turnman():
@@ -80,3 +80,27 @@ def test_empty_controller():
     turnman.step()
     assert turnman.world.small == 2
     assert turnman.world.big == 0
+
+class SimpleCounter(object):
+    def __init__(self):
+        self.n = 0
+    
+    def count(self):
+        self.n += 1
+
+def test_lockable_turnman():
+    turnman = LockableTurnman(None)
+    counter = SimpleCounter()
+    side = ProxyController(None)
+    turnman.add_side(side)
+    side.do_action(counter.count)
+    turnman.step()
+    assert counter.n == 1
+    turnman.lock()
+    side.do_action(counter.count)
+    turnman.step()
+    assert counter.n == 1
+    turnman.unlock()
+    side.do_action(counter.count)
+    turnman.step()
+    assert counter.n == 3

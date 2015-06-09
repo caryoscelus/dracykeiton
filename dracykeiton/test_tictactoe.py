@@ -25,7 +25,7 @@ import copy
 from compat import *
 from entity import Entity
 from controller import Controller
-from turnman import Turnman, SimpleSideTurnman
+from turnman import Turnman
 
 class Board(Entity):
     @unbound
@@ -60,7 +60,7 @@ class TTTAI(Controller):
 
 def test_tictactoe():
     board = TicTacToe()
-    turnman = SimpleSideTurnman(board)
+    turnman = Turnman(board)
     en_x = Player()
     en_x.side = 'x'
     pl_x = TTTAI(board, en_x)

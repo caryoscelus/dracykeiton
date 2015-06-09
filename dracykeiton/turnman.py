@@ -31,6 +31,7 @@ class Turnman(ActionProcessor):
         self.world = world
         self.sides = []
         self.turn_prepared = False
+        self._planned = []
     
     def add_side(self, controller):
         self.queue.append(controller)
@@ -49,7 +50,20 @@ class Turnman(ActionProcessor):
             r = self.step()
         return r
     
+    def plan_action(self, a):
+        self._planned.append(a)
+    
     def step(self):
+        if self._planned:
+            ar = True
+            while ar and self._planned:
+                next_action = self._planned[0]
+                ar = self.process(next_action)
+                if ar:
+                    self._planned.pop(0)
+            if not ar:
+                return
+        
         if not self.queue and not self.back_queue:
             raise IndexError('cannot process turn when there are no sides')
         if not self.turn_prepared:
@@ -70,7 +84,9 @@ class Turnman(ActionProcessor):
         r = side.act()
         if r:
             # action is present
-            self.process(r)
+            ar = self.process(r)
+            if not ar:
+                self.plan_action(r)
         if not r is None:
             # either action or idle, but anyway, turn is not over yet
             self.queue.insert(0, side)
@@ -82,5 +98,20 @@ class Turnman(ActionProcessor):
         self.turn_prepared = False
         return True
 
-class SimpleSideTurnman(Turnman):
-    pass
+class LockableTurnman(Turnman):
+    def __init__(self, *args, **kwargs):
+        super(LockableTurnman, self).__init__(*args, **kwargs)
+        self._locked = 0
+    
+    def lock(self):
+        self._locked += 1
+    
+    def unlock(self):
+        self._locked -= 1
+        if self._locked < 0:
+            raise RuntimeError('too much unlocking')
+    
+    def process(self, a):
+        if self._locked > 0:
+            return False
+        return super(LockableTurnman, self).process(a)
