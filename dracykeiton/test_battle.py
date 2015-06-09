@@ -35,12 +35,18 @@ from hit import HittingEntity
 from battlefield import Battlefield, Side
 from battleuimanager import BattleUIManager
 
+class KindEntity(Entity):
+    @unbound
+    def _init(self, kind=None):
+        self.dynamic_property('kind', kind)
+
 class Goblin(Entity):
     @unbound
     def _init(self):
         self.req_mod(HpEntity, 5)
         self.req_mod(ActionPointEntity, 4)
         self.req_mod(HittingEntity, 3)
+        self.req_mod(KindEntity, 'goblin')
 
 class AIBattleController(Controller):
     def act(self):
