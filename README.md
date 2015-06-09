@@ -9,6 +9,9 @@ requires it, but otherwise it's Python 3 project.
 Right now it's focused on battle-related stuff, since original purpose was
 to create a battle engine for a specific Ren'Py project.
 
+See https://github.com/caryoscelus/dracykeiton-ren for Ren'Py-only part of
+project (coming soon)
+
 ## testing
 
     # setup virtual environments for python 3..
