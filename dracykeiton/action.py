@@ -57,3 +57,14 @@ def action(f):
 class ActionProcessor(object):
     def process(self, a):
         a()
+
+class SimpleEffectProcessor(ActionProcessor):
+    def __init__(self):
+        super(SimpleEffectProcessor, self).__init__()
+        self._effects = dict()
+    def process(self, a):
+        super(SimpleEffectProcessor, self).process(a)
+        if a.__name__ in self._effects:
+            self._effects[a.__name__]()
+    def add_effect(self, target, effect):
+        self._effects[target] = effect

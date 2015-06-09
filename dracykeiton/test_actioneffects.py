@@ -22,7 +22,7 @@
 
 from compat import *
 from entity import Entity
-from action import action, ActionProcessor
+from action import action, ActionProcessor, SimpleEffectProcessor
 
 class FooEntity(Entity):
     @unbound
@@ -43,20 +43,10 @@ class Effector(object):
     def effect(self):
         self.e += 1
 
-class Processor(ActionProcessor):
-    def __init__(self):
-        self._effects = dict()
-    def process(self, a):
-        a()
-        if a.__name__ in self._effects:
-            self._effects[a.__name__]()
-    def add_effect(self, target, effect):
-        self._effects[target] = effect
-
 def test_effect():
     entity = FooEntity()
     effector = Effector()
-    processor = Processor()
+    processor = SimpleEffectProcessor()
     processor.add_effect('action', effector.effect)
     processor.process(entity.action())
     assert entity.n == 1
