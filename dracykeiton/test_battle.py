@@ -34,6 +34,7 @@ from hp import HpEntity
 from hit import HittingEntity
 from battlefield import Battlefield, Side
 from battleuimanager import BattleUIManager
+from action import SimpleEffectProcessor
 
 class KindEntity(Entity):
     @unbound
@@ -95,9 +96,19 @@ def test_battle():
     left_side = turnman.world.sides['left'].members
     assert len(left_side) == 1
 
+class EffectTurnman(Turnman, SimpleEffectProcessor):
+    def __init__(self, *args, **kwargs):
+        super(EffectTurnman, self).__init__(*args, **kwargs)
+        self.add_effect('hit', self.hit_effect)
+        self.hit_number = 0
+    
+    def hit_effect(self, action):
+        assert action.__name__ == 'hit'
+        self.hit_number += 1
+
 def test_battle_pickle():
     pickle = import_pickle()
-    turnman = prepare_battle(AIBattleController, AIBattleController, Turnman)
+    turnman = prepare_battle(AIBattleController, AIBattleController, EffectTurnman)
     s = pickle.dumps(turnman)
     turnman1 = pickle.loads(s)
     goblin = turnman.world.sides['left'].members[0]
