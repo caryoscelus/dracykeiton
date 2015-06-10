@@ -51,3 +51,21 @@ def test_effect():
     processor.process(entity.action())
     assert entity.n == 1
     assert effector.e == 1
+
+class CountingProcessor(SimpleEffectProcessor):
+    def __init__(self, *args, **kwargs):
+        super(CountingProcessor, self).__init__(*args, **kwargs)
+        self.add_effect('action', self.action)
+        self.count = 0
+    
+    def action(self, action):
+        assert action.__name__ == 'action'
+        self.count += 1
+
+def test_custom_pickle():
+    entity = FooEntity()
+    pickle = import_pickle()
+    processor = CountingProcessor()
+    processor0 = pickle.loads(pickle.dumps(processor))
+    processor0.process(entity.action)
+    assert processor0.count == 1
