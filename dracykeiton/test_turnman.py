@@ -43,7 +43,9 @@ def test_pickle():
     if version_info.major < 3:
         import dill
     turnman = Turnman(Entity())
-    pickle.dumps(turnman)
+    t1 = pickle.loads(pickle.dumps(turnman))
+    lockable_turnman = LockableTurnman(Entity())
+    lt1 = pickle.loads(pickle.dumps(lockable_turnman))
 
 class EmptyController(Controller):
     def act(self):
