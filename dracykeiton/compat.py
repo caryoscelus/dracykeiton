@@ -57,3 +57,10 @@ else:
         return f
     def fix_methods(self):
         pass
+
+def import_pickle():
+    if sys.version_info.major >= 3:
+        import pickle
+    else:
+        import dill as pickle
+    return pickle
