@@ -53,7 +53,7 @@ class Turnman(ActionProcessor):
     def plan_action(self, a):
         self._planned.append(a)
     
-    def step(self):
+    def planned_actions(self):
         if self._planned:
             ar = True
             while ar and self._planned:
@@ -62,7 +62,12 @@ class Turnman(ActionProcessor):
                 if ar:
                     self._planned.pop(0)
             if not ar:
-                return
+                return True
+        return False
+    
+    def step(self):
+        if self.planned_actions():
+            return
         
         if not self.queue and not self.back_queue:
             raise IndexError('cannot process turn when there are no sides')
@@ -110,6 +115,8 @@ class LockableTurnman(Turnman):
         self._locked -= 1
         if self._locked < 0:
             raise RuntimeError('too much unlocking')
+        if self._locked == 0:
+            self.planned_actions()
     
     def process(self, a):
         if self._locked > 0:
