@@ -38,10 +38,7 @@ def test_turnman():
     enemy.add_entity(enemy_c)
 
 def test_pickle():
-    import pickle
-    from sys import version_info
-    if version_info.major < 3:
-        import dill
+    pickle = import_pickle()
     turnman = Turnman(Entity())
     t1 = pickle.loads(pickle.dumps(turnman))
     lockable_turnman = LockableTurnman(Entity())

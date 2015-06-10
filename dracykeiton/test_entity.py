@@ -237,11 +237,7 @@ class BarEntity(Entity):
 
 def test_entity_patch():
     import classpatch
-    from sys import version_info
-    if version_info.major >= 3:
-        import pickle
-    else:
-        import dill as pickle
+    pickle = import_pickle()
     entity = FooEntity()
     classpatch.register(FooEntity, 'mod', BarEntity)
     with pytest.raises(AttributeError):

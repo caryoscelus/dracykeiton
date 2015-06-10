@@ -45,11 +45,7 @@ def test_simple():
     assert entity.n == 5
 
 def test_pickle():
-    import sys
-    if sys.version_info.major >= 3:
-        import pickle
-    else:
-        import dill as pickle
+    pickle = import_pickle()
     entity = FooEntity()
     classpatch.register(FooEntity, 'mod', AnotherPatchEntity)
     entity1 = pickle.loads(pickle.dumps(entity))

@@ -96,11 +96,7 @@ def test_battle():
     assert len(left_side) == 1
 
 def test_battle_pickle():
-    import sys
-    if sys.version_info.major >= 3:
-        import pickle
-    else:
-        import dill as pickle
+    pickle = import_pickle()
     turnman = prepare_battle(AIBattleController, AIBattleController, Turnman)
     s = pickle.dumps(turnman)
     turnman1 = pickle.loads(s)
