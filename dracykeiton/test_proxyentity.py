@@ -36,3 +36,17 @@ def test_simple_proxy():
     assert proxy.n == 0
     foo.n = 1
     assert proxy.n == 1
+
+class ProxyContainer(object):
+    def __init__(self):
+        self.foo = FooEntity()
+        self.proxy = ProxyEntity(self.foo)
+
+def test_proxy_pickle():
+    pickle = import_pickle()
+    container = ProxyContainer()
+    assert container.proxy.n == 0
+    container = pickle.loads(pickle.dumps(container))
+    assert container.proxy.n == 0
+    container.foo.n = 1
+    assert container.proxy.n == 1
