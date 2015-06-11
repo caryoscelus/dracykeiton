@@ -60,6 +60,7 @@ class ActionProcessor(object):
         return True
 
 class SimpleEffectProcessor(ActionProcessor):
+    """Action processor capable of performing effects when actions happen."""
     def __init__(self):
         super(SimpleEffectProcessor, self).__init__()
         self._effects = dict()

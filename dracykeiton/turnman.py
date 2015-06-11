@@ -54,6 +54,10 @@ class Turnman(ActionProcessor):
         self._planned.append(a)
     
     def planned_actions(self):
+        """Perform all planned actions.
+        
+        Return True if there are some actions left, False otherwise
+        """
         if self._planned:
             ar = True
             while ar and self._planned:
@@ -66,8 +70,10 @@ class Turnman(ActionProcessor):
         return False
     
     def step(self):
+        """Return True if side's turn is finished, False if not, None if
+        next action is not ready yet."""
         if self.planned_actions():
-            return
+            return None
         
         if not self.queue and not self.back_queue:
             raise IndexError('cannot process turn when there are no sides')
@@ -104,14 +110,20 @@ class Turnman(ActionProcessor):
         return True
 
 class LockableTurnman(Turnman):
+    """Turnman that can be locked and then actions are not performed.
+    
+    This is useful for performing various effects when actions happen.
+    """
     def __init__(self, *args, **kwargs):
         super(LockableTurnman, self).__init__(*args, **kwargs)
         self._locked = 0
     
     def lock(self):
+        """Add lock."""
         self._locked += 1
     
     def unlock(self):
+        """Release lock. This will also perform planned actions if fully unlocked"""
         self._locked -= 1
         if self._locked < 0:
             raise RuntimeError('too much unlocking')
