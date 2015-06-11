@@ -27,7 +27,16 @@ class ProxyEntity(Entity):
     """Entity which gives values from other entity"""
     @unbound
     def _init(self, source=None):
-        self._proxy_source = source
+        if source or not '_proxy_source' in self.__dict__:
+            self._proxy_source = source
+    
+    def __getstate__(self):
+        # clean proxy properties
+        self_copy = super(ProxyEntity, self).__getstate__()
+        for name in self._proxy_source._props:
+            if name in self._props:
+                del self_copy['_props'][name]
+        return self_copy
     
     def __getattr__(self, name):
         try:
