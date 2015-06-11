@@ -65,9 +65,9 @@ class AIBattleController(Controller):
                     return action
         return None
 
-def prepare_battle(left_c, right_c, turnman):
+def prepare_battle(left_c, right_c, turnman, keep_dead=False):
     """Prepare battle with given side controllers"""
-    battlefield = Battlefield(keep_dead=False)
+    battlefield = Battlefield(keep_dead=keep_dead)
     left_side = Side()
     right_side = Side()
     battlefield.add_side('left', left_side)
