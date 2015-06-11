@@ -22,7 +22,7 @@
 """
 
 from compat import *
-from entity import Entity
+from entity import Entity, simplenode
 from proxyentity import ProxyEntity
 
 class FooEntity(Entity):
@@ -50,3 +50,33 @@ def test_proxy_pickle():
     assert container.proxy.n == 0
     container.foo.n = 1
     assert container.proxy.n == 1
+
+class SlideNProxy(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('n_current')
+        self.dynamic_property('n_target')
+        self.add_get_node('n', self.slide_n())
+    
+    @simplenode
+    def slide_n(self, value):
+        self.n_target = value
+        if self.n_current is None:
+            self.n_current = value
+        return self.n_current
+    
+    @unbound
+    def step(self):
+        if self.n_current is None:
+            return
+        self.n_current += (lambda a, b: (a > b) - (a < b))(self.n_target, self.n_current)
+
+def test_modded_proxy():
+    foo = FooEntity()
+    proxy = ProxyEntity(foo)
+    assert proxy.n == 0
+    proxy.req_mod(SlideNProxy)
+    foo.n = 5
+    assert proxy.n == 0
+    proxy.step()
+    assert proxy.n == 1
