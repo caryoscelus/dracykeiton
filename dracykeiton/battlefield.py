@@ -31,8 +31,12 @@ class Side(Entity):
 
 class SimpleField(Entity):
     @unbound
-    def _init(self, *args):
+    def _init(self, *args, **kwargs):
+        keep_dead = kwargs.get('keep_dead')
+        if keep_dead is None:
+            keep_dead = True
         self.dynamic_property('sides', dict({side : Side() for side in args}))
+        self.dynamic_property('keep_dead', keep_dead)
         # for saving/loading purpose
         for side in self.sides:
             for entity in self.sides[side].members:
@@ -77,9 +81,10 @@ class SimpleField(Entity):
     @listener
     def remove_dead(self, target, value):
         if value == 'dead':
-            self.unspawn(target)
+            if not self.keep_dead:
+                self.unspawn(target)
 
 class Battlefield(Entity):
     @unbound
-    def _init(self):
-        self.req_mod(SimpleField, 'left', 'right')
+    def _init(self, keep_dead=True):
+        self.req_mod(SimpleField, 'left', 'right', keep_dead=keep_dead)
