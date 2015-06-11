@@ -70,7 +70,7 @@ class Entity(object):
     Do not create class hierarchy. All entity classes should inherit this
     directly and use .req_mod() for dependencies.
     """
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         super(Entity, self).__init__()
         self._props = dict()
         self._listeners = dict()
@@ -81,7 +81,7 @@ class Entity(object):
         self._mods = set()
         self._get_depends_on = {}
         fix_methods(self)
-        self._init()
+        self._init(*args, **kwargs)
         self._load_patchmods()
     
     @unbound
