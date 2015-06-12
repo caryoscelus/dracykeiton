@@ -21,7 +21,7 @@
 """"""
 
 from compat import *
-from entity import Entity, simplenode
+from entity import Entity, simplenode, listener
 
 class ProxyEntity(Entity):
     """Entity which gives values from other entity"""
@@ -55,3 +55,48 @@ class ProxyEntity(Entity):
         def f(value):
             return getattr(self._proxy_source, name)
         return simplenode(f)()
+    
+    @unbound
+    def proxy_listen(self, name):
+        self._proxy_source.add_listener_node(name, self.source_changed(name))
+    
+    @unbound
+    def source_changed(self, name):
+        def f(target, value):
+            self.notify_listeners(name)
+        return listener(f)()
+
+class CachedEntity(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('_propeprty_cache', dict())
+    
+    @unbound
+    def cache_property(self, name, update_f):
+        value = getattr(self, name)
+        self._proxy_source.add_listener_node(name, self.cache_listener(name, update_f))
+        self._propeprty_cache[name] = dict({'new':value, 'old':value, 'current':value})
+        self.add_get_node(name, self.get_cache(name))
+    
+    @unbound
+    def get_cache(self, name):
+        def f(value):
+            return self._propeprty_cache[name]['current']
+        return simplenode(f)()
+    
+    @unbound
+    def cache_listener(self, name, update_f):
+        def f(target, value):
+            old_value = self.cached(name, 'new')
+            self.update_cache(name, 'new', value)
+            self.update_cache(name, 'old', old_value)
+            update_f(name, old_value, value)
+        return listener(f)()
+    
+    @unbound
+    def cached(self, name, version):
+        return self._propeprty_cache[name][version]
+    
+    @unbound
+    def update_cache(self, name, n, value):
+        self._propeprty_cache[name][n] = value

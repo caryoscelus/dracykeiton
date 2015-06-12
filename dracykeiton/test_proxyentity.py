@@ -23,7 +23,7 @@
 
 from compat import *
 from entity import Entity, simplenode
-from proxyentity import ProxyEntity
+from proxyentity import ProxyEntity, CachedEntity
 
 class FooEntity(Entity):
     @unbound
@@ -79,4 +79,38 @@ def test_modded_proxy():
     foo.n = 5
     assert proxy.n == 0
     proxy.step()
+    assert proxy.n == 1
+
+class CachedN(Entity):
+    @unbound
+    def _init(self):
+        self.req_mod(ProxyEntity)
+        self.req_mod(CachedEntity)
+        self.proxy_listen('n')
+        self.cache_property('n', self.update)
+        self.update_cache('n', 'progress', 1)
+    
+    @unbound
+    def update(self, prop, old_value, value):
+        self.update_cache(prop, 'progress', 0)
+    
+    @unbound
+    def tick(self, time):
+        pr = self.cached('n', 'progress')
+        if pr >= 1:
+            return
+        pr = min(1, pr+time)
+        self.update_cache('n', 'progress', pr)
+        self.update_cache('n', 'current', self.cached('n', 'old')*(1-pr)+self.cached('n', 'new')*pr)
+
+def test_cached_proxy():
+    foo = FooEntity()
+    proxy = ProxyEntity(foo)
+    proxy.req_mod(CachedN)
+    foo.n = 0
+    foo.n = 1
+    assert proxy.n == 0
+    proxy.tick(0.5)
+    assert proxy.n == 0.5
+    proxy.tick(0.6)
     assert proxy.n == 1
