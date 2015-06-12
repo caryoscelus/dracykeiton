@@ -24,9 +24,16 @@ from compat import *
 from entity import Entity, simplenode, listener
 
 class ProxyEntity(Entity):
-    """Entity which gives values from other entity"""
+    """Entity which gives values from other entity.
+    
+    It cannot be used as mod because it overrides __getstate__ and
+    __getattr__. Perhaps, this can be fixed, if there would be usecase
+    for ProxyEntity as mod.
+    """
     @unbound
     def _init(self, source=None):
+        if not isinstance(self, ProxyEntity):
+            raise TypeError('ProxyEntity cannot be used as mod')
         if source or not '_proxy_source' in self.__dict__:
             self._proxy_source = source
     

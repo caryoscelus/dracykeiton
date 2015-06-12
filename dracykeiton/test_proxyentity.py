@@ -24,6 +24,7 @@
 from compat import *
 from entity import Entity, simplenode
 from proxyentity import ProxyEntity, CachedEntity
+import pytest
 
 class FooEntity(Entity):
     @unbound
@@ -114,3 +115,12 @@ def test_cached_proxy():
     assert proxy.n == 0.5
     proxy.tick(0.6)
     assert proxy.n == 1
+
+class ProxyFoo(Entity):
+    @unbound
+    def _init(self):
+        self.req_mod(ProxyEntity)
+
+def test_proxy_instance():
+    with pytest.raises(TypeError):
+        ProxyFoo()
