@@ -124,3 +124,5 @@ class ProxyFoo(Entity):
 def test_proxy_instance():
     with pytest.raises(TypeError):
         ProxyFoo()
+    a = ProxyEntity()
+    a.req_mod(ProxyFoo)
