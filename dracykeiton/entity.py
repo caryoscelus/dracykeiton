@@ -213,6 +213,7 @@ class Entity(object):
         NOTE: this may lead to some listener getting notified more than once if
         it's dependency of multiple dependencies.
         """
+        getattr(self, prop)
         for listener in self._listeners[prop]:
             listener(self, getattr(self, prop))
         for dep in self._get_depends_on[prop]:
