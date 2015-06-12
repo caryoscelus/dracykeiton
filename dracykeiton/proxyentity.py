@@ -76,19 +76,19 @@ class ProxyEntity(Entity):
 class CachedEntity(Entity):
     @unbound
     def _init(self):
-        self.dynamic_property('_propeprty_cache', dict())
+        self.dynamic_property('_property_cache', dict())
     
     @unbound
     def cache_property(self, name, update_f):
         value = getattr(self, name)
         self._proxy_source.add_listener_node(name, self.cache_listener(name, update_f))
-        self._propeprty_cache[name] = dict({'new':value, 'old':value, 'current':value})
+        self._property_cache[name] = dict({'new':value, 'old':value, 'current':value})
         self.add_get_node(name, self.get_cache(name))
     
     @unbound
     def get_cache(self, name):
         def f(value):
-            return self._propeprty_cache[name]['current']
+            return self._property_cache[name]['current']
         return simplenode(f)()
     
     @unbound
@@ -102,8 +102,8 @@ class CachedEntity(Entity):
     
     @unbound
     def cached(self, name, version):
-        return self._propeprty_cache[name][version]
+        return self._property_cache[name][version]
     
     @unbound
     def update_cache(self, name, n, value):
-        self._propeprty_cache[name][n] = value
+        self._property_cache[name][n] = value
