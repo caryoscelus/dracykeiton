@@ -25,18 +25,6 @@ from controller import Controller, ProxyController
 from turnman import Turnman, LockableTurnman
 from entity import Entity
 
-def test_turnman():
-    turnman = Turnman(None)
-    player = Controller(None)
-    enemy = Controller(None)
-    turnman.add_side(player)
-    turnman.add_side(enemy)
-    turnman.turn()
-    player_c = Entity()
-    enemy_c = Entity()
-    player.add_entity(player_c)
-    enemy.add_entity(enemy_c)
-
 def test_pickle():
     pickle = import_pickle()
     turnman = Turnman(Entity())
@@ -52,16 +40,27 @@ class PassController(Controller):
     def act(self):
         return None
 
+def test_turnman():
+    turnman = Turnman(None)
+    player = PassController(None)
+    enemy = PassController(None)
+    assert turnman.next_side() is None
+    turnman.add_side(player)
+    turnman.add_side(enemy)
+    assert turnman.next_side() == player
+    turnman.turn()
+    assert turnman.next_side() == enemy
+
 class Counter(Entity):
     @unbound
     def _init(self):
         self.dynamic_property('small', 0)
         self.dynamic_property('big', 0)
     @unbound
-    def big_turn(self):
+    def new_round(self):
         self.big += 1
     @unbound
-    def small_turn(self):
+    def new_turn(self):
         self.small += 1
 
 def test_empty_controller():
@@ -70,15 +69,18 @@ def test_empty_controller():
     empty = EmptyController(None)
     turnman.add_side(acting)
     turnman.add_side(empty)
-    turnman.step()
-    assert turnman.world.big == 0
-    assert turnman.world.small == 1
-    turnman.step()
+    assert turnman.next_side() is acting
+    turnman.turn()
+    assert turnman.world.big == 1
     assert turnman.world.small == 2
-    turnman.step()
-    turnman.step()
+    assert turnman.next_side() is empty
+    turnman.turn()
     assert turnman.world.small == 2
-    assert turnman.world.big == 0
+    turnman.turn()
+    turnman.turn()
+    assert turnman.world.small == 2
+    assert turnman.world.big == 1
+    assert turnman.next_side() is empty
 
 class SimpleCounter(object):
     def __init__(self):
@@ -93,13 +95,16 @@ def test_lockable_turnman():
     side = ProxyController(None)
     turnman.add_side(side)
     side.do_action(counter.count)
-    turnman.step()
+    turnman.turn()
     assert counter.n == 1
     turnman.lock()
     side.do_action(counter.count)
-    turnman.step()
+    turnman.turn()
+    side.do_action(counter.count)
+    turnman.turn()
     assert counter.n == 1
     turnman.unlock()
-    side.do_action(counter.count)
-    turnman.step()
     assert counter.n == 3
+    side.do_action(counter.count)
+    turnman.turn()
+    assert counter.n == 4

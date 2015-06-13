@@ -69,11 +69,7 @@ class SimpleField(Entity):
         return set(s for s in self.sides.keys() if self.sides[s] != side)
     
     @unbound
-    def big_turn(self):
-        self.small_turn()
-    
-    @unbound
-    def small_turn(self):
+    def new_round(self):
         for side in self.sides:
             for entity in self.sides[side].members:
                 entity.restore_ap()

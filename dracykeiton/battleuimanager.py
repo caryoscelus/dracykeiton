@@ -54,10 +54,13 @@ class BattleUIManager(object):
     
     def do_action(self, action):
         self.user_controller.do_action(action)
+        self.turnman.planned_actions()
+    
+    def start(self):
         self.turnman.turn()
     
     def end_turn(self):
         self.user_controller.end_turn()
-        self.turnman.turn()
+        self.turnman.planned_actions()
         self.turnman.turn()
         self.turnman.turn()

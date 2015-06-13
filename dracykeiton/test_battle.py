@@ -90,10 +90,11 @@ def prepare_battle(left_c, right_c, turnman, keep_dead=False):
 def test_battle():
     turnman = prepare_battle(AIBattleController, AIBattleController, Turnman)
     turnman.turn()
+    left_side = turnman.world.sides['left'].members
+    assert left_side[0].ap == 0
     right_side = turnman.world.sides['right'].members
     assert len(right_side) == 1
     turnman.turn()
-    left_side = turnman.world.sides['left'].members
     assert len(left_side) == 1
 
 class EffectTurnman(Turnman, SimpleEffectProcessor):
@@ -122,7 +123,6 @@ def test_battle_pickle():
 def test_battle_ui_manager():
     turnman = prepare_battle(UserController, AIBattleController, Turnman)
     manager = BattleUIManager(turnman)
-    turnman.start()
     user_controller = turnman.sides[0]
     enemy_controller = turnman.sides[1]
     user_side = tuple(user_controller.entities)[0]
@@ -132,6 +132,7 @@ def test_battle_ui_manager():
     enemy0 = enemy_side.members[0]
     enemy1 = enemy_side.members[1]
     enemy2 = enemy_side.members[2]
+    manager.start()
     manager.clicked(user_side, goblin0)
     manager.clicked(enemy_side, enemy0)
     assert enemy0.hp == 2
