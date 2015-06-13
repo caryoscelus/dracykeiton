@@ -128,11 +128,27 @@ def test_battle_ui_manager():
     user_side = tuple(user_controller.entities)[0]
     enemy_side = tuple(enemy_controller.entities)[0]
     goblin0 = user_side.members[0]
+    goblin1 = user_side.members[1]
     enemy0 = enemy_side.members[0]
+    enemy1 = enemy_side.members[1]
+    enemy2 = enemy_side.members[2]
     manager.clicked(user_side, goblin0)
     manager.clicked(enemy_side, enemy0)
     assert enemy0.hp == 2
     manager.clicked(enemy_side, enemy0)
     assert enemy0.hp == -1
+    manager.clicked(user_side, goblin1)
+    manager.clicked(enemy_side, enemy1)
+    manager.clicked(enemy_side, enemy1)
+    assert enemy1.hp == -1
     manager.end_turn()
     assert goblin0.hp == -1
+    manager.clicked(user_side, goblin1)
+    assert goblin1.ap == 4
+    manager.clicked(enemy_side, enemy2)
+    assert enemy2.hp == 2
+    assert goblin1.ap == 2
+    manager.clicked(enemy_side, enemy2)
+    assert goblin1.ap == 0
+    manager.clicked(enemy_side, enemy2)
+    assert enemy2.hp == -1

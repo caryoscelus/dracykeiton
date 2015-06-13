@@ -60,3 +60,4 @@ class BattleUIManager(object):
         self.user_controller.end_turn()
         self.turnman.turn()
         self.turnman.turn()
+        self.turnman.turn()
