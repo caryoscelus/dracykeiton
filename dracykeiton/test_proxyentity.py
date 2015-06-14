@@ -45,7 +45,7 @@ class ProxyContainer(object):
         self.proxy = ProxyEntity(self.foo)
 
 def test_proxy_pickle():
-    pickle = import_pickle()
+    from compat_pickle import pickle
     container = ProxyContainer()
     assert container.proxy.n == 0
     container = pickle.loads(pickle.dumps(container))

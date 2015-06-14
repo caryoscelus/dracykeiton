@@ -26,7 +26,7 @@ from turnman import Turnman, LockableTurnman
 from entity import Entity
 
 def test_pickle():
-    pickle = import_pickle()
+    from compat_pickle import pickle
     turnman = Turnman(Entity())
     t1 = pickle.loads(pickle.dumps(turnman))
     lockable_turnman = LockableTurnman(Entity())

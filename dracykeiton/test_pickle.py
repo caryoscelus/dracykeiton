@@ -22,8 +22,7 @@
 
 from compat import *
 from entity import DynamicProperty, simplenode, Entity
-
-pickle = import_pickle()
+from compat_pickle import pickle
 
 def test_pickle_property():
     p = DynamicProperty(empty=0)

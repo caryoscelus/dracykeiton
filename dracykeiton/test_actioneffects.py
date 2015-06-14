@@ -63,8 +63,8 @@ class CountingProcessor(SimpleEffectProcessor):
         self.count += 1
 
 def test_custom_pickle():
+    from compat_pickle import pickle
     entity = FooEntity()
-    pickle = import_pickle()
     processor = CountingProcessor()
     processor0 = pickle.loads(pickle.dumps(processor))
     processor0.process(entity.action)

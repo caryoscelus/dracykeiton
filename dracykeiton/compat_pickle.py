@@ -18,36 +18,14 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""Test classpatch"""
+"""Import pickle or dill, depending on python version.
 
-from compat import *
-import classpatch
-from entity import Entity
+Usage: from compat_pickle import pickle
+"""
 
-class FooEntity(Entity):
-    pass
+import sys
 
-
-class PatchEntity(Entity):
-    @unbound
-    def _init(self):
-        self.dynamic_property('n', 5)
-
-class AnotherPatchEntity(Entity):
-    @unbound
-    def _init(self):
-        self.dynamic_property('m', 7)
-
-classpatch.register(FooEntity, 'mod', PatchEntity)
-
-def test_simple():
-    entity = FooEntity()
-    assert entity.n == 5
-
-def test_pickle():
-    from compat_pickle import pickle
-    entity = FooEntity()
-    classpatch.register(FooEntity, 'mod', AnotherPatchEntity)
-    entity1 = pickle.loads(pickle.dumps(entity))
-    assert entity1.n == 5
-    assert entity1.m == 7
+if sys.version_info.major >= 3:
+    import pickle
+else:
+    import dill as pickle

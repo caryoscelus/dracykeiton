@@ -110,7 +110,7 @@ class EffectTurnman(Turnman, SimpleEffectProcessor):
         self.hit_number += 1
 
 def test_battle_pickle():
-    pickle = import_pickle()
+    from compat_pickle import pickle
     turnman = prepare_battle(AIBattleController, AIBattleController, EffectTurnman)
     s = pickle.dumps(turnman)
     turnman1 = pickle.loads(s)
