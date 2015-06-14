@@ -24,7 +24,11 @@ from compat import *
 from controller import UserController
 
 class BattleUIManager(object):
-    # We expect two-side battle with only one side controlled by user!
+    """Helper class which can be used to build battle-controlling UI.
+    
+    NOTE: We expect two-side battle with only one side controlled by user!
+    TODO: Make it flexible
+    """
     def __init__(self, turnman):
         super(BattleUIManager, self).__init__()
         self.turnman = turnman
@@ -32,6 +36,10 @@ class BattleUIManager(object):
         self.user_controller = [s for s in self.turnman.sides if isinstance(s, UserController)][0]
     
     def clicked(self, side, entity):
+        """Process simple click on entity.
+        
+        Right now, it selects player entity and attacks enemy entity
+        """
         # TODO: ugh, fix this
         controller = [s for s in self.turnman.sides if tuple(s.entities)[0] == side][0]
         if isinstance(controller, UserController):
@@ -40,9 +48,17 @@ class BattleUIManager(object):
             self.attack(entity)
     
     def select(self, entity):
+        """This selects given entity.
+        
+        Some (most currently) actions use selected entity.
+        """
         self.selected = entity
     
     def attack(self, entity):
+        """Attack given entity
+        
+        Only possible when there's selected entity and it can act.
+        """
         if not self.selected:
             return
         if self.selected.living != 'alive':
@@ -60,6 +76,13 @@ class BattleUIManager(object):
         self.turnman.turn()
     
     def end_turn(self):
+        """End turn.
+        
+        This marks player's turn as being over and starts AI turn (which ends
+        automatically if everything is fine and then new player turn begins)
+        
+        NOTE: this relies on having only two (player and AI) sides.
+        """
         self.user_controller.end_turn()
         self.turnman.planned_actions()
         self.turnman.turn()
