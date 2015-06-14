@@ -18,18 +18,23 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""Action point system"""
+"""Action point system and stuff related to acting entities in general."""
 
 from entity import Entity, simplenode
 from hp import LivingEntity
 from compat import *
 
 class ActingEntity(Entity):
+    """Basic acting entity, only defines can_act property.
+    
+    This can be used as basis to various possible acting systems.
+    """
     @unbound
     def _init(self):
         self.dynamic_property('can_act', True)
 
 class LivingActingEntity(Entity):
+    """Ensure only alive entities can act."""
     @unbound
     def _init(self):
         self.req_mod(ActingEntity)
@@ -41,6 +46,7 @@ class LivingActingEntity(Entity):
         return self.living == 'alive' and value
 
 class ActionPointEntity(Entity):
+    """AP entity, defining AP and maxAP properties and helper functions."""
     @unbound
     def _init(self, maxap=0):
         self.req_mod(ActingEntity)
@@ -49,6 +55,10 @@ class ActionPointEntity(Entity):
     
     @unbound
     def spend_ap(self, ap):
+        """This can be used by action checker.
+        
+        Returns True if there was enough AP and it's spent, False otherwise.
+        """
         if not self.can_act:
             return False
         if self.ap < ap:
@@ -59,4 +69,5 @@ class ActionPointEntity(Entity):
     
     @unbound
     def restore_ap(self):
+        """Mainly to use when new turn starts"""
         self.ap = self.maxap

@@ -18,7 +18,8 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-""""""
+"""Module containing ActionProcessor, action decorator and related stuff.
+"""
 
 import functools
 
@@ -28,8 +29,8 @@ import curry
 def action(f):
     """Decorator making callable which checks if action is possible.
     
-    If it's possible, return curry, else return None. Checker method
-    should have same name prefixed with can_
+    If it's possible, return actual action callable, else return None. Checker
+    method should have same name prefixed with can_
     
     >>> from entity import Entity
     >>> class Foo(Entity):
@@ -55,7 +56,16 @@ def action(f):
     return wrap
 
 class ActionProcessor(object):
+    """Action processing entity.
+    
+    Could be asked to process action and either do it or not and maybe do
+    something else as well.
+    """
     def process(self, a):
+        """Takes action and maybe processes it (and possibly side effects)
+        
+        Returns True if action was processed, False otherwise.
+        """
         a()
         return True
 
@@ -64,10 +74,16 @@ class SimpleEffectProcessor(ActionProcessor):
     def __init__(self):
         super(SimpleEffectProcessor, self).__init__()
         self._effects = dict()
+    
     def process(self, a):
         if a.__name__ in self._effects:
             self._effects[a.__name__](a)
         r = super(SimpleEffectProcessor, self).process(a)
         return r
+    
     def add_effect(self, target, effect):
+        """Add effect to be performed when action happens.
+        
+        NOTE: currently there could be only one effect per action.
+        """
         self._effects[target] = effect
