@@ -56,9 +56,11 @@ class AIBattleController(Controller):
             if not enemy_sides:
                 continue
             enemy_side = self.world.sides[random.choice(tuple(enemy_sides))]
-            if not enemy_side.members:
+            for enemy in enemy_side.members:
+                if enemy.living == 'alive':
+                    break
+            if not enemy.living == 'alive':
                 continue
-            enemy = enemy_side.members[0]
             for entity in side.members:
                 action = entity.hit(enemy)
                 if action:
