@@ -77,13 +77,17 @@ class SimpleEffectProcessor(ActionProcessor):
     
     def process(self, a):
         if a.__name__ in self._effects:
-            self._effects[a.__name__](a)
+            for effect in self._effects[a.__name__]:
+                effect(a)
         r = super(SimpleEffectProcessor, self).process(a)
         return r
     
     def add_effect(self, target, effect):
         """Add effect to be performed when action happens.
         
-        NOTE: currently there could be only one effect per action.
+        NOTE: currently all effects will be performed in the same order as
+        they were added in.
         """
-        self._effects[target] = effect
+        if not target in self._effects:
+            self._effects[target] = list()
+        self._effects[target].append(effect)
