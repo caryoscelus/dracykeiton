@@ -27,6 +27,7 @@ class BattleUIManager(object):
     """Helper class which can be used to build battle-controlling UI.
     
     NOTE: We expect two-side battle with only one side controlled by user!
+    NOTE: We also expect that the first turn is user's
     TODO: Make it flexible
     """
     def __init__(self, turnman):
@@ -66,10 +67,15 @@ class BattleUIManager(object):
             self.do_action(action)
     
     def do_action(self, action):
+        """Tell turnman that user wants to perform action"""
         self.user_controller.do_action(action)
         self.turnman.planned_actions()
     
     def start(self):
+        """Start manager: this simply starts new turn for user right now.
+        
+        (this can mean allocating AP for example)
+        """
         self.turnman.turn()
     
     def end_turn(self):

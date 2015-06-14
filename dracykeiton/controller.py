@@ -18,7 +18,7 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""Controller: 
+"""Controller: thing that controlls Entity. Can be AI or user or remote..
 """
 
 import functools
@@ -28,15 +28,22 @@ import curry
 from entity import Entity
 
 class ControllableEntity(Entity):
+    """Entity which can be controlled?
+    
+    NOTE: is this required?
+    """
     def __init__(self):
         super(ControllableEntity, self).__init__()
         self.dynamic_property('available_actions', empty=set())
 
 class WorldEntity(Entity):
+    """Perhaps this can be useful for incomplete information games."""
+    @unbound
     def observe(self, observer):
         return self
 
 class Controller(object):
+    """"""
     def __init__(self, world, *args):
         super(Controller, self).__init__()
         self.entities = set(args)
@@ -59,16 +66,26 @@ class Controller(object):
         return None
 
 class ProxyController(Controller):
-    """Controller which is controlled from outside"""
+    """Controller which is controlled from outside.
+    
+    Typical usage for this is player's controller which is controlled by UI,
+    but other usecases can include remote users and even some kind of AI
+    (e.g. running in separate thread)
+    """
     def __init__(self, *args, **kwargs):
         super(ProxyController, self).__init__(*args, **kwargs)
         self._end_turn = False
         self._next_action = None
     
     def end_turn(self):
+        """Mark current turn as finished"""
         self._end_turn = True
     
     def do_action(self, action):
+        """Next time we're asked for an action (through act) we'll return this.
+        
+        NOTE: currently only one action is stored!
+        """
         self._next_action = action
     
     def act(self):
@@ -82,4 +99,5 @@ class ProxyController(Controller):
         return False
 
 class UserController(ProxyController):
+    """A proxy controller, marked as UserController for UI systems convenience"""
     pass

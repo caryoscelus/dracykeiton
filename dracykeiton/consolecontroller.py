@@ -22,6 +22,8 @@
 
 NOTE: this is for testing purposes only; can be insecure
 
+Perhaps this isn't useful and can be removed safely.
+
 >>> from entity import Entity
 >>> import curry
 >>> e = Entity()
