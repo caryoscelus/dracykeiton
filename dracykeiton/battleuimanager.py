@@ -61,9 +61,6 @@ class BattleUIManager(object):
         """
         if not self.selected:
             return
-        if self.selected.living != 'alive':
-            self.selected = None
-            return
         action = self.selected.hit(entity)
         if action:
             self.do_action(action)
