@@ -24,7 +24,7 @@ from .compat import *
 from .entity import Entity, simplenode
 from .action import action
 from .ap import LivingActingEntity, ActionPointEntity
-from .compat_random import random
+from . import random
 
 class HittingEntity(Entity):
     @unbound

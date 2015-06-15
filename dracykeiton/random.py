@@ -21,13 +21,12 @@
 """Exports appropriate random module.
 
 For now if Ren'Py is present, use its random, otherwise regular one.
-Usage: from compat_random import random.
-
-TODO: perhaps would make sense to just have module random reexporting content
-of appropriate module, but that's when there's proper packaging.
+Usage: from dracykeiton import random
 """
 
+from __future__ import absolute_import
+
 try:
-    import renpy.random as random
+    from renpy.random import *
 except ImportError:
-    import random
+    from random import *
