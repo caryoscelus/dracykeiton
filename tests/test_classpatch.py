@@ -21,7 +21,7 @@
 """Test classpatch"""
 
 from dracykeiton.compat import *
-from dracykeiton import classpatch
+from dracykeiton.util import classpatch
 from dracykeiton.entity import Entity
 
 class FooEntity(Entity):

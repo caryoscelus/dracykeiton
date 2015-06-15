@@ -236,7 +236,7 @@ class BarEntity(Entity):
         return self.a+self.b
 
 def test_entity_patch():
-    from dracykeiton import classpatch
+    from dracykeiton.util import classpatch
     from dracykeiton import pickle
     entity = FooEntity()
     classpatch.register(FooEntity, 'mod', BarEntity)

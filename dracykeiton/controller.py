@@ -24,7 +24,7 @@
 import functools
 
 from .compat import *
-from . import curry
+from .util import curry
 from .entity import Entity
 
 class ControllableEntity(Entity):

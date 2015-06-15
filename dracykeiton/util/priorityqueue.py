@@ -29,7 +29,7 @@
 
 """
 
-from .compat import *
+from ..compat import *
 
 class PriorityQueue(object):
     def __init__(self, *priorities, **kwargs):

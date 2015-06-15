@@ -20,7 +20,7 @@
 
 """tests for controller.py"""
 
-from dracykeiton import curry
+from dracykeiton.util import curry
 from dracykeiton.controller import Controller, ControllableEntity, ProxyController
 
 def test_controller():
