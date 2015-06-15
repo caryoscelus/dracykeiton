@@ -20,9 +20,9 @@
 
 """Test additional effects happening when action occur."""
 
-from compat import *
-from entity import Entity
-from action import action, ActionProcessor, SimpleEffectProcessor
+from dracykeiton.compat import *
+from dracykeiton.entity import Entity
+from dracykeiton.action import action, ActionProcessor, SimpleEffectProcessor
 
 class FooEntity(Entity):
     @unbound
@@ -63,7 +63,7 @@ class CountingProcessor(SimpleEffectProcessor):
         self.count += 1
 
 def test_custom_pickle():
-    from compat_pickle import pickle
+    from dracykeiton.compat_pickle import pickle
     entity = FooEntity()
     processor = CountingProcessor()
     processor0 = pickle.loads(pickle.dumps(processor))

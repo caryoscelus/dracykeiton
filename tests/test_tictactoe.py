@@ -22,10 +22,10 @@
 
 import copy
 
-from compat import *
-from entity import Entity
-from controller import Controller
-from turnman import Turnman
+from dracykeiton.compat import *
+from dracykeiton.entity import Entity
+from dracykeiton.controller import Controller
+from dracykeiton.turnman import Turnman
 
 class Board(Entity):
     @unbound

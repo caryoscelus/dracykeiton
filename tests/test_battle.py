@@ -24,17 +24,17 @@
 import copy
 import random
 
-from compat import *
+from dracykeiton.compat import *
 
-from entity import Entity, listener
-from controller import Controller, UserController
-from turnman import Turnman
-from ap import ActionPointEntity
-from hp import HpEntity
-from hit import HittingEntity
-from battlefield import Battlefield, Side
-from battleuimanager import BattleUIManager
-from action import SimpleEffectProcessor
+from dracykeiton.entity import Entity, listener
+from dracykeiton.controller import Controller, UserController
+from dracykeiton.turnman import Turnman
+from dracykeiton.ap import ActionPointEntity
+from dracykeiton.hp import HpEntity
+from dracykeiton.hit import HittingEntity
+from dracykeiton.battlefield import Battlefield, Side
+from dracykeiton.battleuimanager import BattleUIManager
+from dracykeiton.action import SimpleEffectProcessor
 
 class KindEntity(Entity):
     @unbound
@@ -110,7 +110,7 @@ class EffectTurnman(Turnman, SimpleEffectProcessor):
         self.hit_number += 1
 
 def test_battle_pickle():
-    from compat_pickle import pickle
+    from dracykeiton.compat_pickle import pickle
     turnman = prepare_battle(AIBattleController, AIBattleController, EffectTurnman)
     s = pickle.dumps(turnman)
     turnman1 = pickle.loads(s)

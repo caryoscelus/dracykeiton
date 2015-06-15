@@ -22,7 +22,7 @@
 
 import pytest
 
-from priorityqueue import PriorityQueue
+from dracykeiton.priorityqueue import PriorityQueue
 
 def test_plain():
     plain_queue = PriorityQueue()

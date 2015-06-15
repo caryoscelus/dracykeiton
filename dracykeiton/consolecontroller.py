@@ -41,7 +41,7 @@ Entity {'n': None}
 Entity {'n': 7}
 """
 
-from controller import Controller
+from .controller import Controller
 
 class ConsoleController(Controller):
     def act(self):

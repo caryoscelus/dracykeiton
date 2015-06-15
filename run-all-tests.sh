@@ -3,12 +3,12 @@
 pushd `dirname $0`
 
 source env/bin/activate
-py.test dracykeiton/
+py.test tests/
 PY3=$?
 deactivate
 
 source env2/bin/activate
-py.test dracykeiton/
+py.test tests/
 PY2=$?
 deactivate
 

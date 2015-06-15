@@ -23,9 +23,9 @@
 
 import functools
 
-from compat import *
-import curry
-from entity import Entity
+from .compat import *
+from . import curry
+from .entity import Entity
 
 class ControllableEntity(Entity):
     """Entity which can be controlled?

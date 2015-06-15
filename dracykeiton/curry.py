@@ -21,7 +21,7 @@
 """
 """
 
-from compat import *
+from .compat import *
 import functools
 
 def curry(f):

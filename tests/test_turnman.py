@@ -20,13 +20,13 @@
 
 """"""
 
-from compat import *
-from controller import Controller, ProxyController
-from turnman import Turnman, LockableTurnman
-from entity import Entity
+from dracykeiton.compat import *
+from dracykeiton.controller import Controller, ProxyController
+from dracykeiton.turnman import Turnman, LockableTurnman
+from dracykeiton.entity import Entity
 
 def test_pickle():
-    from compat_pickle import pickle
+    from dracykeiton.compat_pickle import pickle
     turnman = Turnman(Entity())
     t1 = pickle.loads(pickle.dumps(turnman))
     lockable_turnman = LockableTurnman(Entity())

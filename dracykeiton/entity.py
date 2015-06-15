@@ -23,9 +23,9 @@
 import functools
 import collections
 
-from compat import *
-import classpatch
-from priorityqueue import PriorityQueue
+from .compat import *
+from . import classpatch
+from .priorityqueue import PriorityQueue
 
 class DynamicProperty(object):
     """Stores dynamic property and modifiers associated with it."""

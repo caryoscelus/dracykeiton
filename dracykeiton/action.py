@@ -23,8 +23,8 @@
 
 import functools
 
-from compat import *
-import curry
+from .compat import *
+from . import curry
 
 def action(f):
     """Decorator making callable which checks if action is possible.

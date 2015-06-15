@@ -18,36 +18,17 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""Test classpatch"""
+"""Test random hit action"""
 
-from compat import *
-import classpatch
-from entity import Entity
+from dracykeiton.compat import *
 
-class FooEntity(Entity):
-    pass
+from dracykeiton.hit import RandomHittingEntity
 
-
-class PatchEntity(Entity):
-    @unbound
-    def _init(self):
-        self.dynamic_property('n', 5)
-
-class AnotherPatchEntity(Entity):
-    @unbound
-    def _init(self):
-        self.dynamic_property('m', 7)
-
-classpatch.register(FooEntity, 'mod', PatchEntity)
-
-def test_simple():
-    entity = FooEntity()
-    assert entity.n == 5
-
-def test_pickle():
-    from compat_pickle import pickle
-    entity = FooEntity()
-    classpatch.register(FooEntity, 'mod', AnotherPatchEntity)
-    entity1 = pickle.loads(pickle.dumps(entity))
-    assert entity1.n == 5
-    assert entity1.m == 7
+def test_random_hit():
+    hitter = RandomHittingEntity()
+    hitter.hit_damage = 6
+    hit0 = hitter.hit_damage
+    hit1 = hitter.hit_damage
+    assert 4 <= hit0 <= 8
+    assert 4 <= hit1 <= 8
+    assert hit0 != hit1

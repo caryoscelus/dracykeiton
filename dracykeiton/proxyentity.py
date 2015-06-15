@@ -20,8 +20,8 @@
 
 """"""
 
-from compat import *
-from entity import Entity, simplenode, listener
+from .compat import *
+from .entity import Entity, simplenode, listener
 
 class ProxyEntity(Entity):
     """Entity which gives values from other entity.

@@ -22,8 +22,8 @@
 
 import pytest
 
-from compat import *
-from entity import Entity, simplenode, ReadOnlyNode, DependencyError
+from dracykeiton.compat import *
+from dracykeiton.entity import Entity, simplenode, ReadOnlyNode, DependencyError
 
 def test_entity_property():
     entity = Entity()
@@ -236,8 +236,8 @@ class BarEntity(Entity):
         return self.a+self.b
 
 def test_entity_patch():
-    import classpatch
-    from compat_pickle import pickle
+    from dracykeiton import classpatch
+    from dracykeiton.compat_pickle import pickle
     entity = FooEntity()
     classpatch.register(FooEntity, 'mod', BarEntity)
     with pytest.raises(AttributeError):

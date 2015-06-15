@@ -21,9 +21,9 @@
 """
 """
 
-from compat import *
-from entity import Entity
-from proxyentity import ProxyEntity, CachedEntity
+from .compat import *
+from .entity import Entity
+from .proxyentity import ProxyEntity, CachedEntity
 
 class InterpolatingCache(Entity):
     @unbound

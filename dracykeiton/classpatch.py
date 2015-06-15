@@ -25,7 +25,7 @@ called classpatch, but it's pretty general and agnostic of specific actions.
 It only stores whatever you tell it to store.
 """
 
-from compat import *
+from .compat import *
 
 classpatch_registry = dict()
 

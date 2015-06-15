@@ -20,8 +20,8 @@
 
 """Hit point system"""
 
-from entity import Entity, simplenode, listener
-from compat import *
+from .entity import Entity, simplenode, listener
+from .compat import *
 
 class LivingEntity(Entity):
     @unbound

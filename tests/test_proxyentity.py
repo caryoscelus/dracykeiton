@@ -21,10 +21,10 @@
 """Test proxy entity
 """
 
-from compat import *
-from entity import Entity, simplenode
-from proxyentity import ProxyEntity, CachedEntity
-from interpolate import InterpolatingCache
+from dracykeiton.compat import *
+from dracykeiton.entity import Entity, simplenode
+from dracykeiton.proxyentity import ProxyEntity, CachedEntity
+from dracykeiton.interpolate import InterpolatingCache
 import pytest
 
 class FooEntity(Entity):
@@ -45,7 +45,7 @@ class ProxyContainer(object):
         self.proxy = ProxyEntity(self.foo)
 
 def test_proxy_pickle():
-    from compat_pickle import pickle
+    from dracykeiton.compat_pickle import pickle
     container = ProxyContainer()
     assert container.proxy.n == 0
     container = pickle.loads(pickle.dumps(container))

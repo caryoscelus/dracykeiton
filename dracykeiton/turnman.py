@@ -20,8 +20,8 @@
 
 """"""
 
-from compat import *
-from action import ActionProcessor
+from .compat import *
+from .action import ActionProcessor
 import copy
 
 class Turnman(ActionProcessor):

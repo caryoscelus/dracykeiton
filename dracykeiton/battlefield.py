@@ -21,8 +21,8 @@
 """
 """
 
-from compat import *
-from entity import Entity, listener
+from .compat import *
+from .entity import Entity, listener
 
 class Side(Entity):
     @unbound

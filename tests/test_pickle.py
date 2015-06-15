@@ -20,9 +20,9 @@
 
 """Test whether pickling is working correct for our classes"""
 
-from compat import *
-from entity import DynamicProperty, simplenode, Entity
-from compat_pickle import pickle
+from dracykeiton.compat import *
+from dracykeiton.entity import DynamicProperty, simplenode, Entity
+from dracykeiton.compat_pickle import pickle
 
 def test_pickle_property():
     p = DynamicProperty(empty=0)

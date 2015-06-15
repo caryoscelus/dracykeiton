@@ -20,8 +20,8 @@
 
 """"""
 
-from compat import *
-from controller import UserController
+from .compat import *
+from .controller import UserController
 
 class BattleUIManager(object):
     """Helper class which can be used to build battle-controlling UI.
