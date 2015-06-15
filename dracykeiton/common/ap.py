@@ -20,9 +20,9 @@
 
 """Action point system and stuff related to acting entities in general."""
 
-from .entity import Entity, simplenode
+from ..entity import Entity, simplenode
 from .hp import LivingEntity
-from .compat import *
+from ..compat import *
 
 class ActingEntity(Entity):
     """Basic acting entity, only defines can_act property.
