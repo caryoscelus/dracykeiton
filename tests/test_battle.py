@@ -29,10 +29,7 @@ from dracykeiton.compat import *
 from dracykeiton.entity import Entity, listener
 from dracykeiton.controller import Controller, UserController
 from dracykeiton.turnman import Turnman
-from dracykeiton.common.ap import ActionPointEntity
-from dracykeiton.common.hp import HpEntity
-from dracykeiton.common.hit import HittingEntity
-from dracykeiton.common.battlefield import Battlefield, Side
+from dracykeiton.common import ActionPointEntity, HpEntity, HittingEntity, Battlefield, Side
 from dracykeiton.battleuimanager import BattleUIManager
 from dracykeiton.action import SimpleEffectProcessor
 
