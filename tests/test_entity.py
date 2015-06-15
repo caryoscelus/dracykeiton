@@ -237,7 +237,7 @@ class BarEntity(Entity):
 
 def test_entity_patch():
     from dracykeiton import classpatch
-    from dracykeiton.compat_pickle import pickle
+    from dracykeiton import pickle
     entity = FooEntity()
     classpatch.register(FooEntity, 'mod', BarEntity)
     with pytest.raises(AttributeError):

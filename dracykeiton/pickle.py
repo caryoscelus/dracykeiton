@@ -20,12 +20,12 @@
 
 """Import pickle or dill, depending on python version.
 
-Usage: from compat_pickle import pickle
+You can use it like "from dracykeiton import pickle"
 """
 
 import sys
 
 if sys.version_info.major >= 3:
-    import pickle
+    from pickle import *
 else:
-    import dill as pickle
+    from dill import *

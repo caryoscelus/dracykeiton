@@ -45,7 +45,7 @@ def test_simple():
     assert entity.n == 5
 
 def test_pickle():
-    from dracykeiton.compat_pickle import pickle
+    from dracykeiton import pickle
     entity = FooEntity()
     classpatch.register(FooEntity, 'mod', AnotherPatchEntity)
     entity1 = pickle.loads(pickle.dumps(entity))

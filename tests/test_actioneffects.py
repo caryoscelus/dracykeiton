@@ -63,7 +63,7 @@ class CountingProcessor(SimpleEffectProcessor):
         self.count += 1
 
 def test_custom_pickle():
-    from dracykeiton.compat_pickle import pickle
+    from dracykeiton import pickle
     entity = FooEntity()
     processor = CountingProcessor()
     processor0 = pickle.loads(pickle.dumps(processor))

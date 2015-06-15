@@ -22,7 +22,7 @@
 
 from dracykeiton.compat import *
 from dracykeiton.entity import DynamicProperty, simplenode, Entity
-from dracykeiton.compat_pickle import pickle
+from dracykeiton import pickle
 
 def test_pickle_property():
     p = DynamicProperty(empty=0)
