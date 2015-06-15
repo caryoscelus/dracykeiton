@@ -21,15 +21,16 @@
 """Hit action"""
 
 from compat import *
-from entity import Entity
+from entity import Entity, simplenode
 from action import action
 from ap import LivingActingEntity, ActionPointEntity
+from compat_random import random
 
 class HittingEntity(Entity):
     @unbound
     def _init(self, hit_damage=0):
         self.req_mod(ActionPointEntity)
-        self.req_mod(LivingActingEntity)
+        self.req_mod(LivingActingEntity) # ?
         self.dynamic_property('hit_damage', hit_damage)
     
     @action
@@ -39,3 +40,14 @@ class HittingEntity(Entity):
     @unbound
     def can_hit(self, enemy):
         return self.spend_ap(2)
+
+class RandomHittingEntity(Entity):
+    @unbound
+    def _init(self):
+        self.req_mod(HittingEntity)
+        self.add_get_node('hit_damage', self.randomize_hit())
+    
+    @simplenode
+    def randomize_hit(self, value):
+        # 1+-1/3
+        return (random.random()+1)*2/3.0*value
