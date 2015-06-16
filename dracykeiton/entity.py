@@ -159,11 +159,13 @@ class Entity(object):
     def dynamic_method(self, name):
         self._methods.add(name)
     
-    def dynamic_property(self, name, empty=None):
+    def dynamic_property(self, name, empty=None, priorities=None):
         """Define new dynamic property called name"""
         if name in self._props:
             return
-        self._props[name] = DynamicProperty(empty=empty, priorities=self._priorities, default=self._default)
+        if priorities is None:
+            priorities = self._priorities
+        self._props[name] = DynamicProperty(empty=empty, priorities=priorities, default=self._default)
         self._get_depends_on[name] = dict()
         self._listeners[name] = list()
     

@@ -243,3 +243,31 @@ def test_entity_patch():
         entity.b
     reloaded = pickle.loads(pickle.dumps(entity))
     assert reloaded.sum() == 3
+
+class NodeEntity(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('n', 0, priorities=('before', 'normal', 'after'))
+        self.add_get_node('n', self.positive(), priority='after')
+        self.add_get_node('n', self.add(), priority='before')
+        self.add_get_node('n', self.subtract(), priority='after')
+    
+    @simplenode
+    def positive(self, value):
+        return max(0, value)
+    
+    @simplenode
+    def add(self, value):
+        return value+10
+    
+    @simplenode
+    def subtract(self, value):
+        return value-10
+
+def test_node_priorities():
+    entity = NodeEntity()
+    assert entity.n == 0
+    entity.n = -15
+    assert entity.n == -10
+    entity.n = 20
+    assert entity.n == 20
