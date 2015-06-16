@@ -24,7 +24,7 @@ from dracykeiton.compat import *
 from dracykeiton.entity import Entity
 from dracykeiton.action import action, ActionProcessor, SimpleEffectProcessor
 
-class FooEntity(Entity):
+class ActionEntity(Entity):
     @unbound
     def _init(self):
         self.dynamic_property('n', 0)
@@ -44,7 +44,7 @@ class Effector(object):
         self.e += 1
 
 def test_effect():
-    entity = FooEntity()
+    entity = ActionEntity()
     effector = Effector()
     processor = SimpleEffectProcessor()
     processor.add_effect('action', effector.effect)
@@ -64,7 +64,7 @@ class CountingProcessor(SimpleEffectProcessor):
 
 def test_custom_pickle():
     from dracykeiton import pickle
-    entity = FooEntity()
+    entity = ActionEntity()
     processor = CountingProcessor()
     processor0 = pickle.loads(pickle.dumps(processor))
     processor0.process(entity.action)

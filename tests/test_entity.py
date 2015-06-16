@@ -221,12 +221,12 @@ def test_entity_monster():
     booster.enable(monster)
     assert monster.maxhp == 5.5
 
-class FooEntity(Entity):
+class FooPatchedEntity(Entity):
     @unbound
     def _init(self):
         self.dynamic_property('a', 1)
 
-class BarEntity(Entity):
+class BarPatchEntity(Entity):
     @unbound
     def _init(self):
         self.dynamic_property('b', 2)
@@ -236,10 +236,9 @@ class BarEntity(Entity):
         return self.a+self.b
 
 def test_entity_patch():
-    from dracykeiton.util import classpatch
     from dracykeiton import pickle
-    entity = FooEntity()
-    classpatch.register(FooEntity, 'mod', BarEntity)
+    entity = FooPatchedEntity()
+    FooPatchedEntity.global_mod(BarPatchEntity)
     with pytest.raises(AttributeError):
         entity.b
     reloaded = pickle.loads(pickle.dumps(entity))

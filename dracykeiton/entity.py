@@ -24,7 +24,6 @@ import functools
 import collections
 
 from .compat import *
-from .util import classpatch
 from .util.priorityqueue import PriorityQueue
 
 class DynamicProperty(object):
@@ -70,6 +69,8 @@ class Entity(object):
     Do not create class hierarchy. All entity classes should inherit this
     directly and use .req_mod() for dependencies.
     """
+    _global_mods = list()
+    
     def __init__(self, *args, **kwargs):
         super(Entity, self).__init__()
         self._props = dict()
@@ -92,8 +93,12 @@ class Entity(object):
     def _uninit(self):
         raise NotImplementedError
     
+    @classmethod
+    def global_mod(cl, mod):
+        cl._global_mods.append(mod)
+    
     def _load_patchmods(self):
-        mods = classpatch.get(type(self), 'mod')
+        mods = type(self)._global_mods
         for mod in mods:
             self.req_mod(mod)
     
