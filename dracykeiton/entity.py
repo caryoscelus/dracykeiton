@@ -63,14 +63,23 @@ class DynamicProperty(object):
     def add_get_node(self, f, priority=None):
         self.getters.add(f, priority)
 
-class Entity(object):
+import sys
+if sys.version_info.major < 3:
+    class AddGlobalMods(type):
+        def __init__(self, name, bases, d):
+            type.__init__(self, name, bases, d)
+            self._global_mods = list()
+    class HasGlobalMods(object):
+        __metaclass__ = AddGlobalMods
+else:
+    from .global_mods import HasGlobalMods
+
+class Entity(HasGlobalMods):
     """Base entity, including dynamic property and modding mechanism.
     
     Do not create class hierarchy. All entity classes should inherit this
     directly and use .req_mod() for dependencies.
     """
-    _global_mods = list()
-    
     def __init__(self, *args, **kwargs):
         super(Entity, self).__init__()
         self._props = dict()

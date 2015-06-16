@@ -239,6 +239,8 @@ def test_entity_patch():
     from dracykeiton import pickle
     entity = FooPatchedEntity()
     FooPatchedEntity.global_mod(BarPatchEntity)
+    assert FooPatchedEntity._global_mods
+    assert not Entity._global_mods
     with pytest.raises(AttributeError):
         entity.b
     reloaded = pickle.loads(pickle.dumps(entity))
