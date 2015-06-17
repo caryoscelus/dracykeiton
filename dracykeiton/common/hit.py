@@ -24,6 +24,7 @@ from ..compat import *
 from ..entity import Entity, simplenode
 from ..action import action
 from .ap import LivingActingEntity, ActionPointEntity
+from .inspire import InspirableEntity
 from .. import random
 
 class HittingEntity(Entity):
@@ -41,10 +42,23 @@ class HittingEntity(Entity):
     def can_hit(self, enemy):
         return self.spend_ap(2)
 
+class InspirableHittingEntity(Entity):
+    @unbound
+    def _init(self, hit_damage=0):
+        self.req_mod(InspirableEntity)
+        self.req_mod(HittingEntity, hit_damage)
+        self.add_get_node('hit_damage', self.inspired_damage())
+    
+    @simplenode
+    def inspired_damage(self, value):
+        if self.inspired:
+            return value * 2
+        return value
+
 class RandomHittingEntity(Entity):
     @unbound
-    def _init(self):
-        self.req_mod(HittingEntity)
+    def _init(self, hit_damage=0):
+        self.req_mod(HittingEntity, hit_damage)
         self.add_get_node('hit_damage', self.randomize_hit())
     
     @simplenode
