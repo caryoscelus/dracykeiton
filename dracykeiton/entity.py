@@ -190,6 +190,9 @@ class Entity(HasGlobalMods):
             self._mods.add(mod)
             mod.enable(self, *args, **kwargs)
     
+    def has_mod(self, mod):
+        return mod in self._mods
+    
     def remove_mod(self, mod):
         """Remove mod from this entity.
         mod should have correct disable method.
