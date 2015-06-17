@@ -32,6 +32,7 @@ from dracykeiton.turnman import Turnman
 from dracykeiton.common import ActionPointEntity, HpEntity, InspirableHittingEntity, Battlefield, Side, InspiringEntity
 from dracykeiton.battleuimanager import BattleUIManager
 from dracykeiton.action import SimpleEffectProcessor
+from dracykeiton.encounter import Encounter
 
 class KindEntity(Entity):
     @unbound
@@ -72,26 +73,10 @@ class AIBattleController(Controller):
 
 def prepare_battle(left_c, right_c, turnman, keep_dead=False):
     """Prepare battle with given side controllers"""
-    battlefield = Battlefield(keep_dead=keep_dead)
-    left_side = Side()
-    right_side = Side()
-    battlefield.add_side('left', left_side)
-    battlefield.add_side('right', right_side)
-    left_controller = left_c(battlefield)
-    left_controller.add_entity(left_side)
-    right_controller = right_c(battlefield)
-    right_controller.add_entity(right_side)
-    for i in range(1):
-        goblin = Goblin()
-        battlefield.spawn('left', goblin)
-    battlefield.spawn('left', GoblinLeader())
-    for i in range(3):
-        goblin = Goblin()
-        battlefield.spawn('right', goblin)
-    turnman = turnman(battlefield)
-    turnman.add_side(left_controller)
-    turnman.add_side(right_controller)
-    return turnman
+    encounter = Encounter(turnman, keep_dead=keep_dead)
+    encounter.add_side('left', left_c, 2, predefined=[Goblin(), GoblinLeader()])
+    encounter.add_side('right', right_c, 3, predefined=[Goblin(), Goblin(), Goblin()])
+    return encounter.generate()
 
 def test_battle():
     turnman = prepare_battle(AIBattleController, AIBattleController, Turnman)
