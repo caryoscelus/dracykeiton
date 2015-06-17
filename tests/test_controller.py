@@ -24,32 +24,11 @@ from dracykeiton.util import curry
 from dracykeiton.controller import Controller, ControllableEntity, ProxyController
 
 def test_controller():
-    controller = Controller(None)
     entity = ControllableEntity()
-    controller.add_entity(entity)
-
-class CustomController(Controller):
-    def __init__(self):
-        super(CustomController, self).__init__(None)
-    
-    def act(self):
-        return ((entity, self.n1_action()) for entity in self.entities)
-    
-    @curry.curry
-    def n1_action(self, target):
-        target.n += 1
-
-def test_custom_controller():
-    controller = CustomController()
-    entity = ControllableEntity()
-    entity.dynamic_property('n', empty=0)
-    controller.add_entity(entity)
-    for (e, action) in controller.act():
-        action(e)
-    assert entity.n == 1
+    controller = Controller(None, entity)
 
 def test_proxy_controller():
-    controller = ProxyController(None)
+    controller = ProxyController(None, None)
     assert controller.act() == False
     controller.end_turn()
     assert controller.act() == None

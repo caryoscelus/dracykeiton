@@ -44,19 +44,16 @@ class WorldEntity(Entity):
 
 class Controller(object):
     """"""
-    def __init__(self, world, *args):
+    def __init__(self, world, entity):
         super(Controller, self).__init__()
-        self.entities = set(args)
+        self.entity = entity
         self.world = world
     
     def set_world(self, world):
         self.world = world
     
-    def add_entity(self, entity):
-        self.entities.add(entity)
-    
-    def remove_entity(self, entity):
-        self.entities.remove(entity)
+    def set_entity(self, entity):
+        self.entity = entity
     
     def act(self):
         """Return next action.

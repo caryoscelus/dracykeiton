@@ -55,20 +55,20 @@ class GoblinLeader(Entity):
 
 class AIBattleController(Controller):
     def act(self):
-        for side in self.entities:
-            enemy_sides = self.world.get_enemies(side)
-            if not enemy_sides:
-                continue
-            enemy_side = self.world.sides[random.choice(tuple(enemy_sides))]
-            for enemy in enemy_side.members:
-                if enemy.living == 'alive':
-                    break
-            if not enemy.living == 'alive':
-                continue
-            for entity in side.members:
-                action = entity.hit(enemy)
-                if action:
-                    return action
+        side = self.entity
+        enemy_sides = self.world.get_enemies(side)
+        if not enemy_sides:
+            return None
+        enemy_side = self.world.sides[random.choice(tuple(enemy_sides))]
+        for enemy in enemy_side.members:
+            if enemy.living == 'alive':
+                break
+        if not enemy.living == 'alive':
+            return None
+        for entity in side.members:
+            action = entity.hit(enemy)
+            if action:
+                return action
         return None
 
 def prepare_battle(left_c, right_c, turnman, keep_dead=False):
@@ -92,8 +92,8 @@ def test_inspire():
     turnman = prepare_battle(UserController, AIBattleController, Turnman)
     user_controller = turnman.sides[0]
     enemy_controller = turnman.sides[1]
-    user_side = tuple(user_controller.entities)[0]
-    enemy_side = tuple(enemy_controller.entities)[0]
+    user_side = user_controller.entity
+    enemy_side = enemy_controller.entity
     goblin = user_side.members[0]
     goblin_leader = user_side.members[1]
     enemy = enemy_side.members[0]
@@ -133,8 +133,8 @@ def test_battle_ui_manager():
     manager = BattleUIManager(turnman)
     user_controller = turnman.sides[0]
     enemy_controller = turnman.sides[1]
-    user_side = tuple(user_controller.entities)[0]
-    enemy_side = tuple(enemy_controller.entities)[0]
+    user_side = user_controller.entity
+    enemy_side = enemy_controller.entity
     goblin0 = user_side.members[0]
     goblin1 = user_side.members[1]
     enemy0 = enemy_side.members[0]

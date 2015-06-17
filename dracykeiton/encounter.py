@@ -65,8 +65,7 @@ class Encounter(object):
         for side_gen in self.sides:
             side = Side()
             battlefield.add_side(side_gen.name, side)
-            controller = side_gen.controller(battlefield)
-            controller.add_entity(side)
+            controller = side_gen.controller(battlefield, side)
             turnman.add_side(controller)
             entities = side_gen.generate()
             for entity in entities:

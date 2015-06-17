@@ -41,8 +41,7 @@ class BattleUIManager(object):
         
         Right now, it selects player entity and attacks enemy entity
         """
-        # TODO: ugh, fix this
-        controller = [s for s in self.turnman.sides if tuple(s.entities)[0] == side][0]
+        controller = [s for s in self.turnman.sides if s.entity == side][0]
         if isinstance(controller, UserController):
             self.select(entity)
         else:

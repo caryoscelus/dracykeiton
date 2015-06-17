@@ -18,7 +18,7 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""Tic-tac-toe as a test"""
+"""Tic-tac-toe as a test. Well, it's kinda dead.."""
 
 import copy
 
@@ -52,9 +52,7 @@ class Player(Entity):
 
 class TTTAI(Controller):
     def act(self):
-        if len(self.entities) != 1:
-            raise TypeError('TTTAI controller can only control single side')
-        side = tuple(self.entities)[0].side
+        side = self.entity.side
         enemy = 'x' if side == 'o' else 'o'
         self.world.mark_tile(1, 1, side)
 

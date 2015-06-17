@@ -42,8 +42,8 @@ class PassController(Controller):
 
 def test_turnman():
     turnman = Turnman(None)
-    player = PassController(None)
-    enemy = PassController(None)
+    player = PassController(None, None)
+    enemy = PassController(None, None)
     assert turnman.next_side() is None
     turnman.add_side(player)
     turnman.add_side(enemy)
@@ -65,8 +65,8 @@ class Counter(Entity):
 
 def test_empty_controller():
     turnman = Turnman(Counter())
-    acting = PassController(None)
-    empty = EmptyController(None)
+    acting = PassController(None, None)
+    empty = EmptyController(None, None)
     turnman.add_side(acting)
     turnman.add_side(empty)
     assert turnman.next_side() is acting
@@ -92,7 +92,7 @@ class SimpleCounter(object):
 def test_lockable_turnman():
     turnman = LockableTurnman(None)
     counter = SimpleCounter()
-    side = ProxyController(None)
+    side = ProxyController(None, None)
     turnman.add_side(side)
     side.do_action(counter.count)
     turnman.turn()
