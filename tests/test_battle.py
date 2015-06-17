@@ -29,7 +29,7 @@ from dracykeiton.compat import *
 from dracykeiton.entity import Entity, listener
 from dracykeiton.controller import Controller, UserController
 from dracykeiton.turnman import Turnman
-from dracykeiton.common import ActionPointEntity, HpEntity, HittingEntity, Battlefield, Side
+from dracykeiton.common import ActionPointEntity, HpEntity, InspirableHittingEntity, Battlefield, Side, InspiringEntity
 from dracykeiton.battleuimanager import BattleUIManager
 from dracykeiton.action import SimpleEffectProcessor
 
@@ -43,8 +43,14 @@ class Goblin(Entity):
     def _init(self):
         self.req_mod(HpEntity, 5)
         self.req_mod(ActionPointEntity, 4)
-        self.req_mod(HittingEntity, 3)
+        self.req_mod(InspirableHittingEntity, 3)
         self.req_mod(KindEntity, 'goblin')
+
+class GoblinLeader(Entity):
+    @unbound
+    def _init(self):
+        self.req_mod(Goblin)
+        self.req_mod(InspiringEntity)
 
 class AIBattleController(Controller):
     def act(self):
@@ -75,9 +81,10 @@ def prepare_battle(left_c, right_c, turnman, keep_dead=False):
     left_controller.add_entity(left_side)
     right_controller = right_c(battlefield)
     right_controller.add_entity(right_side)
-    for i in range(2):
+    for i in range(1):
         goblin = Goblin()
         battlefield.spawn('left', goblin)
+    battlefield.spawn('left', GoblinLeader())
     for i in range(3):
         goblin = Goblin()
         battlefield.spawn('right', goblin)
@@ -95,6 +102,23 @@ def test_battle():
     assert len(right_side) == 1
     turnman.turn()
     assert len(left_side) == 1
+
+def test_inspire():
+    turnman = prepare_battle(UserController, AIBattleController, Turnman)
+    user_controller = turnman.sides[0]
+    enemy_controller = turnman.sides[1]
+    user_side = tuple(user_controller.entities)[0]
+    enemy_side = tuple(enemy_controller.entities)[0]
+    goblin = user_side.members[0]
+    goblin_leader = user_side.members[1]
+    enemy = enemy_side.members[0]
+    turnman.turn()
+    user_controller.do_action(goblin_leader.inspire(goblin))
+    turnman.step(user_controller)
+    assert goblin.hit_damage == 6
+    user_controller.do_action(goblin.hit(enemy))
+    turnman.step(user_controller)
+    assert enemy.living == 'dead'
 
 class EffectTurnman(Turnman, SimpleEffectProcessor):
     def __init__(self, *args, **kwargs):
