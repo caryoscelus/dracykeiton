@@ -18,7 +18,8 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-""""""
+"""TurnEntity - entity that is involved in turn-based battles
+"""
 
 from ..compat import *
 from ..entity import Entity

@@ -22,7 +22,9 @@
 
 from ..entity import Entity, simplenode
 from .hp import LivingEntity
+from .turn import TurnEntity
 from ..compat import *
+from ..util import curry
 
 class ActingEntity(Entity):
     """Basic acting entity, only defines can_act property.
@@ -50,6 +52,8 @@ class ActionPointEntity(Entity):
     @unbound
     def _init(self, maxap=0):
         self.req_mod(ActingEntity)
+        self.req_mod(TurnEntity)
+        self.on_turn_end('restore_ap')
         self.dynamic_property('ap', 0)
         self.dynamic_property('maxap', maxap)
     

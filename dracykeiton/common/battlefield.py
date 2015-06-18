@@ -72,7 +72,10 @@ class SimpleField(Entity):
     def new_round(self):
         for side in self.sides:
             for entity in self.sides[side].members:
-                entity.restore_ap()
+                try:
+                    entity.new_round()
+                except AttributeError:
+                    pass
     
     @listener
     def remove_dead(self, target, value):
