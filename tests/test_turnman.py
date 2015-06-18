@@ -21,8 +21,8 @@
 """"""
 
 from dracykeiton.compat import *
-from dracykeiton.controller import Controller, ProxyController
-from dracykeiton.turnman import Turnman, LockableTurnman
+from dracykeiton.tb.controller import Controller, ProxyController
+from dracykeiton.tb.turnman import Turnman, LockableTurnman
 from dracykeiton.entity import Entity
 
 def test_pickle():

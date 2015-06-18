@@ -27,12 +27,12 @@ import random
 from dracykeiton.compat import *
 
 from dracykeiton.entity import Entity, listener
-from dracykeiton.controller import Controller, UserController
-from dracykeiton.turnman import Turnman
+from dracykeiton.tb.controller import Controller, UserController
+from dracykeiton.tb.turnman import Turnman
 from dracykeiton.common import ActionPointEntity, HpEntity, InspirableHittingEntity, Battlefield, Side, InspiringEntity
-from dracykeiton.battleuimanager import BattleUIManager
+from dracykeiton.tb.battleuimanager import BattleUIManager
 from dracykeiton.action import SimpleEffectProcessor
-from dracykeiton.encounter import Encounter
+from dracykeiton.tb.encounter import Encounter
 
 class KindEntity(Entity):
     @unbound

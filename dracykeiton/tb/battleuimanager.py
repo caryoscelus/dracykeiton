@@ -21,7 +21,7 @@
 """BattleUIManager - interface connecting UI and Turnman/Battle
 """
 
-from .compat import *
+from ..compat import *
 from .controller import UserController
 
 class BattleUIManager(object):

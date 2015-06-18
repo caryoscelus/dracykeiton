@@ -20,9 +20,9 @@
 
 """Encounter: generate battle encounters"""
 
-from .compat import *
-from . import random
-from .common.battlefield import Battlefield, Side
+from ..compat import *
+from .. import random
+from ..common.battlefield import Battlefield, Side
 import copy
 
 class SideGen(object):

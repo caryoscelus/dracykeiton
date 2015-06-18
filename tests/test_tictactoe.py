@@ -24,8 +24,8 @@ import copy
 
 from dracykeiton.compat import *
 from dracykeiton.entity import Entity
-from dracykeiton.controller import Controller
-from dracykeiton.turnman import Turnman
+from dracykeiton.tb.controller import Controller
+from dracykeiton.tb.turnman import Turnman
 
 class Board(Entity):
     @unbound

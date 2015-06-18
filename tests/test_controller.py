@@ -21,7 +21,7 @@
 """tests for controller.py"""
 
 from dracykeiton.util import curry
-from dracykeiton.controller import Controller, ControllableEntity, ProxyController
+from dracykeiton.tb.controller import Controller, ControllableEntity, ProxyController
 
 def test_controller():
     entity = ControllableEntity()
