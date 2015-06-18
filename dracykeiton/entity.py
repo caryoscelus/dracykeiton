@@ -287,6 +287,7 @@ class SimpleNode(ReadOnlyNode):
 def simplenode(f):
     """Returns function, which returns SimpleNode
     
+    >>> from dracykeiton.entity import simplenode, SimpleNode
     >>> node = simplenode(int)(base=2)
     >>> isinstance(node, SimpleNode)
     True
