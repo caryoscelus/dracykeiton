@@ -39,7 +39,7 @@ class Turnman(ActionProcessor):
         self.sides.append(controller)
     
     def next_side(self):
-        """Returns next side or None if no sides"""
+        """Returns next/current active side or None if no sides"""
         if not self.sides:
             return None
         if self.queue:
