@@ -18,41 +18,56 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-""""""
+"""BattleUIManager - interface connecting UI and Turnman/Battle
+"""
 
 from .compat import *
 from .controller import UserController
 
 class BattleUIManager(object):
     """Helper class which can be used to build battle-controlling UI.
-    
-    NOTE: We expect two-side battle with only one side controlled by user!
-    NOTE: We also expect that the first turn is user's
-    TODO: Make it flexible
     """
     def __init__(self, turnman):
         super(BattleUIManager, self).__init__()
         self.turnman = turnman
         self.selected = None
-        self.user_controller = [s for s in self.turnman.sides if isinstance(s, UserController)][0]
+    
+    def end_turn(self):
+        """End turn.
+        
+        This marks player's turn as being over and processes AI turns
+        """
+        if isinstance(self.active_controller(), UserController):
+            self.active_controller().end_turn()
+        # finishes user's turn
+        self.turnman.planned_actions()
+        # process all AI turns
+        while not isinstance(self.active_controller(), UserController):
+            self.turnman.turn()
+        # start user's turn
+        self.turnman.turn()
+    
+    def active_controller(self):
+        return self.turnman.next_side()
     
     def clicked(self, side, entity):
         """Process simple click on entity.
         
-        Right now, it selects player entity and attacks enemy entity
+        Right now, it selects/"heals" player entity and attacks enemy entity
         """
-        controller = [s for s in self.turnman.sides if s.entity == side][0]
-        if isinstance(controller, UserController):
-            self.select(entity)
+        if self.selected:
+            if self.selected is entity:
+                self.selected = None
+            else:
+                if side is self.active_controller().entity:
+                    self.heal(entity)
+                    self.selected = None
+                else:
+                    self.attack(entity)
+                    self.selected = None
         else:
-            self.attack(entity)
-    
-    def select(self, entity):
-        """This selects given entity.
-        
-        Some (most currently) actions use selected entity.
-        """
-        self.selected = entity
+            if side is self.active_controller().entity:
+                self.selected = entity
     
     def attack(self, entity):
         """Attack given entity
@@ -65,9 +80,20 @@ class BattleUIManager(object):
         if action:
             self.do_action(action)
     
+    def heal(self, entity):
+        """"Heal" given entity
+        
+        TODO: more flexible
+        """
+        if not self.selected:
+            return
+        action = self.selected.inspire(entity)
+        if action:
+            self.do_action(action)
+    
     def do_action(self, action):
         """Tell turnman that user wants to perform action"""
-        self.user_controller.do_action(action)
+        self.active_controller().do_action(action)
         self.turnman.planned_actions()
     
     def start(self):
@@ -75,17 +101,4 @@ class BattleUIManager(object):
         
         (this can mean allocating AP for example)
         """
-        self.turnman.turn()
-    
-    def end_turn(self):
-        """End turn.
-        
-        This marks player's turn as being over and starts AI turn (which ends
-        automatically if everything is fine and then new player turn begins)
-        
-        NOTE: this relies on having only two (player and AI) sides.
-        """
-        self.user_controller.end_turn()
-        self.turnman.planned_actions()
-        self.turnman.turn()
         self.turnman.turn()

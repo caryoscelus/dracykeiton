@@ -141,13 +141,17 @@ def test_battle_ui_manager():
     enemy1 = enemy_side.members[1]
     enemy2 = enemy_side.members[2]
     manager.start()
+    assert manager.selected == None
     manager.clicked(user_side, goblin0)
+    assert manager.selected == goblin0
     manager.clicked(enemy_side, enemy0)
     assert enemy0.hp == 2
+    manager.clicked(user_side, goblin0)
     manager.clicked(enemy_side, enemy0)
     assert enemy0.hp == -1
     manager.clicked(user_side, goblin1)
     manager.clicked(enemy_side, enemy1)
+    manager.clicked(user_side, goblin1)
     manager.clicked(enemy_side, enemy1)
     assert enemy1.hp == -1
     manager.end_turn()
@@ -157,7 +161,9 @@ def test_battle_ui_manager():
     manager.clicked(enemy_side, enemy2)
     assert enemy2.hp == 2
     assert goblin1.ap == 2
+    manager.clicked(user_side, goblin1)
     manager.clicked(enemy_side, enemy2)
     assert goblin1.ap == 0
+    manager.clicked(user_side, goblin1)
     manager.clicked(enemy_side, enemy2)
     assert enemy2.hp == -1
