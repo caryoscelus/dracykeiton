@@ -65,14 +65,9 @@ class DynamicProperty(object):
 
 import sys
 if sys.version_info.major < 3:
-    class AddGlobalMods(type):
-        def __init__(self, name, bases, d):
-            type.__init__(self, name, bases, d)
-            self._global_mods = list()
-    class HasGlobalMods(object):
-        __metaclass__ = AddGlobalMods
+    from .global_mods2 import HasGlobalMods
 else:
-    from .global_mods import HasGlobalMods
+    from .global_mods3 import HasGlobalMods
 
 class Entity(HasGlobalMods):
     """Base entity, including dynamic property and modding mechanism.
