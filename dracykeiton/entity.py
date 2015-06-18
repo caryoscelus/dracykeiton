@@ -88,7 +88,7 @@ class Entity(HasGlobalMods):
         # TODO: fix this
         self._priorities = ('early', 'normal', 'late')
         self._default = 'normal'
-        self._mods = set()
+        self._mods = list()
         self._get_depends_on = {}
         fix_methods(self)
         self._init(*args, **kwargs)
@@ -187,7 +187,7 @@ class Entity(HasGlobalMods):
     def req_mod(self, mod, *args, **kwargs):
         """Add mod to this entity"""
         if not mod in self._mods:
-            self._mods.add(mod)
+            self._mods.insert(0, mod)
             mod.enable(self, *args, **kwargs)
     
     def has_mod(self, mod):
