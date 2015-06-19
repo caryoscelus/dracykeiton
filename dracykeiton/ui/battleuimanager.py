@@ -22,7 +22,7 @@
 """
 
 from ..compat import *
-from .controller import UserController
+from ..tb.controller import UserController
 
 class BattleUIManager(object):
     """Helper class which can be used to build battle-controlling UI.

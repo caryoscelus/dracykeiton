@@ -28,7 +28,7 @@ from dracykeiton.compat import *
 from dracykeiton.entity import Entity, listener
 from dracykeiton.tb.controller import Controller, UserController
 from dracykeiton.tb.turnman import Turnman
-from dracykeiton.tb.battleuimanager import BattleUIManager
+from dracykeiton.ui.battleuimanager import BattleUIManager
 from dracykeiton.action import SimpleEffectProcessor
 from dracykeiton.tb.encounter import Encounter
 from dracykeiton.common.sandbox.goblin import Goblin, GoblinLeader
