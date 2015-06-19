@@ -110,3 +110,11 @@ def test_proxy_instance():
         ProxyFoo()
     a = ProxyEntity()
     a.req_mod(ProxyFoo)
+
+def test_equality():
+    entity = Entity()
+    proxy0 = ProxyEntity(entity)
+    proxy1 = ProxyEntity(entity)
+    proxy_other = ProxyEntity(Entity())
+    assert proxy0 == proxy1
+    assert proxy0 != proxy_other

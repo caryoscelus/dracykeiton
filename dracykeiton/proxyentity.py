@@ -37,6 +37,11 @@ class ProxyEntity(Entity):
         if source or not '_proxy_source' in self.__dict__:
             self._proxy_source = source
     
+    def __eq__(self, other):
+        if not isinstance(other, ProxyEntity):
+            return False
+        return self._proxy_source is other._proxy_source
+    
     def __getstate__(self):
         # clean proxy properties
         self_copy = super(ProxyEntity, self).__getstate__()
