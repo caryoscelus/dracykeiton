@@ -41,11 +41,9 @@ class BattleUIManager(object):
             self.active_controller().end_turn()
         # finishes user's turn
         self.turnman.planned_actions()
-        # process all AI turns
-        while not isinstance(self.active_controller(), UserController):
-            self.turnman.turn()
-        # start user's turn
-        self.turnman.turn()
+        # process all AI turns & start player's turn
+        while self.turnman.turn() is None:
+            pass
     
     def active_controller(self):
         return self.turnman.next_side()
