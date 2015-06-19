@@ -22,6 +22,7 @@
 """
 import functools
 import collections
+from six import add_metaclass
 
 from .compat import *
 from .util.priorityqueue import PriorityQueue
@@ -63,13 +64,13 @@ class DynamicProperty(object):
     def add_get_node(self, f, priority=None):
         self.getters.add(f, priority)
 
-import sys
-if sys.version_info.major < 3:
-    from .global_mods2 import HasGlobalMods
-else:
-    from .global_mods3 import HasGlobalMods
+class AddGlobalMods(type):
+    def __init__(self, name, bases, d):
+        type.__init__(self, name, bases, d)
+        self._global_mods = list()
 
-class Entity(HasGlobalMods):
+@add_metaclass(AddGlobalMods)
+class Entity(object):
     """Base entity, including dynamic property and modding mechanism.
     
     Do not create class hierarchy. All entity classes should inherit this
