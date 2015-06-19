@@ -18,11 +18,20 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""common: package containing common enitty build blocks"""
+from ...entity import Entity
+from ...compat import *
+from .. import ActionPointEntity, HpEntity, InspirableHittingEntity, Battlefield, Side, InspiringEntity, KindEntity
 
-from .ap import *
-from .battlefield import *
-from .hit import *
-from .hp import *
-from .inspire import *
-from .kind import *
+class Goblin(Entity):
+    @unbound
+    def _init(self):
+        self.req_mod(HpEntity, 5)
+        self.req_mod(ActionPointEntity, 4)
+        self.req_mod(InspirableHittingEntity, 3)
+        self.req_mod(KindEntity, 'goblin')
+
+class GoblinLeader(Entity):
+    @unbound
+    def _init(self):
+        self.req_mod(Goblin)
+        self.req_mod(InspiringEntity)

@@ -29,29 +29,10 @@ from dracykeiton.compat import *
 from dracykeiton.entity import Entity, listener
 from dracykeiton.tb.controller import Controller, UserController
 from dracykeiton.tb.turnman import Turnman
-from dracykeiton.common import ActionPointEntity, HpEntity, InspirableHittingEntity, Battlefield, Side, InspiringEntity
 from dracykeiton.tb.battleuimanager import BattleUIManager
 from dracykeiton.action import SimpleEffectProcessor
 from dracykeiton.tb.encounter import Encounter
-
-class KindEntity(Entity):
-    @unbound
-    def _init(self, kind=None):
-        self.dynamic_property('kind', kind)
-
-class Goblin(Entity):
-    @unbound
-    def _init(self):
-        self.req_mod(HpEntity, 5)
-        self.req_mod(ActionPointEntity, 4)
-        self.req_mod(InspirableHittingEntity, 3)
-        self.req_mod(KindEntity, 'goblin')
-
-class GoblinLeader(Entity):
-    @unbound
-    def _init(self):
-        self.req_mod(Goblin)
-        self.req_mod(InspiringEntity)
+from dracykeiton.common.sandbox.goblin import Goblin, GoblinLeader
 
 class AIBattleController(Controller):
     def act(self):

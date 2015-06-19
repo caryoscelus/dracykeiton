@@ -18,11 +18,12 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""common: package containing common enitty build blocks"""
+"""KindEntity"""
 
-from .ap import *
-from .battlefield import *
-from .hit import *
-from .hp import *
-from .inspire import *
-from .kind import *
+from ..compat import *
+from ..entity import Entity
+
+class KindEntity(Entity):
+    @unbound
+    def _init(self, kind=None):
+        self.dynamic_property('kind', kind)
