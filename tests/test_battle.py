@@ -22,7 +22,6 @@
 """
 
 import copy
-import random
 
 from dracykeiton.compat import *
 
@@ -33,24 +32,7 @@ from dracykeiton.tb.battleuimanager import BattleUIManager
 from dracykeiton.action import SimpleEffectProcessor
 from dracykeiton.tb.encounter import Encounter
 from dracykeiton.common.sandbox.goblin import Goblin, GoblinLeader
-
-class AIBattleController(Controller):
-    def act(self):
-        side = self.entity
-        enemy_sides = self.world.get_enemies(side)
-        if not enemy_sides:
-            return None
-        enemy_side = self.world.sides[random.choice(tuple(enemy_sides))]
-        for enemy in enemy_side.members:
-            if enemy.living == 'alive':
-                break
-        if not enemy.living == 'alive':
-            return None
-        for entity in side.members:
-            action = entity.hit(enemy)
-            if action:
-                return action
-        return None
+from dracykeiton.ai.sandbox.battleai import AIBattleController
 
 def prepare_battle(left_c, right_c, turnman, keep_dead=False):
     """Prepare battle with given side controllers"""
