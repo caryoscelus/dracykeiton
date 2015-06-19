@@ -102,8 +102,11 @@ class Entity(object):
     def global_mod(cl, mod):
         cl._global_mods.append(mod)
     
-    def _load_patchmods(self):
-        mods = type(self)._global_mods
+    @unbound
+    def _load_patchmods(self, cl=None):
+        if cl is None:
+            cl = type(self)
+        mods = cl._global_mods
         for mod in mods:
             self.req_mod(mod)
     
@@ -156,6 +159,7 @@ class Entity(object):
                 target.dynamic_method(attr)
                 setattr(target, attr, cl.__dict__[attr])
         cl._init(target, *args, **kwargs)
+        cl._load_patchmods(target, cl)
     
     @classmethod
     def disable(cl, target):

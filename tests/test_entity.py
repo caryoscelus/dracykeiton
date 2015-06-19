@@ -246,6 +246,23 @@ def test_entity_patch():
     reloaded = pickle.loads(pickle.dumps(entity))
     assert reloaded.sum() == 3
 
+class PatchedBase(Entity):
+    pass
+
+class UnpatchedSub(Entity):
+    @unbound
+    def _init(self):
+        self.req_mod(PatchedBase)
+
+class Patch(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('hi', 'hello')
+
+def test_inherit_patch():
+    PatchedBase.global_mod(Patch)
+    assert UnpatchedSub().hi == 'hello'
+
 class NodeEntity(Entity):
     @unbound
     def _init(self):
