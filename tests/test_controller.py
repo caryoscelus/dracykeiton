@@ -21,10 +21,11 @@
 """tests for controller.py"""
 
 from dracykeiton.util import curry
-from dracykeiton.tb.controller import Controller, ControllableEntity, ProxyController
+from dracykeiton.entity import Entity
+from dracykeiton.tb.controller import Controller, ProxyController
 
 def test_controller():
-    entity = ControllableEntity()
+    entity = Entity()
     controller = Controller(None, entity)
 
 def test_proxy_controller():

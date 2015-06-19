@@ -27,15 +27,6 @@ from ..compat import *
 from ..util import curry
 from ..entity import Entity
 
-class ControllableEntity(Entity):
-    """Entity which can be controlled?
-    
-    NOTE: is this required?
-    """
-    def __init__(self):
-        super(ControllableEntity, self).__init__()
-        self.dynamic_property('available_actions', empty=set())
-
 class WorldEntity(Entity):
     """Perhaps this can be useful for incomplete information games."""
     @unbound
