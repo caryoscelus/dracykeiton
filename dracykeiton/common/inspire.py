@@ -35,7 +35,9 @@ class InspiringEntity(Entity):
     
     @unbound
     def can_inspire(self, ally):
-        if not ally.has_mod(InspirableEntity):
+        try:
+            ally.inspired
+        except AttributeError:
             return False
         if ally.inspired:
             return False
