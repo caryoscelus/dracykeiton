@@ -118,3 +118,7 @@ def test_equality():
     proxy_other = ProxyEntity(Entity())
     assert proxy0 == proxy1
     assert proxy0 != proxy_other
+
+def test_proxy_graceful_fail():
+    with pytest.raises(AttributeError):
+        ProxyEntity(Entity()).a
