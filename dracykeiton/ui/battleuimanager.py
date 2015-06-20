@@ -36,7 +36,7 @@ class UIAction(object):
             # this can happen if f is rebound action
             self.name = f.func.__name__
     
-    def accept(self, side, entity):
+    def accept(self, entity):
         return False
     
     def ready(self):
@@ -50,8 +50,8 @@ class SingleEnemyAction(UIAction):
         super(SingleEnemyAction, self).__init__(*args, **kwargs)
         self.enemy = None
     
-    def accept(self, side, entity):
-        if not side.is_enemy(self.owner):
+    def accept(self, entity):
+        if not entity.is_enemy(self.owner):
             return False
         self.enemy = entity
         return True
@@ -67,8 +67,8 @@ class SingleAllyAction(UIAction):
         super(SingleAllyAction, self).__init__(*args, **kwargs)
         self.ally = None
     
-    def accept(self, side, entity):
-        if not side.is_ally(self.owner):
+    def accept(self, entity):
+        if not entity.is_ally(self.owner):
             return False
         self.ally = entity
         return True
@@ -137,7 +137,7 @@ class BattleUIManager(object):
             if self.selected is entity:
                 self.deselect()
             elif self.selected_action:
-                if self.selected_action.accept(side, entity):
+                if self.selected_action.accept(entity):
                     if self.selected_action.ready():
                         self.do_action(self.selected_action.get())
         else:
