@@ -28,7 +28,7 @@ from dracykeiton.compat import *
 from dracykeiton.entity import Entity, listener
 from dracykeiton.tb.controller import Controller, UserController
 from dracykeiton.tb.turnman import Turnman
-from dracykeiton.ui.battleuimanager import BattleUIManager
+from dracykeiton.ui.battleuimanager import BattleUIManager, SingleEnemyAction, SingleAllyAction
 from dracykeiton.action import SimpleEffectProcessor
 from dracykeiton.tb.encounter import Encounter
 from dracykeiton.common.sandbox.goblin import Goblin, GoblinLeader
@@ -107,14 +107,15 @@ def test_battle_ui_manager():
     assert manager.selected == None
     manager.clicked(user_side, goblin0)
     assert manager.selected == goblin0
+    manager.select_action(SingleEnemyAction(goblin0, goblin0.hit))
     manager.clicked(enemy_side, enemy0)
     assert enemy0.hp == 2
-    manager.clicked(user_side, goblin0)
+    manager.select_action(SingleEnemyAction(goblin0, goblin0.hit))
     manager.clicked(enemy_side, enemy0)
     assert enemy0.hp == -1
     manager.clicked(user_side, goblin1)
+    manager.select_action(SingleEnemyAction(goblin1, goblin1.hit))
     manager.clicked(enemy_side, enemy1)
-    manager.clicked(user_side, goblin1)
     manager.clicked(enemy_side, enemy1)
     assert enemy1.hp == -1
     manager.end_turn()

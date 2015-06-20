@@ -24,13 +24,65 @@
 from ..compat import *
 from ..tb.controller import UserController
 
+class UIAction(object):
+    def __init__(self, owner, f):
+        super(UIAction, self).__init__()
+        self.owner = owner
+        self.f = f
+        try:
+            self.name = f.__name__
+        except AttributeError:
+            # duh, f is a functools.partial
+            # this can happen if f is rebound action
+            self.name = f.func.__name__
+    
+    def accept(self, side, entity):
+        return False
+    
+    def ready(self):
+        return False
+    
+    def get(self):
+        return None
+
+class SingleEnemyAction(UIAction):
+    def __init__(self, *args, **kwargs):
+        super(SingleEnemyAction, self).__init__(*args, **kwargs)
+        self.enemy = None
+    
+    def accept(self, side, entity):
+        if not side.is_enemy(self.owner):
+            return False
+        self.enemy = entity
+        return True
+    
+    def ready(self):
+        return not self.enemy is None
+    
+    def get(self):
+        return self.f(self.enemy)
+
+class SingleAllyAction(UIAction):
+    pass
+
 class BattleUIManager(object):
     """Helper class which can be used to build battle-controlling UI.
     """
     def __init__(self, turnman):
         super(BattleUIManager, self).__init__()
         self.turnman = turnman
+        self.deselect()
+    
+    def deselect(self):
         self.selected = None
+        self.selected_action = None
+    
+    def start(self):
+        """Start manager: this simply starts new turn for user right now.
+        
+        (this can mean allocating AP for example)
+        """
+        self.turnman.turn()
     
     def end_turn(self):
         """End turn.
@@ -45,6 +97,20 @@ class BattleUIManager(object):
         while self.turnman.turn() is None:
             pass
     
+    def get_actions(self, entity, action_type):
+        if entity == self.selected:
+            try:
+                entity.ui_hints
+            except AttributeError:
+                # no UIHints provided..
+                return []
+            else:
+                return entity.ui_hints(action_type)
+        return []
+    
+    def select_action(self, action):
+        self.selected_action = action
+    
     def active_controller(self):
         return self.turnman.next_side()
     
@@ -55,48 +121,16 @@ class BattleUIManager(object):
         """
         if self.selected:
             if self.selected is entity:
-                self.selected = None
-            else:
-                if side is self.active_controller().entity:
-                    self.heal(entity)
-                    self.selected = None
-                else:
-                    self.attack(entity)
-                    self.selected = None
+                self.deselect()
+            elif self.selected_action:
+                if self.selected_action.accept(side, entity):
+                    if self.selected_action.ready():
+                        self.do_action(self.selected_action.get())
         else:
             if side is self.active_controller().entity:
                 self.selected = entity
-    
-    def attack(self, entity):
-        """Attack given entity
-        
-        Only possible when there's selected entity and it can act.
-        """
-        if not self.selected:
-            return
-        action = self.selected.hit(entity)
-        if action:
-            self.do_action(action)
-    
-    def heal(self, entity):
-        """"Heal" given entity
-        
-        TODO: more flexible
-        """
-        if not self.selected:
-            return
-        action = self.selected.inspire(entity)
-        if action:
-            self.do_action(action)
     
     def do_action(self, action):
         """Tell turnman that user wants to perform action"""
         self.active_controller().do_action(action)
         self.turnman.planned_actions()
-    
-    def start(self):
-        """Start manager: this simply starts new turn for user right now.
-        
-        (this can mean allocating AP for example)
-        """
-        self.turnman.turn()
