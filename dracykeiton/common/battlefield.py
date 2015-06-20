@@ -24,9 +24,27 @@
 from ..compat import *
 from ..entity import Entity, listener
 
+class SidedEntity(Entity):
+    @unbound
+    def _init(self, group=None):
+        self.dynamic_property('ally_group', group)
+    
+    @unbound
+    def is_enemy(self, other):
+        if self.ally_group is None or other.ally_group is None:
+            return False
+        return self.ally_group != other.ally_group
+    
+    @unbound
+    def is_ally(self, other):
+        if self.ally_group is None or other.ally_group is None:
+            return False
+        return self.ally_group == other.ally_group
+
 class Side(Entity):
     @unbound
     def _init(self):
+        self.req_mod(SidedEntity)
         self.dynamic_property('members', [])
 
 class SimpleField(Entity):
@@ -44,6 +62,8 @@ class SimpleField(Entity):
     
     @unbound
     def add_side(self, name, side):
+        side.req_mod(SidedEntity, name)
+        side.ally_group = name
         self.sides[name] = side
         for entity in side.members:
             self.reg_entity(entity)
@@ -53,6 +73,7 @@ class SimpleField(Entity):
         self.sides[side].members.append(entity)
         entity.be_born()
         self.reg_entity(entity)
+        entity.req_mod(SidedEntity, side)
     
     @unbound
     def reg_entity(self, entity):
