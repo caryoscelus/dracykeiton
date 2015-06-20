@@ -63,7 +63,21 @@ class SingleEnemyAction(UIAction):
         return self.f(self.enemy)
 
 class SingleAllyAction(UIAction):
-    pass
+    def __init__(self, *args, **kwargs):
+        super(SingleAllyAction, self).__init__(*args, **kwargs)
+        self.ally = None
+    
+    def accept(self, side, entity):
+        if not side.is_ally(self.owner):
+            return False
+        self.ally = entity
+        return True
+    
+    def ready(self):
+        return not self.ally is None
+    
+    def get(self):
+        return self.f(self.ally)
 
 class BattleUIManager(object):
     """Helper class which can be used to build battle-controlling UI.
