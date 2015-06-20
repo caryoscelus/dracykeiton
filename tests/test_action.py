@@ -26,7 +26,7 @@ from dracykeiton.action import action
 
 class ActionEntity(Entity):
     @action
-    def foo(self):
+    def foo(self, a, b):
         pass
     
     @unbound
@@ -42,3 +42,7 @@ def test_action_name():
     # unfortunatelly we can't fix it :(
     # python creates ugly functools.partial when we call non-class method on instance
     assert b.foo.func.__name__ == 'foo'
+
+def test_action_args():
+    a = ActionEntity()
+    assert a.foo.arguments == ('self', 'a', 'b')

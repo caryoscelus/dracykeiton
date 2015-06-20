@@ -53,6 +53,8 @@ def action(f):
             return curry.curry(f)(self, *args, **kwargs)
         else:
             return None
+    argcount = f.__code__.co_argcount
+    wrap.arguments = f.__code__.co_varnames[:argcount]
     return wrap
 
 class ActionProcessor(object):
