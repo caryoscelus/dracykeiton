@@ -22,6 +22,7 @@
 """
 
 from ..compat import *
+from ..entity import Entity
 from ..tb.controller import UserController
 
 class UIAction(object):
@@ -35,6 +36,7 @@ class UIAction(object):
             # duh, f is a functools.partial
             # this can happen if f is rebound action
             self.name = f.func.__name__
+        self.clear()
     
     def accept(self, entity):
         return False
@@ -44,12 +46,11 @@ class UIAction(object):
     
     def get(self):
         return None
+    
+    def clear(self):
+        pass
 
 class SingleEnemyAction(UIAction):
-    def __init__(self, *args, **kwargs):
-        super(SingleEnemyAction, self).__init__(*args, **kwargs)
-        self.enemy = None
-    
     def accept(self, entity):
         if not entity.is_enemy(self.owner):
             return False
@@ -61,12 +62,11 @@ class SingleEnemyAction(UIAction):
     
     def get(self):
         return self.f(self.enemy)
+    
+    def clear(self):
+        self.enemy = None
 
 class SingleAllyAction(UIAction):
-    def __init__(self, *args, **kwargs):
-        super(SingleAllyAction, self).__init__(*args, **kwargs)
-        self.ally = None
-    
     def accept(self, entity):
         if not entity.is_ally(self.owner):
             return False
@@ -78,6 +78,72 @@ class SingleAllyAction(UIAction):
     
     def get(self):
         return self.f(self.ally)
+    
+    def clear(self):
+        self.ally = None
+
+class UniversalBattleAction(UIAction):
+    def clear(self):
+        f = self.f
+        try:
+            f.func
+        except AttributeError:
+            consume_args = 0
+        else:
+            consume_args = len(f.args)
+            f = f.func
+        args = f.arguments[consume_args:]
+        if f.__defaults__:
+            raise NotImplementedError('default argument value handling is not yet implemented')
+        self.args = dict({arg : None for arg in args})
+    
+    def accept(self, entity):
+        try:
+            entity.ally_group
+        except AttributeError:
+            is_sided = False
+        else:
+            is_sided = True
+        kind = None
+        if is_sided:
+            if entity.is_ally(self.owner):
+                kind = 'ally'
+            elif entity.is_enemy(self.owner):
+                kind = 'enemy'
+        if kind is None:
+            return False
+        matching_args = sorted(list([name for name in self.args if not self.args[name] and name.find(kind) > -1]))
+        if not matching_args:
+            return False
+        arg = matching_args[0]
+        self.args[arg] = (entity,)
+        return True
+    
+    def ready(self):
+        return not [None for name in self.args if not self.args[name]]
+    
+    def get(self):
+        kwargs = dict({arg:self.args[arg][0] for arg in self.args})
+        return self.f(**kwargs)
+
+class BattleUIHints(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('_ui_hints', dict())
+    
+    @unbound
+    def ui_action(self, tp, f):
+        """Mark the action as available to UI"""
+        if not tp in self._ui_hints:
+            self._ui_hints[tp] = list()
+        self._ui_hints[tp].append(UniversalBattleAction(self, f))
+    
+    @unbound
+    def ui_hints(self, action_type):
+        try:
+            return self._ui_hints[action_type]
+        except KeyError:
+            return []
 
 class BattleUIManager(object):
     """Helper class which can be used to build battle-controlling UI.
@@ -124,6 +190,7 @@ class BattleUIManager(object):
     
     def select_action(self, action):
         self.selected_action = action
+        self.selected_action.clear()
     
     def active_controller(self):
         return self.turnman.next_side()
