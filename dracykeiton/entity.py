@@ -146,8 +146,9 @@ class Entity(object):
     
     def __setstate__(self, state):
         self.__dict__.update(state)
-        self._init()
         self._listeners = dict({prop:list() for prop in self._props})
+        self._init()
+        self._listeners.update(dict({prop:list() for prop in self._props}))
         self._load_patchmods()
         for mod in self._mods:
             mod.enable(self)
