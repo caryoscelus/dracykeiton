@@ -34,8 +34,7 @@ def test_entity_property():
 
 def test_entity_subclass():
     class Foo(Entity):
-        def __init__(self):
-            super(Foo, self).__init__()
+        def _init(self):
             self.dynamic_property('foo')
             self.no_set('foo')
             self.add_get_node('foo', self.get3())
@@ -114,112 +113,6 @@ def test_dynamic_method():
     assert e.method() == 5
 
 import math
-
-class LevelEntity(Entity):
-    def __init__(self):
-        super(LevelEntity, self).__init__()
-        self.dynamic_property('level')
-
-class XpEntity(LevelEntity):
-    def __init__(self):
-        super(XpEntity, self).__init__()
-        self.dynamic_property('xp', 0)
-        self.no_set('level')
-        self.add_get_node('level', self.xp_to_level())
-    
-    @simplenode
-    def xp_to_level(self, value):
-        return math.log(self.xp / 100 + 1, 2)
-
-class LivingEntity(Entity):
-    def __init__(self):
-        super(LivingEntity, self).__init__()
-        self.dynamic_property('living')
-        self.add_set_node('living', self.ensure_correct())
-        self.add_get_node('living', self.default_unborn())
-    
-    @simplenode
-    def ensure_correct(self, value):
-        if not value in ('unborn', 'alive', 'dead'):
-            raise TypeError('living property cannnot equal "{}"'.format(value))
-        return value
-    
-    @simplenode
-    def default_unborn(self, value):
-        if value is None:
-            return 'unborn'
-        return value
-
-class HpEntity(LivingEntity):
-    def __init__(self):
-        super(HpEntity, self).__init__()
-        self.dynamic_property('hp', 0)
-        self.dynamic_property('maxhp', 0)
-        self.add_get_node('hp', self.hp_cap())
-        self.add_set_node('hp', self.check_dying())
-    
-    @simplenode
-    def hp_cap(self, value):
-        return min(value, self.maxhp)
-    
-    @simplenode
-    def check_dying(self, value):
-        if value <= 0:
-            self.living = 'dead'
-        return value
-
-class RobustEntity(HpEntity):
-    def __init__(self):
-        super(RobustEntity, self).__init__()
-        self.dynamic_property('robust', 1)
-        self.add_get_node('maxhp', self.__robust_hp())
-    
-    @simplenode
-    def __robust_hp(self, value):
-        return self.robust * value
-
-class Monster(XpEntity, RobustEntity):
-    pass
-
-class HpBooster(object):
-    def enable(self, target):
-        target.add_get_node('maxhp', self.maxhp_booster(), 'early')
-    
-    def disable(self, target):
-        pass
-    
-    @simplenode
-    def maxhp_booster(self, value):
-        return value+1
-
-def test_entity_monster():
-    monster = Monster()
-    monster.xp = 0
-    assert monster.level == 0
-    monster.xp = 100
-    assert monster.level == 1
-    monster.xp = 700
-    assert monster.level == 3
-    
-    assert monster.living == 'unborn'
-    with pytest.raises(TypeError):
-        monster.living = False
-    
-    monster.maxhp = 10
-    monster.hp = 12
-    assert monster.hp == 10
-    monster.hp -= 11
-    assert monster.living == 'dead'
-    monster.living = 'alive'
-    assert monster.living == 'alive'
-    monster.hp = 10
-    monster.robust = 0.5
-    assert monster.maxhp == 5
-    assert monster.hp == 5
-    
-    booster = HpBooster()
-    booster.enable(monster)
-    assert monster.maxhp == 5.5
 
 class FooPatchedEntity(Entity):
     @unbound
