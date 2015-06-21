@@ -33,8 +33,13 @@ class LevelEntity(Entity):
 class XpEntity(Entity):
     @unbound
     def _init(self, xp=0):
-        self.req_mod(LevelEntity)
         self.dynamic_property('xp', xp)
+
+class XpLevelEntity(Entity):
+    @unbound
+    def _init(self, xp=0):
+        self.req_mod(LevelEntity)
+        self.req_mod(XpEntity, xp)
         self.add_set_node('level', self.level_to_xp())
         self.add_get_node('level', self.xp_to_level())
     
