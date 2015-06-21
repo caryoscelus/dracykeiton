@@ -23,7 +23,7 @@
 from ..compat import *
 from ..entity import Entity, simplenode
 from ..action import action
-from .ap import LivingActingEntity, ActionPointEntity
+from .ap import ActionPointEntity
 from .inspire import InspirableEntity
 from .. import random
 
@@ -31,7 +31,6 @@ class HittingEntity(Entity):
     @unbound
     def _init(self, hit_damage=0):
         self.req_mod(ActionPointEntity)
-        self.req_mod(LivingActingEntity) # ?
         self.dynamic_property('hit_damage', hit_damage)
     
     @action
