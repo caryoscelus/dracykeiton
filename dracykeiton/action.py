@@ -75,6 +75,9 @@ class SimpleEffectProcessor(ActionProcessor):
     """Action processor capable of performing effects when actions happen."""
     def __init__(self):
         super(SimpleEffectProcessor, self).__init__()
+        self.init_effects()
+    
+    def init_effects(self):
         self._effects = dict()
     
     def process(self, a):
