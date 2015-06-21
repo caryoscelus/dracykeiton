@@ -113,6 +113,7 @@ def test_battle_ui_manager():
     manager.select_action(SingleEnemyAction(goblin0, goblin0.hit))
     manager.clicked(enemy_side, enemy0)
     assert enemy0.hp == -1
+    assert goblin0.xp == 10
     manager.clicked(user_side, goblin1)
     manager.select_action(SingleEnemyAction(goblin1, goblin1.hit))
     manager.clicked(enemy_side, enemy1)

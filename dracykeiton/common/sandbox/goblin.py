@@ -20,7 +20,7 @@
 
 from ...entity import Entity
 from ...compat import *
-from .. import ActionPointEntity, HpEntity, InspirableHittingEntity, Battlefield, Side, InspiringEntity, KindEntity, XpLevelEntity, LivingActingEntity
+from .. import ActionPointEntity, HpEntity, InspirableHittingEntity, Battlefield, Side, InspiringEntity, KindEntity, XpLevelEntity, LivingActingEntity, XpKillingEntity
 
 class Goblin(Entity):
     @unbound
@@ -31,6 +31,7 @@ class Goblin(Entity):
         self.req_mod(InspirableHittingEntity, 3)
         self.req_mod(KindEntity, 'goblin')
         self.req_mod(XpLevelEntity, 0)
+        self.req_mod(XpKillingEntity)
 
 class GoblinLeader(Entity):
     @unbound
