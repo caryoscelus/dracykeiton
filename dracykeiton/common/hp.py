@@ -64,7 +64,11 @@ class HpEntity(Entity):
     
     @unbound
     def hurt(self, damage):
+        was_alive = self.living == 'alive'
         self.hp -= damage
+        if was_alive and self.living == 'dead':
+            return True
+        return False
     
     @simplenode
     def hp_cap(self, value):

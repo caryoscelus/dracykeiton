@@ -22,6 +22,7 @@
 
 from ..compat import *
 from ..entity import Entity, simplenode
+from .kill import KillingEntity
 
 import math
 
@@ -34,6 +35,17 @@ class XpEntity(Entity):
     @unbound
     def _init(self, xp=0):
         self.dynamic_property('xp', xp)
+
+class XpKillingEntity(Entity):
+    @unbound
+    def _init(self):
+        self.req_mod(XpEntity)
+        self.req_mod(KillingEntity)
+        self.on_kill('gain_xp_from_killing')
+    
+    @unbound
+    def gain_xp_from_killing(self, victim):
+        self.xp += (victim.level+1)*10
 
 class XpLevelEntity(Entity):
     @unbound

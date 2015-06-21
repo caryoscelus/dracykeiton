@@ -25,17 +25,21 @@ from ..entity import Entity, simplenode
 from ..action import action
 from .ap import ActionPointEntity
 from .inspire import InspirableEntity
+from .kill import KillingEntity
 from .. import random
 
 class HittingEntity(Entity):
     @unbound
     def _init(self, hit_damage=0):
         self.req_mod(ActionPointEntity)
+        self.req_mod(KillingEntity)
         self.dynamic_property('hit_damage', hit_damage)
     
     @action
     def hit(self, enemy):
-        enemy.hurt(self.hit_damage)
+        killed = enemy.hurt(self.hit_damage)
+        if killed:
+            self.killed(enemy)
     
     @unbound
     def can_hit(self, enemy):

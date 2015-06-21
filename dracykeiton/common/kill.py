@@ -18,13 +18,21 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""common: package containing common enitty build blocks"""
+"""KillingEntity"""
 
-from .ap import *
-from .battlefield import *
-from .hit import *
-from .hp import *
-from .inspire import *
-from .kind import *
-from .xp import *
-from .kill import *
+from ..compat import *
+from ..entity import Entity
+
+class KillingEntity(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('kill_hooks', list())
+    
+    @unbound
+    def on_kill(self, f):
+        self.kill_hooks.append(f)
+    
+    @unbound
+    def killed(self, victim):
+        for f in self.kill_hooks:
+            getattr(self, f)(victim)
