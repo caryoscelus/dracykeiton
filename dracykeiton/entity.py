@@ -142,16 +142,18 @@ class Entity(object):
             del self_copy[name]
         # will be restored by mods as well
         del self_copy['_listeners']
+        self_copy['_mods_to_load'] = self_copy['_mods']
+        del self_copy['_mods']
         return self_copy
     
     def __setstate__(self, state):
         self.__dict__.update(state)
+        self._mods = list()
         self._listeners = dict({prop:list() for prop in self._props})
         self._init()
-        self._listeners.update(dict({prop:list() for prop in self._props}))
         self._load_patchmods()
-        for mod in self._mods:
-            mod.enable(self)
+        for mod in self._mods_to_load:
+            self.req_mod(mod)
     
     @classmethod
     def enable(cl, target, *args, **kwargs):
