@@ -122,3 +122,9 @@ def test_equality():
 def test_proxy_graceful_fail():
     with pytest.raises(AttributeError):
         ProxyEntity(Entity()).a
+
+def test_proxy_set():
+    a = FooEntity()
+    proxy = ProxyEntity(a)
+    proxy.n = 5
+    assert a.n == 5

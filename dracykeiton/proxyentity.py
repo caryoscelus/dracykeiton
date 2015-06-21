@@ -57,6 +57,14 @@ class ProxyEntity(Entity):
             self.proxy_property(name)
             return super(ProxyEntity, self).__getattr__(name)
     
+    def __setattr__(self, name, value):
+        if name[0] == '_':
+            super(ProxyEntity, self).__setattr__(name, value)
+        elif hasattr(self, '_proxy_source') and self._proxy_source and name in self._proxy_source._props:
+            setattr(self._proxy_source, name, value)
+        else:
+            super(ProxyEntity, self).__setattr__(name, value)
+    
     def proxy_property(self, name):
         if name[:2] == '__':
             return
