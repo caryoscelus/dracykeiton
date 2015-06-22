@@ -59,7 +59,11 @@ class NotFinished(BattleState):
     def __str__(self):
         return 'Not finished'
 
-class Won(BattleState):
+class Finished(BattleState):
+    def __str__(self):
+        return 'Finished'
+
+class Won(Finished):
     def __init__(self, winner):
         self.winner = winner
     
@@ -102,6 +106,32 @@ class SimpleField(Entity):
         self.win_conditions[side].add(cond)
     
     @unbound
+    def check_conditions(self):
+        result = dict()
+        for side in self.sides:
+            for lose in self.lose_conditions[side]:
+                if lose():
+                    result[side] = 'lose'
+                    break
+            else:
+                for win in self.win_conditions[side]:
+                    if win():
+                        result[side] = 'win'
+                        break
+        if len(result) == len(self.sides):
+            winners = [side for side in result if result[side] == 'win']
+            if winners:
+                self.state = Won(winners)
+            else:
+                self.state = Finished()
+        elif len(result)+1 == len(self.sides):
+            winners = [side for side in result if result[side] == 'win']
+            if winners:
+                self.state = Won(winners)
+            else:
+                self.state = Won([side for side in self.sides if not side in result])
+    
+    @unbound
     def spawn(self, side, entity):
         self.sides[side].members.append(entity)
         entity.be_born()
@@ -132,6 +162,10 @@ class SimpleField(Entity):
                     entity.new_round()
                 except AttributeError:
                     pass
+    
+    @unbound
+    def new_turn(self):
+        self.check_conditions()
     
     @listener
     def remove_dead(self, target, value):
