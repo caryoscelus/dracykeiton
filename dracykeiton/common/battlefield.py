@@ -55,9 +55,7 @@ class Side(Entity):
 class SimpleField(Entity):
     @unbound
     def _init(self, *args, **kwargs):
-        keep_dead = kwargs.get('keep_dead')
-        if keep_dead is None:
-            keep_dead = True
+        keep_dead = kwargs.get('keep_dead', True)
         self.dynamic_property('sides', dict({side : Side() for side in args}))
         self.dynamic_property('keep_dead', keep_dead)
         # for saving/loading purpose
