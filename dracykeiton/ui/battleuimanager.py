@@ -152,6 +152,8 @@ class BattleUIManager(object):
         super(BattleUIManager, self).__init__()
         self.turnman = turnman
         self.deselect()
+        self.done = False
+        self.post_encounter_hooks = list()
     
     def deselect(self):
         self.selected = None
@@ -176,6 +178,14 @@ class BattleUIManager(object):
         # process all AI turns & start player's turn
         while self.turnman.turn() is None:
             pass
+    
+    def can_finish(self):
+        return False
+    
+    def end_encounter(self):
+        self.done = True
+        for f in self.post_encounter_hooks:
+            f()
     
     def get_actions(self, entity, action_type):
         if entity == self.selected:
