@@ -104,3 +104,13 @@ class LevelHpEntity(Entity):
     @simplenode
     def get_level_hp(self, value):
         return value * (1+self.level/3)
+
+class RoundingHpEntity(Entity):
+    @unbound
+    def _init(self):
+        self.req_mod(HpEntity)
+        self.add_set_node('hp', self.round_hp())
+    
+    @simplenode
+    def round_hp(self, value):
+        return int(value)
