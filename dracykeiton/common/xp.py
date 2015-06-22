@@ -59,4 +59,4 @@ class XpLevelEntity(Entity):
     @depends('xp')
     @simplenode
     def xp_to_level(self, value, xp):
-        return math.log(xp / 100 + 1, 2)
+        return int(math.log(xp / 100 + 1, 2))
