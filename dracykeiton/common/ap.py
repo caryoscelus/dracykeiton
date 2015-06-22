@@ -20,7 +20,7 @@
 
 """Action point system and stuff related to acting entities in general."""
 
-from ..entity import Entity, simplenode
+from ..entity import Entity, simplenode, depends
 from .hp import LivingEntity
 from .turn import TurnEntity
 from ..compat import *
@@ -43,9 +43,10 @@ class LivingActingEntity(Entity):
         self.req_mod(LivingEntity)
         self.add_get_node('can_act', self.check_if_alive())
     
+    @depends('living')
     @simplenode
-    def check_if_alive(self, value):
-        return self.living == 'alive' and value
+    def check_if_alive(self, value, living):
+        return living == 'alive' and value
 
 class ActionPointEntity(Entity):
     """AP entity, defining AP and maxAP properties and helper functions."""

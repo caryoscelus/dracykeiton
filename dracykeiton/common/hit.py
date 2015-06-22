@@ -21,7 +21,7 @@
 """Hit action"""
 
 from ..compat import *
-from ..entity import Entity, simplenode
+from ..entity import Entity, simplenode, depends
 from ..action import action
 from .ap import ActionPointEntity
 from .inspire import InspirableEntity
@@ -52,9 +52,10 @@ class InspirableHittingEntity(Entity):
         self.req_mod(HittingEntity, hit_damage)
         self.add_get_node('hit_damage', self.inspired_damage())
     
+    @depends('inspired')
     @simplenode
-    def inspired_damage(self, value):
-        if self.inspired:
+    def inspired_damage(self, value, inspired):
+        if inspired:
             return value * 2
         return value
 
