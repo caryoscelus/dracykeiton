@@ -41,6 +41,11 @@ class SidedEntity(Entity):
             return False
         return self.ally_group == other.ally_group
 
+class BattlefieldEntity(Entity):
+    @unbound
+    def _init(self, field=None):
+        self.dynamic_property('field', field)
+
 class Side(Entity):
     @unbound
     def _init(self):
@@ -74,6 +79,8 @@ class SimpleField(Entity):
         entity.be_born()
         self.reg_entity(entity)
         entity.req_mod(SidedEntity, side)
+        entity.req_mod(BattlefieldEntity)
+        entity.field = self
     
     @unbound
     def reg_entity(self, entity):
