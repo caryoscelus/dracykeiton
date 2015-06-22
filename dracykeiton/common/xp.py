@@ -21,7 +21,7 @@
 """Xp, level"""
 
 from ..compat import *
-from ..entity import Entity, simplenode
+from ..entity import Entity, simplenode, depends
 from .kill import KillingEntity
 from .level import LevelEntity
 
@@ -56,6 +56,7 @@ class XpLevelEntity(Entity):
         self.xp = ((2 ** value)-1)*100
         return None
     
+    @depends('xp')
     @simplenode
-    def xp_to_level(self, value):
-        return math.log(self.xp / 100 + 1, 2)
+    def xp_to_level(self, value, xp):
+        return math.log(xp / 100 + 1, 2)
