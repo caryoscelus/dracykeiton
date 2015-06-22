@@ -54,7 +54,7 @@ class HpEntity(Entity):
         self.req_mod(LivingEntity)
         self.dynamic_property('hp', 0)
         self.dynamic_property('maxhp', maxhp)
-        self.add_get_node('hp', self.hp_cap())
+        self.add_set_node('hp', self.hp_cap())
         self.add_listener_node('hp', self.check_hp())
         self.add_listener_node('living', self.check_if_born())
     
