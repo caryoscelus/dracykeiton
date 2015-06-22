@@ -135,13 +135,17 @@ class BattleUIHints(Entity):
     def ui_action(self, tp, f):
         """Mark the action as available to UI"""
         if not tp in self._ui_hints:
-            self._ui_hints[tp] = list()
-        self._ui_hints[tp].append(UniversalBattleAction(self, f))
+            self._ui_hints[tp] = dict()
+        try:
+            name = f.__name__
+        except AttributeError:
+            name = f.func.__name__
+        self._ui_hints[tp][name] = f
     
     @unbound
     def ui_hints(self, action_type):
         try:
-            return self._ui_hints[action_type]
+            return [UniversalBattleAction(self, f) for f in self._ui_hints[action_type].values()]
         except KeyError:
             return []
 
