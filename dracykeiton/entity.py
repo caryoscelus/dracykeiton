@@ -281,7 +281,7 @@ class ReadOnlyNode(ProcessingNode):
         kwargs.update({'value' : value})
         return self.process(**kwargs)
     
-    def process(self, value):
+    def process(self, value, **kwargs):
         return value
 
 class SimpleNode(ReadOnlyNode):
@@ -289,8 +289,8 @@ class SimpleNode(ReadOnlyNode):
         super(SimpleNode, self).__init__()
         self.f = f
     
-    def process(self, value):
-        return self.f(value)
+    def process(self, value, **kwargs):
+        return self.f(value, **kwargs)
 
 def simplenode(f):
     """Returns function, which returns SimpleNode
@@ -306,9 +306,20 @@ def simplenode(f):
     >>> foo(1, 2).process(5)
     15
     """
+    @functools.wraps(f)
     def wrap(*args, **kwargs):
         return SimpleNode(functools.partial(f, *args, **kwargs))
     return wrap
+
+def depends(name):
+    def decorator(f):
+        @functools.wraps(f)
+        def wrap(*args, **kwargs):
+            node = f(*args, **kwargs)
+            node.depends(name)
+            return node
+        return wrap
+    return decorator
 
 class ForbidWritingNode(ReadOnlyNode):
     def __init__(self, prop):
