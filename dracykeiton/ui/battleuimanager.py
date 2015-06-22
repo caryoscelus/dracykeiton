@@ -215,7 +215,7 @@ class BattleUIManager(object):
         Right now, it selects/"heals" player entity and attacks enemy entity
         """
         if self.selected:
-            if self.selected is entity:
+            if self.selected == entity:
                 self.deselect()
             elif self.selected_action:
                 if self.selected_action.accept(entity):
