@@ -21,9 +21,30 @@
 """Level"""
 
 from ..compat import *
-from ..entity import Entity
+from ..entity import Entity, listener
 
 class LevelEntity(Entity):
     @unbound
     def _init(self, level=0):
         self.dynamic_property('level', level)
+
+class LevelAbility(Entity):
+    @unbound
+    def _init(self):
+        self.req_mod(LevelEntity)
+        self.dynamic_property('level_mods', dict())
+        self.add_listener_node('level', self.levelup_listener())
+    
+    @listener
+    def levelup_listener(self, target, value):
+        for i in range(int(value)+1):
+            if i in self.level_mods:
+                for mod in self.level_mods[i]:
+                    self.req_mod(mod[0], *mod[1], **mod[2])
+                del self.level_mods[i]
+    
+    @unbound
+    def on_level(self, level, mod, *args, **kwargs):
+        if not level in self.level_mods:
+            self.level_mods[level] = list()
+        self.level_mods[level].append((mod, args, kwargs))
