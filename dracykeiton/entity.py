@@ -311,12 +311,13 @@ def simplenode(f):
         return SimpleNode(functools.partial(f, *args, **kwargs))
     return wrap
 
-def depends(name):
+def depends(*names):
     def decorator(f):
         @functools.wraps(f)
         def wrap(*args, **kwargs):
             node = f(*args, **kwargs)
-            node.depends(name)
+            for name in names:
+                node.depends(name)
             return node
         return wrap
     return decorator
