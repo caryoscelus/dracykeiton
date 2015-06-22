@@ -205,6 +205,8 @@ class BattleUIManager(object):
     def select_action(self, action):
         self.selected_action = action
         self.selected_action.clear()
+        if self.selected_action.ready():
+            self.do_action(self.selected_action.get())
     
     def active_controller(self):
         return self.turnman.next_side()
