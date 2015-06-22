@@ -18,15 +18,24 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""common: package containing common enitty build blocks"""
+from ..compat import *
+from ..entity import Entity, simplenode
+from ..action import action
+from .ap import ActionPointEntity
+from .battlefield import BattlefieldEntity
 
-from .ap import *
-from .battlefield import *
-from .hit import *
-from .hp import *
-from .inspire import *
-from .kind import *
-from .xp import *
-from .kill import *
-from .level import *
-from .calling import *
+class CallingEntity(Entity):
+    @unbound
+    def _init(self, calling_type=None):
+        self.req_mod(ActionPointEntity)
+        self.req_mod(BattlefieldEntity)
+        self.dynamic_property('calling_type', calling_type)
+    
+    @action
+    def call_unit(self):
+        unit = self.calling_type()
+        self.field.spawn(self.ally_group, unit)
+    
+    @unbound
+    def can_call_unit(self):
+        return self.spend_ap(4)
