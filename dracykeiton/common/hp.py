@@ -83,3 +83,24 @@ class HpEntity(Entity):
     def check_if_born(self, target, value):
         if value == 'alive':
             self.full_hp()
+
+class RobustHpEntity(Entity):
+    @unbound
+    def _init(self, robust=1.0):
+        self.req_mod(HpEntity)
+        self.dynamic_property('robust', robust)
+        self.add_get_node('maxhp', self.get_robust_hp())
+    
+    @simplenode
+    def get_robust_hp(self, value):
+        return value * self.robust
+
+class LevelHpEntity(Entity):
+    @unbound
+    def _init(self):
+        self.req_mod(HpEntity)
+        self.add_get_node('maxhp', self.get_level_hp())
+    
+    @simplenode
+    def get_level_hp(self, value):
+        return value * (1+self.level/3)
