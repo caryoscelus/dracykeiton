@@ -52,12 +52,32 @@ class Side(Entity):
         self.req_mod(SidedEntity)
         self.dynamic_property('members', [])
 
+class BattleState(object):
+    pass
+
+class NotFinished(BattleState):
+    def __str__(self):
+        return 'Not finished'
+
+class Won(BattleState):
+    def __init__(self, winner):
+        self.winner = winner
+    
+    def __str__(self):
+        return 'Won by {}'.format(self.winner)
+
 class SimpleField(Entity):
     @unbound
     def _init(self, *args, **kwargs):
         keep_dead = kwargs.get('keep_dead', True)
-        self.dynamic_property('sides', dict({side : Side() for side in args}))
+        self.dynamic_property('sides', dict())
+        self.dynamic_property('win_conditions', dict())
+        self.dynamic_property('lose_conditions', dict())
         self.dynamic_property('keep_dead', keep_dead)
+        self.dynamic_property('state', NotFinished())
+        for side in args:
+            if not side in self.sides:
+                self.add_side(side, Side())
         # for saving/loading purpose
         for side in self.sides:
             for entity in self.sides[side].members:
@@ -68,8 +88,18 @@ class SimpleField(Entity):
         side.req_mod(SidedEntity, name)
         side.ally_group = name
         self.sides[name] = side
+        self.win_conditions[name] = set()
+        self.lose_conditions[name] = set()
         for entity in side.members:
             self.reg_entity(entity)
+    
+    @unbound
+    def add_lose_condition(self, side, cond):
+        self.lose_conditions[side].add(cond)
+    
+    @unbound
+    def add_win_condition(self, side, cond):
+        self.win_conditions[side].add(cond)
     
     @unbound
     def spawn(self, side, entity):
