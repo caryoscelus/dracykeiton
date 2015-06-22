@@ -18,14 +18,12 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""common: package containing common enitty build blocks"""
+"""Level"""
 
-from .ap import *
-from .battlefield import *
-from .hit import *
-from .hp import *
-from .inspire import *
-from .kind import *
-from .xp import *
-from .kill import *
-from .level import *
+from ..compat import *
+from ..entity import Entity
+
+class LevelEntity(Entity):
+    @unbound
+    def _init(self, level=0):
+        self.dynamic_property('level', level)

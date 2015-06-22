@@ -23,13 +23,9 @@
 from ..compat import *
 from ..entity import Entity, simplenode
 from .kill import KillingEntity
+from .level import LevelEntity
 
 import math
-
-class LevelEntity(Entity):
-    @unbound
-    def _init(self, level=0):
-        self.dynamic_property('level', level)
 
 class XpEntity(Entity):
     @unbound
