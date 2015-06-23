@@ -20,7 +20,7 @@
 
 """Hit point system"""
 
-from ..entity import Entity, simplenode, listener
+from ..entity import Entity, simplenode, listener, depends
 from ..compat import *
 
 class LivingEntity(Entity):
@@ -30,7 +30,7 @@ class LivingEntity(Entity):
         self.add_set_node('living', self.ensure_correct())
     
     @simplenode
-    def ensure_correct(self, value):
+    def ensure_correct(value):
         if not value in ('unborn', 'alive', 'dead'):
             raise TypeError('living property cannnot equal "{}"'.format(value))
         return value
@@ -70,9 +70,10 @@ class HpEntity(Entity):
             return True
         return False
     
+    @depends('maxhp')
     @simplenode
-    def hp_cap(self, value):
-        return min(value, self.maxhp)
+    def hp_cap(value, maxhp):
+        return min(value, maxhp)
     
     @listener
     def check_hp(self, target, value):
@@ -91,9 +92,10 @@ class RobustHpEntity(Entity):
         self.dynamic_property('robust', robust)
         self.add_get_node('maxhp', self.get_robust_hp())
     
+    @depends('robust')
     @simplenode
-    def get_robust_hp(self, value):
-        return value * self.robust
+    def get_robust_hp(value, robust):
+        return value * robust
 
 class LevelHpEntity(Entity):
     @unbound
@@ -101,9 +103,10 @@ class LevelHpEntity(Entity):
         self.req_mod(HpEntity)
         self.add_get_node('maxhp', self.get_level_hp())
     
+    @depends('level')
     @simplenode
-    def get_level_hp(self, value):
-        return value * (1+self.level/3)
+    def get_level_hp(value, level):
+        return value * (1+level/3)
 
 class RoundingHpEntity(Entity):
     @unbound
@@ -112,5 +115,5 @@ class RoundingHpEntity(Entity):
         self.add_set_node('hp', self.round_hp())
     
     @simplenode
-    def round_hp(self, value):
+    def round_hp(value):
         return int(value)

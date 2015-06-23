@@ -54,7 +54,7 @@ class InspirableHittingEntity(Entity):
     
     @depends('inspired')
     @simplenode
-    def inspired_damage(self, value, inspired):
+    def inspired_damage(value, inspired):
         if inspired:
             return value * 2
         return value
@@ -66,6 +66,6 @@ class RandomHittingEntity(Entity):
         self.add_get_node('hit_damage', self.randomize_hit())
     
     @simplenode
-    def randomize_hit(self, value):
+    def randomize_hit(value):
         # 1+-1/3
         return (random.random()+1)*2/3.0*value

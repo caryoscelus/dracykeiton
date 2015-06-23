@@ -45,7 +45,7 @@ class LivingActingEntity(Entity):
     
     @depends('living')
     @simplenode
-    def check_if_alive(self, value, living):
+    def check_if_alive(value, living):
         return living == 'alive' and value
 
 class ActionPointEntity(Entity):

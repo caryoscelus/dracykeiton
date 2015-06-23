@@ -46,7 +46,7 @@ class FooEntity(Entity):
         self.add_get_node('n', self.get1())
     
     @simplenode
-    def get1(self, value):
+    def get1(value):
         return value+1
 
 def test_pickle_entity():

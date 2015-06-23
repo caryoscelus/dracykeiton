@@ -307,6 +307,12 @@ def simplenode(f):
     15
     """
     @functools.wraps(f)
+    def wrap(self, *args, **kwargs):
+        return SimpleNode(functools.partial(f, *args, **kwargs))
+    return wrap
+
+def writernode(f):
+    @functools.wraps(f)
     def wrap(*args, **kwargs):
         return SimpleNode(functools.partial(f, *args, **kwargs))
     return wrap

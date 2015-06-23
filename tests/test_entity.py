@@ -40,7 +40,7 @@ def test_entity_subclass():
             self.add_get_node('foo', self.get3())
         
         @simplenode
-        def get3(self, value):
+        def get3(value):
             return 3
     
     foo = Foo()
@@ -95,7 +95,7 @@ def test_mod():
             self.remove_property('n')
         
         @simplenode
-        def get5(self, value):
+        def get5(value):
             return 5
     entity = Entity()
     entity.req_mod(Foo)
@@ -165,15 +165,15 @@ class NodeEntity(Entity):
         self.add_get_node('n', self.subtract(), priority='after')
     
     @simplenode
-    def positive(self, value):
+    def positive(value):
         return max(0, value)
     
     @simplenode
-    def add(self, value):
+    def add(value):
         return value+10
     
     @simplenode
-    def subtract(self, value):
+    def subtract(value):
         return value-10
 
 def test_node_priorities():

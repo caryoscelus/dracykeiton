@@ -22,7 +22,7 @@
 """
 
 from dracykeiton.compat import *
-from dracykeiton.entity import Entity, simplenode
+from dracykeiton.entity import Entity, simplenode, writernode
 from dracykeiton.proxyentity import ProxyEntity, CachedEntity
 from dracykeiton.interpolate import InterpolatingCache
 import pytest
@@ -60,7 +60,7 @@ class SlideNProxy(Entity):
         self.dynamic_property('n_target')
         self.add_get_node('n', self.slide_n())
     
-    @simplenode
+    @writernode
     def slide_n(self, value):
         self.n_target = value
         if self.n_current is None:

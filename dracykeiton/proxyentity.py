@@ -21,7 +21,7 @@
 """"""
 
 from .compat import *
-from .entity import Entity, simplenode, listener, DependencyError
+from .entity import Entity, SimpleNode, listener, DependencyError
 
 class ProxyEntity(Entity):
     """Entity which gives values from other entity.
@@ -77,7 +77,7 @@ class ProxyEntity(Entity):
     def read_source(self, name):
         def f(value):
             return getattr(self._proxy_source, name)
-        return simplenode(f)()
+        return SimpleNode(f)
     
     @unbound
     def proxy_listen(self, name):
@@ -105,7 +105,7 @@ class CachedEntity(Entity):
     def get_cache(self, name):
         def f(value):
             return self._property_cache[name]['current']
-        return simplenode(f)()
+        return SimpleNode(f)
     
     @unbound
     def cache_listener(self, name, update_f):
