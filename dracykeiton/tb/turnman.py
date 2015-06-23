@@ -67,9 +67,20 @@ class Turnman(ActionProcessor):
         """Called when next side's turn begins"""
         self.queue.pop(0)
         try:
-            self.world.new_turn()
+            self.world.new_turn
         except AttributeError:
             pass
+        else:
+            self.world.new_turn()
+    
+    def finish(self):
+        """Call this to clear the battle"""
+        try:
+            self.world.finish
+        except AttributeError:
+            pass
+        else:
+            self.world.finish()
     
     def turn(self):
         """Advance till turn ends.

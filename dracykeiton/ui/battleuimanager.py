@@ -188,6 +188,7 @@ class BattleUIManager(object):
         return isinstance(self.turnman.world.state, battle.Finished)
     
     def end_encounter(self):
+        self.turnman.finish()
         self.done = True
         for f in self.post_encounter_hooks:
             f()

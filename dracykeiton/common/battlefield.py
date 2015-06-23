@@ -132,6 +132,12 @@ class SimpleField(Entity):
         entity.add_listener_node('living', self.remove_dead())
     
     @unbound
+    def unreg_entity(self, entity):
+        # need to remove listener..
+        if entity.living == 'alive':
+            entity.living = 'unborn'
+    
+    @unbound
     def unspawn(self, entity):
         for side in self.sides:
             if entity in self.sides[side].members:
@@ -153,6 +159,12 @@ class SimpleField(Entity):
     @unbound
     def new_turn(self):
         self.check_conditions()
+    
+    @unbound
+    def finish(self):
+        for side in self.sides.values():
+            for entity in side.members:
+                self.unreg_entity(entity)
     
     @listener
     def remove_dead(self, target, value):
