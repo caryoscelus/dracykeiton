@@ -24,6 +24,7 @@
 from ..compat import *
 from ..entity import Entity
 from ..tb.controller import UserController
+from ..tb import battle
 
 class UIAction(object):
     def __init__(self, owner, f):
@@ -184,7 +185,7 @@ class BattleUIManager(object):
             pass
     
     def can_finish(self):
-        return False
+        return isinstance(self.turnman.world.state, battle.Finished)
     
     def end_encounter(self):
         self.done = True
