@@ -51,6 +51,10 @@ class Side(Entity):
     def _init(self):
         self.req_mod(SidedEntity)
         self.dynamic_property('members', [])
+    
+    @unbound
+    def empty_side(self):
+        return all([member.living != 'alive' for member in self.members])
 
 class BattleState(object):
     pass
@@ -110,12 +114,12 @@ class SimpleField(Entity):
         result = dict()
         for side in self.sides:
             for lose in self.lose_conditions[side]:
-                if lose():
+                if lose(self.sides[side]):
                     result[side] = 'lose'
                     break
             else:
                 for win in self.win_conditions[side]:
-                    if win():
+                    if win(self.sides[side]):
                         result[side] = 'win'
                         break
         if len(result) == len(self.sides):
