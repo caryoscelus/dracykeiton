@@ -51,13 +51,17 @@ class Turnman(ActionProcessor):
         """Called when new round starts"""
         self.queue = copy.copy(self.sides)
         try:
+            self.world.new_round
+        except AttributeError:
+            pass
+        else:
             self.world.new_round()
-        except AttributeError:
-            pass
         try:
-            self.world.new_turn()
+            self.world.new_turn
         except AttributeError:
             pass
+        else:
+            self.world.new_turn()
     
     def new_turn(self):
         """Called when next side's turn begins"""
