@@ -23,6 +23,7 @@
 
 from ..compat import *
 from ..entity import Entity, listener
+from ..tb import battle
 
 class SidedEntity(Entity):
     @unbound
@@ -56,24 +57,6 @@ class Side(Entity):
     def empty_side(self):
         return all([member.living != 'alive' for member in self.members])
 
-class BattleState(object):
-    pass
-
-class NotFinished(BattleState):
-    def __str__(self):
-        return 'Not finished'
-
-class Finished(BattleState):
-    def __str__(self):
-        return 'Finished'
-
-class Won(Finished):
-    def __init__(self, winner):
-        self.winner = winner
-    
-    def __str__(self):
-        return 'Won by {}'.format(self.winner)
-
 class SimpleField(Entity):
     @unbound
     def _init(self, *args, **kwargs):
@@ -82,7 +65,7 @@ class SimpleField(Entity):
         self.dynamic_property('win_conditions', dict())
         self.dynamic_property('lose_conditions', dict())
         self.dynamic_property('keep_dead', keep_dead)
-        self.dynamic_property('state', NotFinished())
+        self.dynamic_property('state', battle.NotFinished())
         for side in args:
             if not side in self.sides:
                 self.add_side(side, Side())
@@ -125,15 +108,15 @@ class SimpleField(Entity):
         if len(result) == len(self.sides):
             winners = [side for side in result if result[side] == 'win']
             if winners:
-                self.state = Won(winners)
+                self.state = battle.Won(winners)
             else:
-                self.state = Finished()
+                self.state = battle.Finished()
         elif len(result)+1 == len(self.sides):
             winners = [side for side in result if result[side] == 'win']
             if winners:
-                self.state = Won(winners)
+                self.state = battle.Won(winners)
             else:
-                self.state = Won([side for side in self.sides if not side in result])
+                self.state = battle.Won([side for side in self.sides if not side in result])
     
     @unbound
     def spawn(self, side, entity):
