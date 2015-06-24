@@ -82,6 +82,14 @@ class Turnman(ActionProcessor):
         else:
             self.world.finish()
     
+    def play_forever(self):
+        """Continous battle mode where next turn is performed when it can.
+        
+        This might lead to lock if there are no external pauses (e.g. some
+        controller require user input or time to pass).
+        """
+        self._turns_planned = float('inf')
+    
     def turn(self):
         """Advance till turn ends.
         
@@ -101,17 +109,20 @@ class Turnman(ActionProcessor):
         
         side = self.next_side()
         if side is None:
-            return None
-        if not self.queue:
-            self.new_round()
-        
-        r = True
-        while r:
-            r = self.step(side)
-        if r is None:
-            self.new_turn()
+            r = None
         else:
-            self._turns_planned += 1
+            if not self.queue:
+                self.new_round()
+            
+            r = True
+            while r:
+                r = self.step(side)
+            if r is None:
+                self.new_turn()
+            else:
+                self._turns_planned += 1
+        if r is None:
+            self.planned_turns()
         return r
     
     def step(self, side):
@@ -148,12 +159,21 @@ class Turnman(ActionProcessor):
                     self._planned.pop(0)
             if not ar:
                 return True
+        return False
+    
+    def planned_turns(self):
         if self._turns_planned > 0:
             self._turns_planned -= 1
             r = self.turn()
             if r is None:
                 return False
+            else:
+                return True
         return False
+    
+    def planned(self):
+        self.planned_actions()
+        self.planned_turns()
 
 class LockableTurnman(Turnman):
     """Turnman that can be locked and then actions are not performed.
@@ -174,7 +194,7 @@ class LockableTurnman(Turnman):
         if self._locked < 0:
             raise RuntimeError('too much unlocking')
         if self._locked == 0:
-            self.planned_actions()
+            self.planned()
     
     def process(self, a):
         if self._locked > 0:

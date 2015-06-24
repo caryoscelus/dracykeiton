@@ -169,6 +169,7 @@ class BattleUIManager(object):
         
         (this can mean allocating AP for example)
         """
+        self.turnman.play_forever()
         self.turnman.turn()
     
     def end_turn(self):
@@ -178,11 +179,10 @@ class BattleUIManager(object):
         """
         if isinstance(self.active_controller(), UserController):
             self.active_controller().end_turn()
-        # finishes user's turn
-        self.turnman.planned_actions()
-        # process all AI turns & start player's turn
-        while self.turnman.turn() is None:
-            pass
+        # since we use turnman.play_forever(), we only need to do what is
+        # already planned
+        # NOTE: might end up in non-stop loop if there's no user
+        self.turnman.planned()
     
     def can_finish(self):
         return isinstance(self.turnman.world.state, battle.Finished)
@@ -232,4 +232,4 @@ class BattleUIManager(object):
     def do_action(self, action):
         """Tell turnman that user wants to perform action"""
         self.active_controller().do_action(action)
-        self.turnman.planned_actions()
+        self.turnman.planned()
