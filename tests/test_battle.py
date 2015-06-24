@@ -132,3 +132,25 @@ def test_battle_ui_manager():
     manager.clicked(user_side, goblin1)
     manager.clicked(enemy_side, enemy2)
     assert enemy2.hp == -1
+
+def test_callback_pickle():
+    from dracykeiton import pickle
+    goblin0 = Goblin()
+    enemy0 = Goblin()
+    goblin0.restore_ap()
+    goblin0.be_born()
+    enemy0.be_born()
+    container = [goblin0, enemy0]
+    reloaded = pickle.loads(pickle.dumps(container))
+    goblin1 = reloaded[0]
+    enemy1 = reloaded[1]
+    
+    goblin0.hit(enemy0)()
+    goblin0.hit(enemy0)()
+    assert enemy0.living == 'dead'
+    assert goblin0.xp == 10
+    
+    goblin1.hit(enemy1)()
+    goblin1.hit(enemy1)()
+    assert enemy1.living == 'dead'
+    assert goblin1.xp == 10
