@@ -105,6 +105,7 @@ def test_battle_ui_manager():
     enemy2 = enemy_side.members[2]
     manager.start()
     assert manager.selected == None
+    assert goblin0.ap == 4
     manager.clicked(user_side, goblin0)
     assert manager.selected == goblin0
     manager.select_action(SingleEnemyAction(goblin0, goblin0.hit))
