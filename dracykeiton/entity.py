@@ -37,6 +37,9 @@ class DynamicProperty(object):
     def __str__(self):
         return str(self.value)
     
+    def __repr__(self):
+        return '<DynamicProperty {}>'.format(repr(self.value))
+    
     def __getstate__(self):
         # we expect somebody else to add all the nodes since we can't
         # store them from here
