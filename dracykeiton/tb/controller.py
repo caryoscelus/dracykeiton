@@ -79,6 +79,7 @@ class ProxyController(Controller):
     def act(self):
         if self._end_turn:
             self._end_turn = False
+            self._next_action = None
             return None
         if self._next_action:
             action = self._next_action
