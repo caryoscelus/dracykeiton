@@ -26,11 +26,11 @@ from ..entity import Entity
 class KillingEntity(Entity):
     @unbound
     def _init(self):
-        self.dynamic_property('kill_hooks', list())
+        self.dynamic_property('kill_hooks', set())
     
     @unbound
     def on_kill(self, f):
-        self.kill_hooks.append(f)
+        self.kill_hooks.add(f)
     
     @unbound
     def killed(self, victim):
