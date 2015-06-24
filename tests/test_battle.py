@@ -154,3 +154,9 @@ def test_callback_pickle():
     goblin1.hit(enemy1)()
     assert enemy1.living == 'dead'
     assert goblin1.xp == 10
+    
+    reloaded = pickle.loads(pickle.dumps(container))
+    goblin2 = reloaded[0]
+    enemy2 = reloaded[1]
+    assert enemy2.living == 'dead'
+    assert goblin2.xp == 10
