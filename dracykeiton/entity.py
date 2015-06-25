@@ -96,14 +96,28 @@ class Entity(object):
     
     @unbound
     def _init(self):
+        """This is used to init Entity or to add it as mod.
+        
+        Use it instead of __init__
+        """
         pass
     
     @unbound
     def _uninit(self):
+        """This is called when unloading mod.
+        
+        Not really used much for now. You should implement this in your
+        unloadable mod if you want to use it.
+        """
         raise NotImplementedError
     
     @classmethod
     def global_mod(cl, mod):
+        """Add global mod to this Entity class.
+        
+        This mod will be automatically added to all instances created or
+        loaded after calling global_mod
+        """
         cl._global_mods.append(mod)
     
     @unbound
@@ -161,6 +175,7 @@ class Entity(object):
     
     @classmethod
     def enable(cl, target, *args, **kwargs):
+        """Enable this mod on target entity"""
         for attr in cl.__dict__:
             if attr[0] != '_':
                 target.dynamic_method(attr)
@@ -170,6 +185,10 @@ class Entity(object):
     
     @classmethod
     def disable(cl, target):
+        """Disable this mod on target entity
+        
+        NOTE: not really used or tested yet
+        """
         cl._uninit(target)
     
     def dynamic_method(self, name):
@@ -198,6 +217,11 @@ class Entity(object):
             mod.enable(self, *args, **kwargs)
     
     def has_mod(self, mod):
+        """Check if this Entity has mod.
+        
+        Still, duck typing is usually preferred cause same behaviour can
+        be implemented by different mods.
+        """
         return mod in self._mods
     
     def remove_mod(self, mod):
@@ -231,6 +255,10 @@ class Entity(object):
         self._get_depends_on[dependency][dependant] += 1
     
     def add_listener_node(self, prop, listener):
+        """Add listner node to the prop.
+        
+        It will be notified on changes, including changes of dependencies.
+        """
         self._listeners[prop].append(listener)
     
     def notify_listeners(self, prop):
