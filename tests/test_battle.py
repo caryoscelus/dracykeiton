@@ -82,9 +82,14 @@ def test_battle_pickle():
     from dracykeiton import pickle
     turnman = prepare_battle(AIBattleController, AIBattleController, EffectTurnman)
     s = pickle.dumps(turnman)
-    turnman1 = pickle.loads(s)
     goblin = turnman.world.sides['left'].members[0]
+    assert len(goblin._listeners['living']) == 2
+    turnman1 = pickle.loads(s)
     goblin1 = turnman1.world.sides['left'].members[0]
+    assert len(turnman1.world.sides) == 2
+    # this should happen automatically at some point..
+    # unfortunatelly, there's no guarantee that it will now
+    turnman1.world.ensure_registration()
     assert len(goblin1._listeners['living']) == len(goblin._listeners['living'])
     
     turnman1.turn()

@@ -66,16 +66,29 @@ class SimpleField(Entity):
         self.dynamic_property('lose_conditions', dict())
         self.dynamic_property('keep_dead', keep_dead)
         self.dynamic_property('state', battle.NotFinished())
+        self.dynamic_property('to_reg', list())
         for side in args:
             if not side in self.sides:
                 self.add_side(side, Side())
         # for saving/loading purpose
-        for side in self.sides:
-            for entity in self.sides[side].members:
-                self.reg_entity(entity)
+        self.to_reg = list(self.sides.keys())
+        self.ensure_registration()
+    
+    @unbound
+    def ensure_registration(self):
+        to_reg = list()
+        for side in self.to_reg:
+            print('side '+side)
+            try:
+                for entity in self.sides[side].members:
+                    self.reg_entity(entity)
+            except AttributeError:
+                to_reg.append(side)
+        self.to_reg = to_reg
     
     @unbound
     def add_side(self, name, side):
+        self.ensure_registration()
         side.req_mod(SidedEntity, name)
         side.ally_group = name
         self.sides[name] = side
@@ -94,6 +107,7 @@ class SimpleField(Entity):
     
     @unbound
     def check_conditions(self):
+        self.ensure_registration()
         result = dict()
         for side in self.sides:
             for lose in self.lose_conditions[side]:
@@ -120,6 +134,7 @@ class SimpleField(Entity):
     
     @unbound
     def spawn(self, side, entity):
+        self.ensure_registration()
         self.sides[side].members.append(entity)
         entity.be_born()
         self.reg_entity(entity)
@@ -149,6 +164,7 @@ class SimpleField(Entity):
     
     @unbound
     def new_round(self):
+        self.ensure_registration()
         for side in self.sides:
             for entity in self.sides[side].members:
                 try:
@@ -158,6 +174,7 @@ class SimpleField(Entity):
     
     @unbound
     def new_turn(self):
+        self.ensure_registration()
         self.check_conditions()
     
     @unbound
