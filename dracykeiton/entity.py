@@ -152,7 +152,11 @@ class Entity(object):
             raise AttributeError('_props not present!')
         if name in self._props:
             return self._props[name].value
-        raise AttributeError('{} has no attribute/property {}'.format(self, name))
+        try:
+            self_repr = repr(self)
+        except AttributeError:
+            self_repr = 'this entity'
+        raise AttributeError('{} has no attribute/property {}'.format(self_repr, name))
     
     def __setattr__(self, name, value):
         if name[0] == '_':
@@ -179,7 +183,11 @@ class Entity(object):
             del self_copy[name]
         # will be restored by mods as well
         del self_copy['_listeners']
-        self_copy['_mods_to_load'] = self_copy['_mods']
+        self_copy['_mods_to_load'] = [
+            mod
+                for mod in self_copy['_mods']
+                    if not mod in type(self)._global_mods
+            ]
         del self_copy['_mods']
         return self_copy
     
@@ -188,9 +196,9 @@ class Entity(object):
         self._mods = list()
         self._listeners = dict({prop:list() for prop in self._props})
         self._load()
-        self._load_patchmods()
         for mod in self._mods_to_load:
             self.req_mod(mod)
+        self._load_patchmods()
     
     @classmethod
     def enable(cl, target, *args, **kwargs):
@@ -293,7 +301,7 @@ class Entity(object):
         for dep in self._get_depends_on[prop]:
             self.notify_listeners(dep)
 
-class DependencyError(Exception):
+class DependencyError(AttributeError):
     pass
 
 class ProcessingNode(object):
