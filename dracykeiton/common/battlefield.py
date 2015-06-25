@@ -78,7 +78,6 @@ class SimpleField(Entity):
     def ensure_registration(self):
         to_reg = list()
         for side in self.to_reg:
-            print('side '+side)
             try:
                 for entity in self.sides[side].members:
                     self.reg_entity(entity)
