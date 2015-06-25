@@ -21,7 +21,9 @@
 """Tests for dracykeiton.util.dependency"""
 
 from dracykeiton.compat import *
-from dracykeiton.util.dependency import DependencyTree
+from dracykeiton.util.dependency import DependencyTree, DependencyLoopError
+
+import pytest
 
 def test_deps():
     tree = DependencyTree()
@@ -46,3 +48,11 @@ def test_reuse():
     tree.add_dep(None, 'root')
     assert list(tree) == ['root']
     assert list(tree) == ['root']
+
+def test_loop():
+    tree = DependencyTree()
+    tree.add_dep(None, 'a')
+    tree.add_dep('a', 'b')
+    tree.add_dep('b', 'a')
+    with pytest.raises(DependencyLoopError):
+        list(tree)
