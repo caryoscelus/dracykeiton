@@ -23,7 +23,7 @@
 import pytest
 
 from dracykeiton.compat import *
-from dracykeiton.entity import Entity, simplenode, ReadOnlyNode, DependencyError
+from dracykeiton.entity import Entity, simplenode, ReadOnlyNode, NodeDependencyError
 
 def test_entity_property():
     entity = Entity()
@@ -80,7 +80,7 @@ def test_dependencies():
             return value
     
     entity.add_get_node('foo', BarNode())
-    with pytest.raises(DependencyError):
+    with pytest.raises(NodeDependencyError):
         entity.add_get_node('bar', BarNode())
 
 def test_mod():

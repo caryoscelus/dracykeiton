@@ -275,7 +275,7 @@ class Entity(object):
         try:
             getattr(self, prop)
         except RuntimeError:
-            raise DependencyError('circular dependency on {}'.format(prop))
+            raise NodeDependencyError('circular dependency on {}'.format(prop))
     
     def inc_get_dependency(self, dependency, dependant):
         if not dependant in self._get_depends_on[dependency]:
@@ -301,7 +301,7 @@ class Entity(object):
         for dep in self._get_depends_on[prop]:
             self.notify_listeners(dep)
 
-class DependencyError(AttributeError):
+class NodeDependencyError(AttributeError):
     pass
 
 class ProcessingNode(object):

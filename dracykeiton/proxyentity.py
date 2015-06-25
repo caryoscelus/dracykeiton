@@ -21,7 +21,7 @@
 """"""
 
 from .compat import *
-from .entity import Entity, SimpleNode, listener, DependencyError
+from .entity import Entity, SimpleNode, listener, NodeDependencyError
 
 class ProxyEntity(Entity):
     """Entity which gives values from other entity.
@@ -71,7 +71,7 @@ class ProxyEntity(Entity):
         self.dynamic_property(name)
         try:
             self.add_get_node(name, self.read_source(name))
-        except DependencyError:
+        except NodeDependencyError:
             raise ProxyAttributeError('proxied entity has no attribute {}'.format(name))
     
     def read_source(self, name):
