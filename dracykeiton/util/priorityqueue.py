@@ -58,6 +58,9 @@ class PriorityQueue(object):
             for value in self.store[p]:
                 yield value
     
+    def __repr__(self):
+        return '<PriorityQueue {}>'.format(list(self))
+    
     def add(self, value, priority=None):
         if priority is None:
             if self.default:
