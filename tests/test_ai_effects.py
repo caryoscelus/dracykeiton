@@ -43,7 +43,7 @@ class PausingTurnman(LockableTurnman, SimpleEffectProcessor):
     def hit_effect(self, action):
         self.count += 1
         self.lock()
-        t = threading.Timer(0.3, self.unlock)
+        t = threading.Timer(0.05, self.unlock)
         t.start()
 
 def test_ai_effects():
@@ -65,6 +65,6 @@ def test_ai_effects():
     assert turnman.count == 1
     assert goblin.hp == 47
     while turnman._locked > 0:
-        time.sleep(0.1)
+        time.sleep(0.05)
     assert goblin.hp == 38
     assert goblin.ap == 4
