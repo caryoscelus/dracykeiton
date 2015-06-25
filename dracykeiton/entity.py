@@ -26,6 +26,7 @@ from six import add_metaclass
 
 from .compat import *
 from .util.priorityqueue import PriorityQueue
+from .util import curry
 
 class DynamicProperty(object):
     """Stores dynamic property and modifiers associated with it."""
@@ -266,12 +267,19 @@ class ListenerNode(ProcessingNode):
         super(ListenerNode, self).__init__()
         self.f = f
     
+    def __str__(self):
+        return '<ListenerNode with {}>'.format(str(self.f))
+    
+    def __repr__(self):
+        return str(self)
+    
     def __call__(self, target, value):
         self.f(target, value)
 
 def listener(f):
+    @functools.wraps(f)
     def wrap(*args, **kwargs):
-        return ListenerNode(functools.partial(f, *args, **kwargs))
+        return ListenerNode(curry.curry(f)(*args, **kwargs))
     return wrap
 
 class ReadOnlyNode(ProcessingNode):
