@@ -40,3 +40,9 @@ def test_deps():
 def test_empty():
     tree = DependencyTree()
     assert list(tree) == []
+
+def test_reuse():
+    tree = DependencyTree()
+    tree.add_dep(None, 'root')
+    assert list(tree) == ['root']
+    assert list(tree) == ['root']

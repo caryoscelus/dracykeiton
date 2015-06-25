@@ -19,6 +19,7 @@
 ##
 
 from ..compat import *
+import copy
 
 class DependencyTree(object):
     def __init__(self):
@@ -26,7 +27,7 @@ class DependencyTree(object):
         self._deps = dict()
     
     def __iter__(self):
-        deps = self._deps.copy()
+        deps = copy.deepcopy(self._deps)
         stack = list([None])
         while stack:
             target = stack[-1]
