@@ -30,16 +30,21 @@ class DependencyTree(object):
         deps = copy.deepcopy(self._deps)
         stack = list([None])
         while stack:
+            # tree leaves are not in _deps keys, that's why we need +1 here
+            if len(stack) > len(self._deps)+1:
+                raise DependencyLoopError('DependencyTree has dependency loop')
             target = stack[-1]
             if not target in deps or not deps[target]:
                 stack.pop()
+                if stack:
+                    deps[stack[-1]].remove(target)
                 if not target is None:
                     yield target
             else:
-                stack.append(deps[target].pop())
+                stack.append(deps[target][-1])
     
     def add_dep(self, target, dep):
-        """Add dependecy dep to target
+        """Add dependency dep to target
         
         DependencyTree always has implicit root target None, so pass it
         to add first dependency.
@@ -47,3 +52,6 @@ class DependencyTree(object):
         if not target in self._deps:
             self._deps[target] = list()
         self._deps[target].append(dep)
+
+class DependencyLoopError(RuntimeError):
+    pass
