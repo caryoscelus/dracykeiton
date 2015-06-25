@@ -92,6 +92,7 @@ class Entity(object):
         self._get_depends_on = {}
         fix_methods(self)
         self._init(*args, **kwargs)
+        self._load()
         self._load_patchmods()
     
     @unbound
@@ -99,6 +100,24 @@ class Entity(object):
         """This is used to init Entity or to add it as mod.
         
         Use it instead of __init__
+        """
+        pass
+    
+    @unbound
+    def _save(self):
+        """This is called before pickling (for every mod)
+        
+        Any data that is not essential for saving can be get rid of at
+        this point.
+        """
+        pass
+    
+    @unbound
+    def _load(self):
+        """This is called after pickling and after _init when creating
+        
+        NOTE: mods & dynamic properties will be restored automatically,
+        but property nodes should be assigned here.
         """
         pass
     
@@ -168,7 +187,7 @@ class Entity(object):
         self.__dict__.update(state)
         self._mods = list()
         self._listeners = dict({prop:list() for prop in self._props})
-        self._init()
+        self._load()
         self._load_patchmods()
         for mod in self._mods_to_load:
             self.req_mod(mod)
@@ -181,6 +200,7 @@ class Entity(object):
                 target.dynamic_method(attr)
                 setattr(target, attr, cl.__dict__[attr])
         cl._init(target, *args, **kwargs)
+        cl._load(target)
         cl._load_patchmods(target, cl)
     
     @classmethod

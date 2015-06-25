@@ -50,6 +50,9 @@ class InspirableHittingEntity(Entity):
     def _init(self, hit_damage=0):
         self.req_mod(InspirableEntity)
         self.req_mod(HittingEntity, hit_damage)
+    
+    @unbound
+    def _load(self):
         self.add_get_node('hit_damage', self.inspired_damage())
     
     @depends('inspired')
@@ -63,6 +66,9 @@ class RandomHittingEntity(Entity):
     @unbound
     def _init(self, hit_damage=0):
         self.req_mod(HittingEntity, hit_damage)
+    
+    @unbound
+    def _load(self):
         self.add_get_node('hit_damage', self.randomize_hit())
     
     @simplenode

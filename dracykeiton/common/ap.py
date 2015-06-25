@@ -41,6 +41,9 @@ class LivingActingEntity(Entity):
     def _init(self):
         self.req_mod(ActingEntity)
         self.req_mod(LivingEntity)
+    
+    @unbound
+    def _load(self):
         self.add_get_node('can_act', self.check_if_alive())
     
     @depends('living')

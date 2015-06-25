@@ -70,6 +70,9 @@ class SimpleField(Entity):
         for side in args:
             if not side in self.sides:
                 self.add_side(side, Side())
+    
+    @unbound
+    def _load(self):
         # for saving/loading purpose
         self.to_reg = list(self.sides.keys())
         self.ensure_registration()

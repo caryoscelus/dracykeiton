@@ -20,13 +20,17 @@
 
 """Hit point system"""
 
-from ..entity import Entity, simplenode, listener, depends
 from ..compat import *
+from ..entity import Entity, simplenode, listener, depends
+from .level import LevelEntity
 
 class LivingEntity(Entity):
     @unbound
     def _init(self):
         self.dynamic_property('living', 'unborn')
+    
+    @unbound
+    def _load(self):
         self.add_set_node('living', self.ensure_correct())
     
     @simplenode
@@ -54,6 +58,9 @@ class HpEntity(Entity):
         self.req_mod(LivingEntity)
         self.dynamic_property('hp', 0)
         self.dynamic_property('maxhp', maxhp)
+    
+    @unbound
+    def _load(self):
         self.add_set_node('hp', self.hp_cap())
         self.add_listener_node('hp', self.check_hp())
         self.add_listener_node('living', self.check_if_born())
@@ -90,6 +97,9 @@ class RobustHpEntity(Entity):
     def _init(self, robust=1.0):
         self.req_mod(HpEntity)
         self.dynamic_property('robust', robust)
+    
+    @unbound
+    def _load(self):
         self.add_get_node('maxhp', self.get_robust_hp())
     
     @depends('robust')
@@ -101,6 +111,10 @@ class LevelHpEntity(Entity):
     @unbound
     def _init(self):
         self.req_mod(HpEntity)
+        self.req_mod(LevelEntity)
+    
+    @unbound
+    def _load(self):
         self.add_get_node('maxhp', self.get_level_hp())
     
     @depends('level')
@@ -112,6 +126,9 @@ class RoundingHpEntity(Entity):
     @unbound
     def _init(self):
         self.req_mod(HpEntity)
+    
+    @unbound
+    def _load(self):
         self.add_set_node('hp', self.round_hp())
     
     @simplenode

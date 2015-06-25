@@ -33,6 +33,9 @@ class LevelAbility(Entity):
     def _init(self):
         self.req_mod(LevelEntity)
         self.dynamic_property('level_mods', dict())
+    
+    @unbound
+    def _load(self):
         self.add_listener_node('level', self.levelup_listener())
     
     @listener

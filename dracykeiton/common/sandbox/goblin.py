@@ -31,9 +31,9 @@ class Goblin(Entity):
         self.req_mod(LivingActingEntity)
         self.req_mod(InspirableHittingEntity, 3)
         self.req_mod(KindEntity, 'goblin')
-        self.req_mod(XpLevelEntity, 0)
         self.req_mod(XpKillingEntity)
         self.req_mod(LevelHpEntity)
+        self.req_mod(XpLevelEntity, 0)
         self.req_mod(RobustHpEntity, 1.0)
 
 class GoblinLeader(Entity):

@@ -43,6 +43,9 @@ class FooEntity(Entity):
     @unbound
     def _init(self):
         self.dynamic_property('n', 5)
+    
+    @unbound
+    def _load(self):
         self.add_get_node('n', self.get1())
     
     @simplenode
