@@ -23,7 +23,7 @@
 import pytest
 
 from dracykeiton.compat import *
-from dracykeiton.entity import Entity, simplenode, ReadOnlyNode, NodeDependencyError
+from dracykeiton.entity import Entity, simplenode, ReadOnlyNode, NodeDependencyError, mod_dep, depends
 
 def test_entity_property():
     entity = Entity()
@@ -183,3 +183,30 @@ def test_node_priorities():
     assert entity.n == -10
     entity.n = 20
     assert entity.n == 20
+
+def test_new_mods():
+    class Core(Entity):
+        @unbound
+        def _init(self):
+            self.dynamic_property('core', 0)
+    
+    @mod_dep(Core)
+    class CustomCore(Entity):
+        @unbound
+        def _init(self):
+            self.dynamic_property('positive_core')
+        
+        @unbound
+        def _load(self):
+            self.add_get_node('positive_core', self.be_positive())
+        
+        @depends('core')
+        @simplenode
+        def be_positive(value, core):
+            return max(core, -core)
+    
+    entity = CustomCore()
+    entity.core = 4
+    assert entity.positive_core == 4
+    entity.core = -5
+    assert entity.positive_core == 5

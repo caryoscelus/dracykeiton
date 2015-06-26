@@ -26,6 +26,7 @@ from six import add_metaclass
 
 from .compat import *
 from .util.priorityqueue import PriorityQueue
+from .util.dependency import DependencyTree
 from .util import curry
 
 class DynamicProperty(object):
@@ -68,12 +69,21 @@ class DynamicProperty(object):
     def add_get_node(self, f, priority=None):
         self.getters.add(f, priority)
 
-class AddGlobalMods(type):
+class EntityMeta(type):
     def __init__(self, name, bases, d):
         type.__init__(self, name, bases, d)
         self._global_mods = list()
+        self._mod_deps = list()
 
-@add_metaclass(AddGlobalMods)
+def mod_dep(*mods):
+    """Decorator for Entity mod dependency"""
+    def wrap(cl):
+        for mod in mods:
+            cl.dep_mod(mod)
+        return cl
+    return wrap
+
+@add_metaclass(EntityMeta)
 class Entity(object):
     """Base entity, including dynamic property and modding mechanism.
     
@@ -88,10 +98,11 @@ class Entity(object):
         # TODO: fix this
         self._priorities = ('early', 'normal', 'late')
         self._default = 'normal'
-        self._mods = list()
+        self._mods = list([type(self)])
         self._get_depends_on = {}
         fix_methods(self)
         self._init(*args, **kwargs)
+        self._load_depmods()
         self._load()
         self._load_patchmods()
     
@@ -131,6 +142,11 @@ class Entity(object):
         raise NotImplementedError
     
     @classmethod
+    def dep_mod(cl, mod):
+        """Add mod dependency for this Entity class"""
+        cl._mod_deps.append(mod)
+    
+    @classmethod
     def global_mod(cl, mod):
         """Add global mod to this Entity class.
         
@@ -138,6 +154,14 @@ class Entity(object):
         loaded after calling global_mod
         """
         cl._global_mods.append(mod)
+    
+    @unbound
+    def _load_depmods(self, cl=None):
+        if cl is None:
+            cl = type(self)
+        mods = DependencyTree.collect(cl, lambda cl: cl._mod_deps)
+        for mod in mods:
+            self.req_mod(mod)
     
     @unbound
     def _load_patchmods(self, cl=None):
@@ -186,7 +210,7 @@ class Entity(object):
         self_copy['_mods_to_load'] = [
             mod
                 for mod in self_copy['_mods']
-                    if not mod in type(self)._global_mods
+                    if not mod in type(self)._global_mods and not mod is type(self)
             ]
         del self_copy['_mods']
         return self_copy
