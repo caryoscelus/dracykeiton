@@ -22,7 +22,7 @@
 """
 
 from ..compat import *
-from ..entity import Entity, listener
+from ..entity import Entity, listener, mod_dep
 from ..tb import battle
 
 class SidedEntity(Entity):
@@ -47,10 +47,10 @@ class BattlefieldEntity(Entity):
     def _init(self, field=None):
         self.dynamic_property('field', field)
 
+@mod_dep(SidedEntity)
 class Side(Entity):
     @unbound
     def _init(self):
-        self.req_mod(SidedEntity)
         self.dynamic_property('members', [])
     
     @unbound
@@ -191,7 +191,10 @@ class SimpleField(Entity):
             if not self.keep_dead:
                 self.unspawn(target)
 
+@mod_dep(SimpleField)
 class Battlefield(Entity):
     @unbound
     def _init(self, keep_dead=True):
-        self.req_mod(SimpleField, 'left', 'right', keep_dead=keep_dead)
+        self.keep_dead = keep_dead
+        self.add_side('left', Side())
+        self.add_side('right', Side())

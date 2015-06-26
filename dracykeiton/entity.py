@@ -265,7 +265,7 @@ class Entity(object):
     def req_mod(self, mod, *args, **kwargs):
         """Add mod to this entity"""
         if not mod in self._mods:
-            self._mods.insert(0, mod)
+            self._mods.append(mod)
             mod.enable(self, *args, **kwargs)
     
     def has_mod(self, mod):

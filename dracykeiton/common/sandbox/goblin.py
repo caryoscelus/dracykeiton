@@ -18,30 +18,25 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-from ...entity import Entity
+from ...entity import Entity, mod_dep
 from ...compat import *
 from .. import ActionPointEntity, HpEntity, InspirableHittingEntity, Battlefield, Side, InspiringEntity, KindEntity, XpLevelEntity, LivingActingEntity, XpKillingEntity, RobustHpEntity, LevelHpEntity, RoundingHpEntity, CallingEntity, LevelAbility
 
+@mod_dep(RoundingHpEntity, ActionPointEntity, LivingActingEntity, LevelHpEntity, RobustHpEntity, InspirableHittingEntity, KindEntity, XpKillingEntity, XpLevelEntity)
 class Goblin(Entity):
     @unbound
     def _init(self):
-        self.req_mod(HpEntity, 5)
-        self.req_mod(RoundingHpEntity)
-        self.req_mod(ActionPointEntity, 4)
-        self.req_mod(LivingActingEntity)
-        self.req_mod(InspirableHittingEntity, 3)
-        self.req_mod(KindEntity, 'goblin')
-        self.req_mod(XpKillingEntity)
-        self.req_mod(LevelHpEntity)
-        self.req_mod(XpLevelEntity, 0)
-        self.req_mod(RobustHpEntity, 1.0)
+        self.maxhp = 5
+        self.maxap = 4
+        self.hit_damage = 3
+        self.kind = 'goblin'
+        self.robust = 1.0
+        self.xp = 0
 
+@mod_dep(Goblin, InspiringEntity, LevelAbility)
 class GoblinLeader(Entity):
     @unbound
     def _init(self):
-        self.req_mod(Goblin)
-        self.req_mod(InspiringEntity)
-        self.req_mod(LevelAbility)
         self.on_level(2, CallingEntity, Goblin)
         self.level = 1
         self.robust = 0.8
