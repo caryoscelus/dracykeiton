@@ -101,7 +101,7 @@ class Entity(object):
         self._mods = list([type(self)])
         self._get_depends_on = {}
         fix_methods(self)
-        self._load_depmods()
+        self._init_depmods()
         self._init(*args, **kwargs)
         self._load()
         self._load_patchmods()
@@ -156,12 +156,20 @@ class Entity(object):
         cl._global_mods.append(mod)
     
     @unbound
-    def _load_depmods(self, cl=None):
+    def _init_depmods(self, cl=None):
         if cl is None:
             cl = type(self)
         mods = DependencyTree.collect(cl, lambda cl: cl._mod_deps)
         for mod in mods:
             self.req_mod(mod)
+    
+    @unbound
+    def _load_depmods(self, cl=None):
+        if cl is None:
+            cl = type(self)
+        mods = DependencyTree.collect(cl, lambda cl: cl._mod_deps)
+        for mod in mods:
+            self.load_mod(mod)
     
     @unbound
     def _load_patchmods(self, cl=None):
@@ -217,21 +225,23 @@ class Entity(object):
     
     def __setstate__(self, state):
         self.__dict__.update(state)
-        self._mods = list()
+        self._mods = list([type(self)])
         self._listeners = dict({prop:list() for prop in self._props})
+        self._load_depmods()
         self._load()
         for mod in self._mods_to_load:
-            self.req_mod(mod)
+            self.load_mod(mod)
         self._load_patchmods()
     
     @classmethod
-    def enable(cl, target, *args, **kwargs):
+    def enable(cl, target, first_load, *args, **kwargs):
         """Enable this mod on target entity"""
         for attr in cl.__dict__:
             if attr[0] != '_':
                 target.dynamic_method(attr)
                 setattr(target, attr, cl.__dict__[attr])
-        cl._init(target, *args, **kwargs)
+        if first_load:
+            cl._init(target, *args, **kwargs)
         cl._load(target)
         cl._load_patchmods(target, cl)
     
@@ -261,12 +271,17 @@ class Entity(object):
         del self._props[name]
         del self._get_depends_on[name]
     
-    # TODO: mod dep counting
+    def load_mod(self, mod, *args, **kwargs):
+        """Load mod to this entity after reloading"""
+        if not mod in self._mods:
+            self._mods.append(mod)
+            mod.enable(self, False, *args, **kwargs)
+    
     def req_mod(self, mod, *args, **kwargs):
         """Add mod to this entity"""
         if not mod in self._mods:
             self._mods.append(mod)
-            mod.enable(self, *args, **kwargs)
+            mod.enable(self, True, *args, **kwargs)
     
     def has_mod(self, mod):
         """Check if this Entity has mod.

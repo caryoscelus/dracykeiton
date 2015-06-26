@@ -22,6 +22,7 @@
 
 from dracykeiton.compat import *
 from dracykeiton.entity import DynamicProperty, simplenode, Entity
+from dracykeiton.common.sandbox.goblin import GoblinLeader
 from dracykeiton import pickle
 
 def test_pickle_property():
@@ -68,3 +69,10 @@ def test_mod_entity():
     assert entity.n == 7
     entity1 = pickle.loads(pickle.dumps(entity))
     assert entity.n == entity1.n
+
+def test_goblin():
+    leader0 = GoblinLeader()
+    assert leader0.has_mod(GoblinLeader)
+    leader1 = pickle.loads(pickle.dumps(leader0))
+    assert leader1.has_mod(GoblinLeader)
+    assert leader1.robust == leader0.robust
