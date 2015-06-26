@@ -61,7 +61,7 @@ class DependencyTree(object):
                 continue
             else:
                 stack.append(target)
-                nodes = f(target)
+                nodes = list(f(target))
         return DependencyTree(deps)
     
     def __iter__(self):
