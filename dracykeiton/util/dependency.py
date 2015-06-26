@@ -49,12 +49,14 @@ class DependencyTree(object):
         while stack:
             target = stack[-1]
             if not target in deps:
-                deps[target] = list()
+                deps[target] = set()
             for node in nodes:
-                deps[target].append(node)
+                deps[target].add(node)
             if not nodes:
                 node = stack.pop()
                 done.add(node)
+                if stack:
+                    nodes = deps[stack[-1]]-done
                 continue
             target = nodes.pop()
             if target in done:
@@ -62,7 +64,7 @@ class DependencyTree(object):
             else:
                 stack.append(target)
                 nodes = list(f(target))
-        return DependencyTree(deps)
+        return DependencyTree({k:list(deps[k]) for k in deps})
     
     def __iter__(self):
         deps = copy2(self._deps)

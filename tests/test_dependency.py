@@ -103,8 +103,20 @@ def test_collect_2():
     c.add_dep(e)
     e.add_dep(d)
     tree = DependencyTree.collect(a, Foo.get_dep)
-    print(tree._deps)
     r = list(tree)
-    print(r)
     r.remove(d)
     assert not d in r
+
+def test_collect_3():
+    a = Foo('a')
+    b = Foo('b')
+    c = Foo('c')
+    d = Foo('d')
+    e = Foo('e')
+    a.add_dep(b)
+    a.add_dep(c)
+    b.add_dep(d)
+    b.add_dep(e)
+    tree = DependencyTree.collect(a, Foo.get_dep)
+    r = list(tree)
+    assert e in r
