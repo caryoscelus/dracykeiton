@@ -67,13 +67,15 @@ class DependencyTree(object):
     def __iter__(self):
         deps = copy2(self._deps)
         stack = list([None])
+        done = set([None])
         while stack:
             target = stack[-1]
             if not target in deps or not deps[target]:
                 stack.pop()
                 if stack:
                     deps[stack[-1]].remove(target)
-                if not target is None:
+                if not target in done:
+                    done.add(target)
                     yield target
             else:
                 if deps[target][-1] in stack:

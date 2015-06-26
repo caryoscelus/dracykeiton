@@ -57,17 +57,18 @@ def test_loop():
     with pytest.raises(DependencyLoopError):
         list(tree)
 
+class Foo(object):
+    def __init__(self, s):
+        self.deps = []
+        self.s = s
+    def __repr__(self):
+        return 'Foo({})'.format(self.s)
+    def get_dep(self):
+        return self.deps
+    def add_dep(self, dep):
+        self.deps.append(dep)
+
 def test_collect():
-    class Foo(object):
-        def __init__(self, s):
-            self.deps = []
-            self.s = s
-        def __repr__(self):
-            return 'Foo({})'.format(self.s)
-        def get_dep(self):
-            return self.deps
-        def add_dep(self, dep):
-            self.deps.append(dep)
     a = Foo('a')
     b = Foo('b')
     c = Foo('c')
@@ -87,3 +88,23 @@ def test_collect():
     r = list(tree)
     assert r.index(a) > r.index(b) > r.index(c) > r.index(d)
     assert r.index(b) > r.index(e)
+
+def test_collect_2():
+    a = Foo('a')
+    b = Foo('b')
+    c = Foo('c')
+    d = Foo('d')
+    e = Foo('e')
+    a.add_dep(b)
+    a.add_dep(c)
+    b.add_dep(c)
+    b.add_dep(d)
+    c.add_dep(d)
+    c.add_dep(e)
+    e.add_dep(d)
+    tree = DependencyTree.collect(a, Foo.get_dep)
+    print(tree._deps)
+    r = list(tree)
+    print(r)
+    r.remove(d)
+    assert not d in r
