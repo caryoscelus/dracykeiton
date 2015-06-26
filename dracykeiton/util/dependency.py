@@ -21,13 +21,51 @@
 from ..compat import *
 import copy
 
+def copy2(d):
+    """Copy two levels.
+    
+    Currently takes dict of lists
+    """
+    return { k:copy.copy(d[k]) for k in d }
+
 class DependencyTree(object):
-    def __init__(self):
+    def __init__(self, deps=dict()):
         super(DependencyTree, self).__init__()
-        self._deps = dict()
+        self._deps = copy2(deps)
+    
+    @classmethod
+    def collect(cl, root, f):
+        """Alternative way to create DependencyTree from existing structures
+        
+        f should be function which returns list of dependencies when supplied
+        with node
+        
+        root should be first node of tree
+        """
+        deps = dict()
+        stack = list([None])
+        nodes = list([root])
+        done = set()
+        while stack:
+            target = stack[-1]
+            if not target in deps:
+                deps[target] = list()
+            for node in nodes:
+                deps[target].append(node)
+            if not nodes:
+                node = stack.pop()
+                done.add(node)
+                continue
+            target = nodes.pop()
+            if target in done:
+                continue
+            else:
+                stack.append(target)
+                nodes = f(target)
+        return DependencyTree(deps)
     
     def __iter__(self):
-        deps = copy.deepcopy(self._deps)
+        deps = copy2(self._deps)
         stack = list([None])
         while stack:
             target = stack[-1]
