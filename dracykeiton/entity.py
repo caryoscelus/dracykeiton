@@ -101,8 +101,8 @@ class Entity(object):
         self._mods = list([type(self)])
         self._get_depends_on = {}
         fix_methods(self)
-        self._init(*args, **kwargs)
         self._load_depmods()
+        self._init(*args, **kwargs)
         self._load()
         self._load_patchmods()
     
