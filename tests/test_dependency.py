@@ -80,7 +80,6 @@ def test_collect():
     b.add_dep(e)
     c.add_dep(d)
     tree = DependencyTree.collect(a, Foo.get_dep)
-    print(tree._deps)
     r = list(tree)
     assert r.index(a) > r.index(b) > r.index(c) > r.index(d)
     assert r.index(b) > r.index(e)
