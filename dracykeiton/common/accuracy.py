@@ -22,13 +22,15 @@
 
 from ..compat import *
 from ..entity import Entity, simplenode, depends, mod_dep
+from .dexterity import Dexterity
 from .. import random
 
-class AccuracyEntity(Entity):
+class Accuracy(Entity):
     @unbound
     def _init(self):
         self.dynamic_property('accuracy', 0)
 
+@mod_dep(Accuracy)
 class RandomAccuracy(Entity):
     @unbound
     def _load(self):
@@ -37,3 +39,14 @@ class RandomAccuracy(Entity):
     @simplenode
     def random_accuracy(value):
         return value*random.random()
+
+@mod_dep(Accuracy, Dexterity)
+class DexterityBasedAccuracy(Entity):
+    @unbound
+    def _load(self):
+        self.add_get_node('accuracy', self.get_accuracy())
+    
+    @depends('dexterity')
+    @simplenode
+    def get_accuracy(value, dexterity):
+        return dexterity

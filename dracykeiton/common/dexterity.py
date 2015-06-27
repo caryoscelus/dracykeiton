@@ -18,17 +18,12 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""common: package containing common enitty build blocks"""
+"""Dexterity attribute"""
 
-from .ap import *
-from .battlefield import *
-from .hit import *
-from .hp import *
-from .inspire import *
-from .kind import *
-from .xp import *
-from .kill import *
-from .level import *
-from .calling import *
-from .accuracy import *
-from .dexterity import *
+from ..compat import *
+from ..entity import Entity
+
+class Dexterity(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('dexterity')

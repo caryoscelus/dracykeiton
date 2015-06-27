@@ -26,10 +26,10 @@ from ..action import action
 from .ap import ActionPointEntity
 from .inspire import InspirableEntity
 from .kill import KillingEntity
-from .accuracy import AccuracyEntity
+from .accuracy import Accuracy
 from .. import random
 
-@mod_dep(ActionPointEntity, KillingEntity, AccuracyEntity)
+@mod_dep(ActionPointEntity, KillingEntity, Accuracy)
 class HittingEntity(Entity):
     @unbound
     def _init(self, hit_damage=0):
