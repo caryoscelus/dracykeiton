@@ -26,9 +26,10 @@ from ..action import action
 from .ap import ActionPointEntity
 from .inspire import InspirableEntity
 from .kill import KillingEntity
+from .accuracy import AccuracyEntity
 from .. import random
 
-@mod_dep(ActionPointEntity, KillingEntity)
+@mod_dep(ActionPointEntity, KillingEntity, AccuracyEntity)
 class HittingEntity(Entity):
     @unbound
     def _init(self, hit_damage=0):
@@ -36,6 +37,20 @@ class HittingEntity(Entity):
     
     @action
     def hit(self, enemy):
+        if self.try_hit(enemy):
+            self.force_hit(enemy)
+    
+    @unbound
+    def try_hit(self, enemy):
+        try:
+            evasion = enemy.evasion
+        except AttributeError:
+            evasion = -1
+        accuracy = self.accuracy
+        return accuracy > evasion
+    
+    @unbound
+    def force_hit(self, enemy):
         killed = enemy.hurt(self.hit_damage)
         if killed:
             self.killed(enemy)
