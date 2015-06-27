@@ -47,7 +47,7 @@ class HittingEntity(Entity):
         except AttributeError:
             evasion = -1
         accuracy = self.accuracy
-        return accuracy > evasion
+        return accuracy >= evasion
     
     @unbound
     def force_hit(self, enemy):

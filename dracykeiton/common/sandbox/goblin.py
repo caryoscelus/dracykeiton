@@ -20,7 +20,7 @@
 
 from ...entity import Entity, mod_dep
 from ...compat import *
-from .. import ActionPointEntity, HpEntity, InspirableHittingEntity, Battlefield, Side, InspiringEntity, KindEntity, XpLevelEntity, LivingActingEntity, XpKillingEntity, RobustHpEntity, LevelHpEntity, RoundingHpEntity, CallingEntity, LevelAbility, DexterityBasedAccuracy
+from .. import ActionPointEntity, HpEntity, InspirableHittingEntity, Battlefield, Side, InspiringEntity, KindEntity, XpLevelEntity, LivingActingEntity, XpKillingEntity, RobustHpEntity, LevelHpEntity, RoundingHpEntity, CallingEntity, LevelAbility, DexterityBasedAccuracy, DexterityBasedEvasion
 
 @mod_dep(
     RoundingHpEntity,
@@ -32,7 +32,8 @@ from .. import ActionPointEntity, HpEntity, InspirableHittingEntity, Battlefield
     KindEntity,
     XpKillingEntity,
     XpLevelEntity,
-    DexterityBasedAccuracy
+    DexterityBasedAccuracy,
+    DexterityBasedEvasion
 )
 class Goblin(Entity):
     @unbound

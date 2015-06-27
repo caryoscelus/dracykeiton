@@ -18,18 +18,24 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""common: package containing common enitty build blocks"""
+"""Evasion"""
 
-from .ap import *
-from .battlefield import *
-from .hit import *
-from .hp import *
-from .inspire import *
-from .kind import *
-from .xp import *
-from .kill import *
-from .level import *
-from .calling import *
-from .accuracy import *
-from .dexterity import *
-from .evasion import *
+from ..compat import *
+from ..entity import Entity, mod_dep, simplenode, depends
+from .dexterity import Dexterity
+
+class Evasion(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('evasion')
+
+@mod_dep(Evasion, Dexterity)
+class DexterityBasedEvasion(Entity):
+    @unbound
+    def _load(self):
+        self.add_get_node('evasion', self.get_evasion())
+    
+    @depends('dexterity')
+    @simplenode
+    def get_evasion(value, dexterity):
+        return dexterity*0.5

@@ -26,4 +26,4 @@ from ..entity import Entity
 class Dexterity(Entity):
     @unbound
     def _init(self):
-        self.dynamic_property('dexterity')
+        self.dynamic_property('dexterity', 0)
