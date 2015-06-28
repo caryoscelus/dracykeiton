@@ -75,6 +75,9 @@ class EntityMeta(type):
         self._global_mods = list()
         self._mod_deps = list()
 
+def get_mods_deps(cl):
+    return cl._mod_deps
+
 def mod_dep(*mods):
     """Decorator for Entity mod dependency"""
     def wrap(cl):
@@ -159,7 +162,7 @@ class Entity(object):
     def _init_depmods(self, cl=None):
         if cl is None:
             cl = type(self)
-        mods = DependencyTree.collect(cl, lambda cl: cl._mod_deps)
+        mods = DependencyTree.collect(cl, get_mods_deps)
         for mod in mods:
             self.req_mod(mod)
     
@@ -167,7 +170,7 @@ class Entity(object):
     def _load_depmods(self, cl=None):
         if cl is None:
             cl = type(self)
-        mods = DependencyTree.collect(cl, lambda cl: cl._mod_deps)
+        mods = DependencyTree.collect(cl, get_mods_deps)
         for mod in mods:
             self.load_mod(mod)
     
@@ -177,6 +180,9 @@ class Entity(object):
             cl = type(self)
         mods = cl._global_mods
         for mod in mods:
+            mod_deps = DependencyTree.collect(mod, get_mods_deps)
+            for dep in mod_deps:
+                self.req_mod(dep)
             self.req_mod(mod)
     
     def __getattr__(self, name):
