@@ -22,9 +22,9 @@
 
 from ..compat import *
 from ..entity import Entity, simplenode, listener, depends, mod_dep
-from .level import LevelEntity
+from .level import Level
 
-class LivingEntity(Entity):
+class Living(Entity):
     @unbound
     def _init(self):
         self.dynamic_property('living', 'unborn')
@@ -52,8 +52,8 @@ class LivingEntity(Entity):
         elif self.living == 'alive':
             raise TypeError('cannot be born twice!')
 
-@mod_dep(LivingEntity)
-class HpEntity(Entity):
+@mod_dep(Living)
+class Hp(Entity):
     @unbound
     def _init(self, maxhp=0):
         self.dynamic_property('hp', 0)
@@ -92,8 +92,8 @@ class HpEntity(Entity):
         if value == 'alive':
             self.full_hp()
 
-@mod_dep(HpEntity)
-class RobustHpEntity(Entity):
+@mod_dep(Hp)
+class RobustHp(Entity):
     @unbound
     def _init(self, robust=1.0):
         self.dynamic_property('robust', robust)
@@ -107,8 +107,8 @@ class RobustHpEntity(Entity):
     def get_robust_hp(value, robust):
         return value * robust
 
-@mod_dep(HpEntity, LevelEntity)
-class LevelHpEntity(Entity):
+@mod_dep(Hp, Level)
+class LevelHp(Entity):
     @unbound
     def _init(self):
         pass
@@ -122,8 +122,8 @@ class LevelHpEntity(Entity):
     def get_level_hp(value, level):
         return value * (1+level/3)
 
-@mod_dep(HpEntity)
-class RoundingHpEntity(Entity):
+@mod_dep(Hp)
+class RoundingHp(Entity):
     @unbound
     def _init(self):
         pass

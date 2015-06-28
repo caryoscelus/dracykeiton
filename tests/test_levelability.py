@@ -19,21 +19,21 @@
 ##
 
 from dracykeiton.compat import *
-from dracykeiton.common import LevelAbility, CallingEntity
+from dracykeiton.common import LevelAbility, Caller
 from dracykeiton.common.sandbox.goblin import GoblinLeader
 
 def test_levelup():
     goblin = GoblinLeader()
     assert goblin.level == 1
-    assert not goblin.has_mod(CallingEntity)
+    assert not goblin.has_mod(Caller)
     goblin.level = 2
     assert goblin.level == 2
-    assert goblin.has_mod(CallingEntity)
+    assert goblin.has_mod(Caller)
 
 def test_xp_levelup():
     goblin = GoblinLeader()
     assert goblin.level == 1
-    assert not goblin.has_mod(CallingEntity)
+    assert not goblin.has_mod(Caller)
     goblin.xp = 300
     assert goblin.level == 2
-    assert goblin.has_mod(CallingEntity)
+    assert goblin.has_mod(Caller)

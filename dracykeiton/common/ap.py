@@ -21,12 +21,12 @@
 """Action point system and stuff related to acting entities in general."""
 
 from ..entity import Entity, simplenode, depends, mod_dep
-from .hp import LivingEntity
+from .hp import Living
 from .turn import TurnEntity
 from ..compat import *
 from ..util import curry
 
-class ActingEntity(Entity):
+class Acting(Entity):
     """Basic acting entity, only defines can_act property.
     
     This can be used as basis to various possible acting systems.
@@ -35,8 +35,8 @@ class ActingEntity(Entity):
     def _init(self):
         self.dynamic_property('can_act', True)
 
-@mod_dep(ActingEntity, LivingEntity)
-class LivingActingEntity(Entity):
+@mod_dep(Acting, Living)
+class LivingActing(Entity):
     """Ensure only alive entities can act."""
     @unbound
     def _init(self):
@@ -51,8 +51,8 @@ class LivingActingEntity(Entity):
     def check_if_alive(value, living):
         return living == 'alive' and value
 
-@mod_dep(ActingEntity, TurnEntity)
-class ActionPointEntity(Entity):
+@mod_dep(Acting, TurnEntity)
+class ActionPoint(Entity):
     """AP entity, defining AP and maxAP properties and helper functions."""
     @unbound
     def _init(self, maxap=0):

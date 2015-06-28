@@ -18,12 +18,12 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""KindEntity"""
+"""Kind"""
 
 from ..compat import *
 from ..entity import Entity
 
-class KindEntity(Entity):
+class Kind(Entity):
     @unbound
     def _init(self, kind=None):
         self.dynamic_property('kind', kind)

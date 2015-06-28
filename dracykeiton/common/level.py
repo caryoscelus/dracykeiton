@@ -23,12 +23,12 @@
 from ..compat import *
 from ..entity import Entity, listener, mod_dep
 
-class LevelEntity(Entity):
+class Level(Entity):
     @unbound
     def _init(self, level=0):
         self.dynamic_property('level', level)
 
-@mod_dep(LevelEntity)
+@mod_dep(Level)
 class LevelAbility(Entity):
     @unbound
     def _init(self):

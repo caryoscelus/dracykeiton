@@ -22,10 +22,10 @@
 
 from dracykeiton.compat import *
 
-from dracykeiton.common import RandomHittingEntity
+from dracykeiton.common import RandomHit
 
 def test_random_hit():
-    hitter = RandomHittingEntity()
+    hitter = RandomHit()
     hitter.hit_damage = 6
     hit0 = hitter.hit_damage
     hit1 = hitter.hit_damage

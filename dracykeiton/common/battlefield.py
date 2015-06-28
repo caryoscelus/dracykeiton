@@ -25,7 +25,7 @@ from ..compat import *
 from ..entity import Entity, listener, mod_dep
 from ..tb import battle
 
-class SidedEntity(Entity):
+class Sided(Entity):
     @unbound
     def _init(self, group=None):
         self.dynamic_property('ally_group', group)
@@ -47,7 +47,7 @@ class BattlefieldEntity(Entity):
     def _init(self, field=None):
         self.dynamic_property('field', field)
 
-@mod_dep(SidedEntity)
+@mod_dep(Sided)
 class Side(Entity):
     @unbound
     def _init(self):
@@ -91,7 +91,7 @@ class SimpleField(Entity):
     @unbound
     def add_side(self, name, side):
         self.ensure_registration()
-        side.req_mod(SidedEntity, name)
+        side.req_mod(Sided, name)
         side.ally_group = name
         self.sides[name] = side
         self.win_conditions[name] = set()
@@ -140,7 +140,7 @@ class SimpleField(Entity):
         self.sides[side].members.append(entity)
         entity.be_born()
         self.reg_entity(entity)
-        entity.req_mod(SidedEntity, side)
+        entity.req_mod(Sided, side)
         entity.req_mod(BattlefieldEntity)
         entity.field = self
     

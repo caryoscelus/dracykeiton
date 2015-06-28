@@ -21,11 +21,11 @@
 from ..compat import *
 from ..entity import Entity, simplenode, mod_dep
 from ..action import action
-from .ap import ActionPointEntity
+from .ap import ActionPoint
 from .battlefield import BattlefieldEntity
 
-@mod_dep(ActionPointEntity, BattlefieldEntity)
-class CallingEntity(Entity):
+@mod_dep(ActionPoint, BattlefieldEntity)
+class Caller(Entity):
     @unbound
     def _init(self, calling_type=None):
         self.dynamic_property('calling_type', calling_type)

@@ -18,12 +18,12 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""KillingEntity"""
+"""Kill"""
 
 from ..compat import *
 from ..entity import Entity
 
-class KillingEntity(Entity):
+class Kill(Entity):
     @unbound
     def _init(self):
         self.dynamic_property('kill_hooks', set())

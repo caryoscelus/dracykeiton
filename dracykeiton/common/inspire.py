@@ -24,7 +24,7 @@ from ..compat import *
 from ..entity import Entity
 from ..action import action
 
-class InspiringEntity(Entity):
+class Inspire(Entity):
     @unbound
     def _init(self):
         pass
@@ -43,7 +43,7 @@ class InspiringEntity(Entity):
             return False
         return self.spend_ap(2)
 
-class InspirableEntity(Entity):
+class Inspirable(Entity):
     @unbound
     def _init(self):
         self.dynamic_property('inspired', False)

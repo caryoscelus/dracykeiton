@@ -23,14 +23,14 @@
 from ..compat import *
 from ..entity import Entity, simplenode, depends, mod_dep
 from ..action import action
-from .ap import ActionPointEntity
-from .inspire import InspirableEntity
-from .kill import KillingEntity
+from .ap import ActionPoint
+from .inspire import Inspirable
+from .kill import Kill
 from .accuracy import Accuracy
 from .. import random
 
-@mod_dep(ActionPointEntity, KillingEntity, Accuracy)
-class HittingEntity(Entity):
+@mod_dep(ActionPoint, Kill, Accuracy)
+class Hit(Entity):
     @unbound
     def _init(self, hit_damage=0):
         self.dynamic_property('hit_damage', hit_damage)
@@ -59,8 +59,8 @@ class HittingEntity(Entity):
     def can_hit(self, enemy):
         return self.spend_ap(2)
 
-@mod_dep(InspirableEntity, HittingEntity)
-class InspirableHittingEntity(Entity):
+@mod_dep(Inspirable, Hit)
+class InspirableHit(Entity):
     @unbound
     def _init(self):
         pass
@@ -76,8 +76,8 @@ class InspirableHittingEntity(Entity):
             return value * 2
         return value
 
-@mod_dep(HittingEntity)
-class RandomHittingEntity(Entity):
+@mod_dep(Hit)
+class RandomHit(Entity):
     @unbound
     def _init(self):
         pass

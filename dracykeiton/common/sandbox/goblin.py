@@ -20,18 +20,18 @@
 
 from ...entity import Entity, mod_dep
 from ...compat import *
-from .. import ActionPointEntity, HpEntity, InspirableHittingEntity, Battlefield, Side, InspiringEntity, KindEntity, XpLevelEntity, LivingActingEntity, XpKillingEntity, RobustHpEntity, LevelHpEntity, RoundingHpEntity, CallingEntity, LevelAbility, DexterityBasedAccuracy, DexterityBasedEvasion
+from .. import ActionPoint, Hp, InspirableHit, Battlefield, Side, Inspire, Kind, XpBasedLevel, LivingActing, XpKill, RobustHp, LevelHp, RoundingHp, Caller, LevelAbility, DexterityBasedAccuracy, DexterityBasedEvasion
 
 @mod_dep(
-    RoundingHpEntity,
-    ActionPointEntity,
-    LivingActingEntity,
-    LevelHpEntity,
-    RobustHpEntity,
-    InspirableHittingEntity,
-    KindEntity,
-    XpKillingEntity,
-    XpLevelEntity,
+    RoundingHp,
+    ActionPoint,
+    LivingActing,
+    LevelHp,
+    RobustHp,
+    InspirableHit,
+    Kind,
+    XpKill,
+    XpBasedLevel,
     DexterityBasedAccuracy,
     DexterityBasedEvasion
 )
@@ -46,10 +46,10 @@ class Goblin(Entity):
         self.xp = 0
         self.dexterity = 0
 
-@mod_dep(Goblin, InspiringEntity, LevelAbility)
+@mod_dep(Goblin, Inspire, LevelAbility)
 class GoblinLeader(Entity):
     @unbound
     def _init(self):
-        self.on_level(2, CallingEntity, Goblin)
+        self.on_level(2, Caller, Goblin)
         self.level = 1
         self.robust = 0.8
