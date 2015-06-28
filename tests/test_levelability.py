@@ -20,7 +20,7 @@
 
 from dracykeiton.compat import *
 from dracykeiton.common import LevelAbility, Caller
-from dracykeiton.common.sandbox.goblin import GoblinLeader
+from dracykeiton.common.sandbox.goblin import GoblinLeader, Goblin
 
 def test_levelup():
     goblin = GoblinLeader()
@@ -37,3 +37,15 @@ def test_xp_levelup():
     goblin.xp = 300
     assert goblin.level == 2
     assert goblin.has_mod(Caller)
+
+def test_attribute_levelup():
+    goblin = Goblin()
+    assert goblin.level == 0
+    assert goblin.level_points == 0
+    assert goblin.dexterity == 0
+    goblin.xp = 100
+    assert goblin.level == 1
+    assert goblin.level_points == 1
+    goblin.increase_attribute('dexterity')()
+    assert goblin.level_points == 0
+    assert goblin.dexterity == 1
