@@ -33,3 +33,4 @@ from .calling import *
 from .accuracy import *
 from .dexterity import *
 from .evasion import *
+from .attribute import *
