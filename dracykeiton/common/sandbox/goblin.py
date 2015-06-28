@@ -50,6 +50,6 @@ class Goblin(Entity):
 class GoblinLeader(Entity):
     @unbound
     def _init(self):
-        self.on_level(2, Caller, Goblin)
+        self.mod_on_level(2, Caller, Goblin)
         self.level = 1
         self.robust = 0.8

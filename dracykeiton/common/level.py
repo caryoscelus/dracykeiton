@@ -22,6 +22,7 @@
 
 from ..compat import *
 from ..entity import Entity, listener, mod_dep
+from ..util import curry
 
 class Level(Entity):
     @unbound
@@ -32,7 +33,7 @@ class Level(Entity):
 class LevelAbility(Entity):
     @unbound
     def _init(self):
-        self.dynamic_property('level_mods', dict())
+        self.dynamic_property('level_hooks', dict())
     
     @unbound
     def _load(self):
@@ -41,13 +42,17 @@ class LevelAbility(Entity):
     @listener
     def levelup_listener(self, target, value):
         for i in range(int(value)+1):
-            if i in self.level_mods:
-                for mod in self.level_mods[i]:
-                    self.req_mod(mod[0], *mod[1], **mod[2])
-                del self.level_mods[i]
+            if i in self.level_hooks:
+                for f in self.level_hooks[i]:
+                    f()
+                del self.level_hooks[i]
     
     @unbound
-    def on_level(self, level, mod, *args, **kwargs):
-        if not level in self.level_mods:
-            self.level_mods[level] = list()
-        self.level_mods[level].append((mod, args, kwargs))
+    def on_level(self, level, f):
+        if not level in self.level_hooks:
+            self.level_hooks[level] = list()
+        self.level_hooks[level].append(f)
+    
+    @unbound
+    def mod_on_level(self, level, mod, *args, **kwargs):
+        self.on_level(level, curry.curry(self.req_mod)(mod, *args, **kwargs))
