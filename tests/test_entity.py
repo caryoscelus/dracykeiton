@@ -210,3 +210,24 @@ def test_new_mods():
     assert entity.positive_core == 4
     entity.core = -5
     assert entity.positive_core == 5
+
+def test_new_mod_patch_deps():
+    class A(Entity):
+        @unbound
+        def _init(self):
+            self.dynamic_property('a', 0)
+    
+    class B(Entity):
+        @unbound
+        def _init(self):
+            self.dynamic_property('b', -1)
+    
+    @mod_dep(B)
+    class APatch(Entity):
+        @unbound
+        def _init(self):
+            self.a = self.b
+    A.global_mod(APatch)
+    
+    a = A()
+    assert a.b == -1
