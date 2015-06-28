@@ -24,6 +24,23 @@
 from ..compat import *
 import functools
 
+def wraps(f):
+    """Version of functools.wraps with more helpful error message"""
+    def decorator(*args, **kwargs):
+        f0 = functools.wraps(f)
+        try:
+            return f0(*args, **kwargs)
+        except AttributeError:
+            raise AttributeError("AttributeError while wrapping for curry. It is likely you're passing a bad callable to curry.")
+    return decorator
+
+def update_wrapper(target, source):
+    """Version of functools.update_wrapper with more helpful error message"""
+    try:
+        return functools.update_wrapper(target, source)
+    except AttributeError:
+        raise AttributeError("AttributeError while wrapping for curry. It is likely you're passing a bad callable to curry.")
+
 def curry(f):
     """Takes a function and returns callable which returns callable.
     
@@ -36,7 +53,7 @@ def curry(f):
     >>> pprint.__name__
     'print'
     """
-    @functools.wraps(f)
+    @wraps(f)
     def wrap(*args, **kwargs):
-        return functools.update_wrapper(functools.partial(f, *args, **kwargs), f)
+        return update_wrapper(functools.partial(f, *args, **kwargs), f)
     return wrap
