@@ -56,8 +56,8 @@ class Living(Entity):
 class Hp(Entity):
     @unbound
     def _init(self, maxhp=0):
-        self.dynamic_property('hp', 0)
-        self.dynamic_property('maxhp', maxhp)
+        self.dynamic_property('hp', 0, priorities=('normal', 'round'))
+        self.dynamic_property('maxhp', maxhp, priorities=('normal', 'round'))
     
     @unbound
     def _load(self):
@@ -130,7 +130,8 @@ class RoundingHp(Entity):
     
     @unbound
     def _load(self):
-        self.add_set_node('hp', self.round_hp())
+        self.add_set_node('hp', self.round_hp(), priority='round')
+        self.add_get_node('maxhp', self.round_hp(), priority='round')
     
     @simplenode
     def round_hp(value):
