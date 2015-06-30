@@ -59,7 +59,7 @@ class PriorityQueue(object):
                 yield value
     
     def __repr__(self):
-        return '<PriorityQueue {}>'.format(list(self))
+        return '<PriorityQueue {} with priorities {}>'.format(list(self), self.priorities)
     
     def add(self, value, priority=None):
         if priority is None:
