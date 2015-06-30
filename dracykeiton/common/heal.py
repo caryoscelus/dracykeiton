@@ -18,20 +18,23 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""common: package containing common enitty build blocks"""
+from ..compat import *
+from ..entity import Entity, mod_dep
+from ..action import action
+from .ap import ActionPoint
 
-from .ap import *
-from .battlefield import *
-from .hit import *
-from .hp import *
-from .inspire import *
-from .kind import *
-from .xp import *
-from .kill import *
-from .level import *
-from .calling import *
-from .accuracy import *
-from .dexterity import *
-from .evasion import *
-from .attribute import *
-from .heal import *
+@mod_dep(ActionPoint)
+class Heal(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('heal_amount', 0)
+    
+    @action
+    def heal(self, ally):
+        ally.hp += self.heal_amount
+    
+    @unbound
+    def can_heal(self, ally):
+        if ally.hp == ally.maxhp:
+            return False
+        return self.spend_ap(4)
