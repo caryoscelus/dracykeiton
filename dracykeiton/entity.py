@@ -46,7 +46,7 @@ class DynamicProperty(object):
         # we expect somebody else to add all the nodes since we can't
         # store them from here
         if self.getters or self.setters:
-            self_copy = DynamicProperty(self._value)
+            self_copy = DynamicProperty(self._value, priorities=self.getters.priorities, default=self.getters.default)
             return self_copy.__getstate__()
         return self.__dict__
     
