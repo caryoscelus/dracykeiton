@@ -20,7 +20,7 @@
 
 from ...entity import Entity, mod_dep
 from ...compat import *
-from .. import ActionPoint, Hp, InspirableHit, Battlefield, Side, Inspire, Kind, XpBasedLevel, LivingActing, XpKill, RobustHp, LevelHp, RoundingHp, Caller, LevelAbility, DexterityBasedAccuracy, DexterityBasedEvasion, AttributeLevelup
+from .. import ActionPoint, Hp, InspirableHit, Battlefield, Side, Inspire, Kind, XpBasedLevel, LivingActing, XpKill, RobustHp, LevelHp, RoundingHp, Caller, LevelAbility, DexterityBasedAccuracy, DexterityBasedEvasion, AttributeLevelup, Heal
 
 @mod_dep(
     RoundingHp,
@@ -55,3 +55,11 @@ class GoblinLeader(Entity):
         self.mod_on_level(2, Caller, Goblin)
         self.level = 1
         self.robust = 0.8
+
+@mod_dep(Goblin, Heal)
+class GoblinHealer(Entity):
+    @unbound
+    def _init(self):
+        self.heal_amount = 3
+        self.level = 1
+        self.robust = 0.7
