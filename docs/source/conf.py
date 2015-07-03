@@ -37,8 +37,6 @@ extensions = [
     'sphinx.ext.viewcode',
 ]
 
-sys.path.insert(0, os.path.join('..', 'dracykeiton'))
-
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
