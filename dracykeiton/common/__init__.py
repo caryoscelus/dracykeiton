@@ -35,3 +35,4 @@ from .dexterity import *
 from .evasion import *
 from .attribute import *
 from .heal import *
+from .dice import *
