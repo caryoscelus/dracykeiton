@@ -49,10 +49,10 @@ class SideGen(object):
         return entities
 
 class Encounter(object):
-    def __init__(self, turnman_c, keep_dead=True):
+    def __init__(self, turnman_c, **battlefield_args):
         super(Encounter, self).__init__()
         self.sides = []
-        self.keep_dead = keep_dead
+        self.battlefield_args = battlefield_args
         self.turnman_c = turnman_c
     
     def add_side(self, *args, **kwargs):
@@ -60,7 +60,7 @@ class Encounter(object):
     
     def generate(self):
         """Generate encounter (returns turnman)"""
-        battlefield = Battlefield(keep_dead=self.keep_dead)
+        battlefield = Battlefield(**self.battlefield_args)
         turnman = self.turnman_c(battlefield)
         for side_gen in self.sides:
             side = Side()
