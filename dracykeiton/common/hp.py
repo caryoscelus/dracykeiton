@@ -51,6 +51,13 @@ class Living(Entity):
             raise TypeError('dead cannot be born, try some black magic instead!')
         elif self.living == 'alive':
             raise TypeError('cannot be born twice!')
+    
+    @unbound
+    def be_unborn(self):
+        if self.living == 'dead':
+            raise TypeError('cannot unborn dead')
+        else:
+            self.living = 'unborn'
 
 @mod_dep(Living)
 class Hp(Entity):
