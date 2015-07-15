@@ -54,9 +54,7 @@ class Living(Entity):
     
     @unbound
     def be_unborn(self):
-        if self.living == 'dead':
-            raise TypeError('cannot unborn dead')
-        else:
+        if self.living != 'dead':
             self.living = 'unborn'
 
 @mod_dep(Living)
