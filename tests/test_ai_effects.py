@@ -25,7 +25,7 @@ from dracykeiton.ui.battleuimanager import BattleUIManager
 from dracykeiton.tb.turnman import LockableTurnman
 from dracykeiton.action import SimpleEffectProcessor
 from dracykeiton.tb.controller import UserController
-from dracykeiton.tb.encounter import Encounter
+from dracykeiton.tb.battlegen import BattleGen
 from dracykeiton.ai.sandbox.battleai import AIBattleController
 from dracykeiton.common.sandbox.goblin import Goblin
 
@@ -47,7 +47,7 @@ class PausingTurnman(LockableTurnman, SimpleEffectProcessor):
         t.start()
 
 def test_ai_effects():
-    encounter = Encounter(PausingTurnman)
+    encounter = BattleGen(PausingTurnman)
     goblin = Goblin()
     enemy0 = Goblin()
     enemy1 = Goblin()

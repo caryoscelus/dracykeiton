@@ -30,13 +30,13 @@ from dracykeiton.tb.controller import Controller, UserController
 from dracykeiton.tb.turnman import Turnman
 from dracykeiton.ui.battleuimanager import BattleUIManager, SingleEnemyAction, SingleAllyAction
 from dracykeiton.action import SimpleEffectProcessor
-from dracykeiton.tb.encounter import Encounter
+from dracykeiton.tb.battlegen import BattleGen
 from dracykeiton.common.sandbox.goblin import Goblin, GoblinLeader
 from dracykeiton.ai.sandbox.battleai import AIBattleController
 
 def prepare_battle(left_c, right_c, turnman, keep_dead=False):
     """Prepare battle with given side controllers"""
-    encounter = Encounter(turnman, keep_dead=keep_dead)
+    encounter = BattleGen(turnman, keep_dead=keep_dead)
     encounter.add_side('left', left_c, 2, predefined=[Goblin(), GoblinLeader()])
     encounter.add_side('right', right_c, 3, predefined=[Goblin(), Goblin(), Goblin()])
     return encounter.generate()

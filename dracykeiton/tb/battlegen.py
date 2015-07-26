@@ -18,7 +18,7 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""Encounter: generate battle encounters"""
+"""BattleGen: generate battle encounters"""
 
 from ..compat import *
 from .. import random
@@ -48,9 +48,9 @@ class SideGen(object):
             entities.append(entity)
         return entities
 
-class Encounter(object):
+class BattleGen(object):
     def __init__(self, turnman_c, **battlefield_args):
-        super(Encounter, self).__init__()
+        super(BattleGen, self).__init__()
         self.sides = []
         self.battlefield_args = battlefield_args
         self.turnman_c = turnman_c
