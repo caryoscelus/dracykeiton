@@ -138,7 +138,8 @@ class SimpleField(Entity):
     def spawn(self, side, entity):
         self.ensure_registration()
         self.sides[side].members.append(entity)
-        entity.be_born()
+        if entity.living == 'unborn':
+            entity.be_born()
         self.reg_entity(entity)
         entity.req_mod(Sided, side)
         entity.req_mod(BattlefieldEntity)
