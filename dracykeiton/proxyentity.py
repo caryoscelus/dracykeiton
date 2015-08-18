@@ -21,7 +21,7 @@
 """"""
 
 from .compat import *
-from .entity import Entity, SimpleNode, listener, NodeDependencyError
+from .entity import Entity, SimpleNode, listener, NodeDependencyError, mod_dep
 
 class ProxyEntity(Entity):
     """Entity which gives values from other entity.
@@ -126,3 +126,12 @@ class CachedEntity(Entity):
 
 class ProxyAttributeError(AttributeError):
     pass
+
+if HAS_RENPY:
+    @mod_dep(ProxyEntity)
+    class RenpyProxyTracebackReporter(Entity):
+        @unbound
+        def report_traceback(self):
+            return "Hello from ProxyEntity.."
+    
+    ProxyEntity.global_mod(RenpyProxyTracebackReporter)
