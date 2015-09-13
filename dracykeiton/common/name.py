@@ -26,3 +26,8 @@ class Name(Entity):
     @unbound
     def _init(self, name=''):
         self.dynamic_property('name', name)
+
+class Id(Entity):
+    @unbound
+    def _init(self, id=''):
+        self.dynamic_property('id', id)
