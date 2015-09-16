@@ -26,7 +26,7 @@ from .hit import *
 from .hp import *
 from .inspire import *
 from .kind import *
-from .name import *
+from .meta import *
 from .xp import *
 from .kill import *
 from .level import *
