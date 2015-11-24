@@ -22,7 +22,7 @@
 
 from ..compat import *
 from .. import random
-from ..common.battlefield import Battlefield, Side
+from ..common.battlefield import TwoSideField, Side
 import copy
 
 class SideGen(object):
@@ -60,7 +60,7 @@ class BattleGen(object):
     
     def generate(self):
         """Generate encounter (returns turnman)"""
-        battlefield = Battlefield(**self.battlefield_args)
+        battlefield = TwoSideField(**self.battlefield_args)
         turnman = self.turnman_c(battlefield)
         for side_gen in self.sides:
             side = Side()

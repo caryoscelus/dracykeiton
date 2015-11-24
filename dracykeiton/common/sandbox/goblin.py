@@ -20,7 +20,7 @@
 
 from ...entity import Entity, mod_dep
 from ...compat import *
-from .. import ActionPoint, Hp, InspirableHit, Battlefield, Side, Inspire, Kind, XpBasedLevel, LivingActing, XpKill, RobustHp, LevelHp, RoundingHp, Caller, LevelAbility, DexterityBasedAccuracy, DexterityBasedEvasion, AttributeLevelup, Heal
+from .. import ActionPoint, Hp, InspirableHit, Side, Inspire, Kind, XpBasedLevel, LivingActing, XpKill, RobustHp, LevelHp, RoundingHp, Caller, LevelAbility, DexterityBasedAccuracy, DexterityBasedEvasion, AttributeLevelup, Heal
 
 @mod_dep(
     RoundingHp,

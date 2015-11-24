@@ -202,7 +202,7 @@ class SimpleField(Entity):
                 self.unspawn(target)
 
 @mod_dep(SimpleField)
-class Battlefield(Entity):
+class TwoSideField(Entity):
     @unbound
     def _init(self, keep_dead=True):
         self.keep_dead = keep_dead
