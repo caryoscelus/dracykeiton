@@ -57,19 +57,11 @@ class Side(Entity):
     def empty_side(self):
         return all([member.living != 'alive' for member in self.members])
 
-class SimpleField(Entity):
+class SidedCombat(Entity):
     @unbound
-    def _init(self, *args, **kwargs):
-        keep_dead = kwargs.get('keep_dead', True)
+    def _init(self):
         self.dynamic_property('sides', dict())
-        self.dynamic_property('win_conditions', dict())
-        self.dynamic_property('lose_conditions', dict())
-        self.dynamic_property('keep_dead', keep_dead)
-        self.dynamic_property('state', battle.NotFinished())
         self.dynamic_property('to_reg', list())
-        for side in args:
-            if not side in self.sides:
-                self.add_side(side, Side())
     
     @unbound
     def _load(self):
@@ -98,6 +90,13 @@ class SimpleField(Entity):
         self.lose_conditions[name] = set()
         for entity in side.members:
             self.reg_entity(entity)
+
+@mod_dep(SidedCombat)
+class WinLoseConditions(Entity):
+    @unbound
+    def _init(self, win_conditions=dict(), lose_conditions=dict()):
+        self.dynamic_property('win_conditions', win_conditions)
+        self.dynamic_property('lose_conditions', lose_conditions)
     
     @unbound
     def add_lose_condition(self, side, cond):
@@ -121,18 +120,28 @@ class SimpleField(Entity):
                     if win(self.sides[side]):
                         result[side] = 'win'
                         break
+        winners = [side for side in result if result[side] == 'win']
         if len(result) == len(self.sides):
-            winners = [side for side in result if result[side] == 'win']
             if winners:
                 self.state = battle.Won(winners)
             else:
                 self.state = battle.Finished()
         elif len(result)+1 == len(self.sides):
-            winners = [side for side in result if result[side] == 'win']
             if winners:
                 self.state = battle.Won(winners)
             else:
                 self.state = battle.Won([side for side in self.sides if not side in result])
+
+@mod_dep(SidedCombat, WinLoseConditions)
+class SimpleField(Entity):
+    @unbound
+    def _init(self, *args, **kwargs):
+        keep_dead = kwargs.get('keep_dead', True)
+        self.dynamic_property('keep_dead', keep_dead)
+        self.dynamic_property('state', battle.NotFinished())
+        for side in args:
+            if not side in self.sides:
+                self.add_side(side, Side())
     
     @unbound
     def spawn(self, side, entity):
