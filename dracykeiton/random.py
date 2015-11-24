@@ -30,3 +30,6 @@ try:
     from renpy.random import *
 except ImportError:
     from random import *
+
+# can be used for stuff that does not need to have reproducable random, e.g. ui
+import random as real_random
