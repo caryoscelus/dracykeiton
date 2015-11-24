@@ -220,11 +220,13 @@ class GridField(Entity):
     @unbound
     def _init(self, w=1, h=1):
         self.dynamic_property('grid', None)
+        self.dynamic_property('size', None)
         self.init_grid(w, h)
     
     @unbound
     def init_grid(self, w, h):
         self.grid = [[GridCell() for _ in range(w)] for _ in range(h)]
+        self.size = (w, h)
     
     @unbound
     def put_on(self, x, y, entity, layer=None):
