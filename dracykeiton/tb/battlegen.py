@@ -22,7 +22,7 @@
 
 from ..compat import *
 from .. import random
-from ..common.battlefield import TwoSideField, Side
+from ..common.battlefield import Side
 import copy
 
 class SideGen(object):
@@ -49,18 +49,19 @@ class SideGen(object):
         return entities
 
 class BattleGen(object):
-    def __init__(self, turnman_c, **battlefield_args):
+    def __init__(self, turnman_c, field_c, **battlefield_args):
         super(BattleGen, self).__init__()
         self.sides = []
         self.battlefield_args = battlefield_args
         self.turnman_c = turnman_c
+        self.field_c = field_c
     
     def add_side(self, *args, **kwargs):
         self.sides.append(SideGen(*args, **kwargs))
     
     def generate(self):
         """Generate encounter (returns turnman)"""
-        battlefield = TwoSideField(**self.battlefield_args)
+        battlefield = self.field_c(**self.battlefield_args)
         turnman = self.turnman_c(battlefield)
         for side_gen in self.sides:
             side = Side()

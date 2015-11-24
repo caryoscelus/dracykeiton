@@ -27,6 +27,7 @@ from dracykeiton.action import SimpleEffectProcessor
 from dracykeiton.tb.controller import UserController
 from dracykeiton.tb.battlegen import BattleGen
 from dracykeiton.ai.sandbox.battleai import AIBattleController
+from dracykeiton.common.battlefield import TwoSideField
 from dracykeiton.common.sandbox.goblin import Goblin
 
 from test_battle import prepare_battle
@@ -47,7 +48,7 @@ class PausingTurnman(LockableTurnman, SimpleEffectProcessor):
         t.start()
 
 def test_ai_effects():
-    encounter = BattleGen(PausingTurnman)
+    encounter = BattleGen(PausingTurnman, TwoSideField)
     goblin = Goblin()
     enemy0 = Goblin()
     enemy1 = Goblin()
