@@ -18,23 +18,28 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""common: package containing common enitty build blocks"""
+from ..compat import *
+from ..entity import Entity, simplenode, depends, mod_dep
+from ..action import action
+from .ap import ActionPoint
+from .battlefield import GridEntity, BattlefieldEntity
 
-from .ap import *
-from .battlefield import *
-from .hit import *
-from .hp import *
-from .inspire import *
-from .kind import *
-from .meta import *
-from .xp import *
-from .kill import *
-from .level import *
-from .calling import *
-from .accuracy import *
-from .dexterity import *
-from .evasion import *
-from .attribute import *
-from .heal import *
-from .dice import *
-from .grid import *
+@mod_dep(ActionPoint, GridEntity, BattlefieldEntity)
+class Movable(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('move_constraints', list())
+    
+    @unbound
+    def add_move_constraint(self, constraint):
+        self.move_constraints.append(constraint)
+    
+    @action
+    def move(self, x, y):
+        self.field.put_on(x, y, self)
+    
+    @unbound
+    def can_move(self, x, y):
+        if not all([constraint(self, x, y) for constraint in self.move_constraints]):
+            return False
+        return self.spend_ap(1)
