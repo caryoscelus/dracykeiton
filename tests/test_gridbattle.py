@@ -33,10 +33,10 @@ def test_chess_moves():
     darknight = Knight()
     board.spawn('black', darknight)
     board.put_on(0, 0, darknight)
-    assert board.grid[0][0].content[None] == darknight
+    assert board.grid[0][0].get() == darknight
     assert darknight.x == 0 and darknight.y == 0
     assert darknight.check_move(1, 2)
     assert not darknight.check_move(2, 2)
     board.put_on(1, 2, darknight)
-    assert board.grid[2][1].content[None] == darknight
-    assert board.grid[0][0].content[None] is None
+    assert board.grid[2][1].get() == darknight
+    assert board.grid[0][0].get() is None

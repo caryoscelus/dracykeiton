@@ -207,6 +207,10 @@ class GridCell(Entity):
         if not content:
             content = dict()
         self.dynamic_property('content', content)
+    
+    @unbound
+    def get(self, layer=None):
+        return self.content.get(layer)
 
 class GridEntity(Entity):
     @unbound
