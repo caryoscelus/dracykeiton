@@ -201,6 +201,51 @@ class SimpleField(Entity):
             if not self.keep_dead:
                 self.unspawn(target)
 
+class GridCell(Entity):
+    @unbound
+    def _init(self, content=None):
+        if not content:
+            content = dict()
+        self.dynamic_property('content', content)
+
+class GridEntity(Entity):
+    @unbound
+    def _init(self, x=None, y=None, layer=None):
+        self.dynamic_property('x', x)
+        self.dynamic_property('y', y)
+        self.dynamic_property('layer', layer)
+
+@mod_dep(SimpleField)
+class GridField(Entity):
+    @unbound
+    def _init(self, w=1, h=1):
+        self.dynamic_property('grid', None)
+        self.init_grid(w, h)
+    
+    @unbound
+    def init_grid(self, w, h):
+        self.grid = [[GridCell() for _ in range(w)] for _ in range(h)]
+    
+    @unbound
+    def put_on(self, x, y, entity, layer=None):
+        if not entity.has_mod(GridEntity):
+            entity.req_mod(GridEntity, x, y, layer)
+        else:
+            x0, y0 = entity.x, entity.y
+            layer0 = entity.layer
+            if x0 == x and y0 == y and layer0 == layer:
+                return
+            else:
+                self.remove_from(x0, y0, layer0)
+        self.grid[y][x].content[layer] = entity
+        entity.x = x
+        entity.y = y
+    
+    @unbound
+    def remove_from(self, x, y, layer=None):
+        if not (x is None) and not (y is None):
+            self.grid[y][x].content[layer] = None
+
 @mod_dep(SimpleField)
 class TwoSideField(Entity):
     @unbound
