@@ -63,6 +63,14 @@ def category(cat):
         return f
     return decorator
 
+def get_actions(self):
+    """Get categorized actions (with their names)
+    
+    TODO: maybe move somewhere
+    """
+    attrs = {name : getattr(self, name) for name in dir(self)}
+    return {name : attrs[name] for name in attrs if callable(attrs[name]) and hasattr(attrs[name], 'category')}
+
 class ActionProcessor(object):
     """Action processing entity.
     
