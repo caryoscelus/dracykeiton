@@ -22,7 +22,7 @@
 
 from ..compat import *
 from ..entity import Entity, simplenode, depends, mod_dep
-from ..action import action
+from ..action import action, category
 from .ap import ActionPoint
 from .inspire import Inspirable
 from .kill import Kill
@@ -35,6 +35,7 @@ class Hit(Entity):
     def _init(self, hit_damage=0):
         self.dynamic_property('hit_damage', hit_damage)
     
+    @category('battle')
     @action
     def hit(self, enemy):
         if self.try_hit(enemy):

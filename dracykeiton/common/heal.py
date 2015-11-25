@@ -20,7 +20,7 @@
 
 from ..compat import *
 from ..entity import Entity, mod_dep
-from ..action import action
+from ..action import action, category
 from .ap import ActionPoint
 
 @mod_dep(ActionPoint)
@@ -29,6 +29,7 @@ class Heal(Entity):
     def _init(self):
         self.dynamic_property('heal_amount', 0)
     
+    @category('buff')
     @action
     def heal(self, ally):
         ally.hp += self.heal_amount

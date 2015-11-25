@@ -22,13 +22,14 @@
 
 from ..compat import *
 from ..entity import Entity
-from ..action import action
+from ..action import action, category
 
 class Inspire(Entity):
     @unbound
     def _init(self):
         pass
     
+    @category('buff')
     @action
     def inspire(self, ally):
         ally.be_inspired()

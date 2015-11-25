@@ -20,7 +20,7 @@
 
 from ..compat import *
 from ..entity import Entity, simplenode, mod_dep
-from ..action import action
+from ..action import action, category
 from .ap import ActionPoint
 from .battlefield import BattlefieldEntity
 
@@ -30,6 +30,7 @@ class Caller(Entity):
     def _init(self, calling_type=None):
         self.dynamic_property('calling_type', calling_type)
     
+    @category('battle')
     @action
     def call_unit(self):
         unit = self.calling_type()
