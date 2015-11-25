@@ -203,7 +203,9 @@ class Entity(object):
             self._props[name].value = value
             self.notify_listeners(name)
         elif name in self._methods:
-            super(Entity, self).__setattr__(name, functools.partial(value, self))
+            method = functools.partial(value, self)
+            functools.update_wrapper(method, value)
+            super(Entity, self).__setattr__(name, method)
         else:
             super(Entity, self).__setattr__(name, value)
             #raise AttributeError('{} has no property {}'.format(self, name))
