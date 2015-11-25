@@ -214,7 +214,7 @@ class Entity(object):
         return 'Entity {}'.format({name:getattr(self, name) for name in self._props})
     
     def __repr__(self):
-        return str(self)
+        return 'Entity of type {} with mods {}'.format(type(self).__name__, [mod.__name__ for mod in self._mods])
     
     def __getstate__(self):
         self_copy = self.__dict__.copy()
