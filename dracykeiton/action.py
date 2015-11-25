@@ -57,6 +57,12 @@ def action(f):
     wrap.arguments = f.__code__.co_varnames[:argcount]
     return wrap
 
+def category(cat):
+    def decorator(f):
+        f.category = cat
+        return f
+    return decorator
+
 class ActionProcessor(object):
     """Action processing entity.
     

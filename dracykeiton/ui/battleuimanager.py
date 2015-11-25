@@ -145,8 +145,11 @@ class BattleUIHints(Entity):
     
     @unbound
     def ui_hints(self, action_type):
+        actions = set(self._ui_hints.get(action_type, dict()).values())
+        attrs = [getattr(self, nm) for nm in dir(self)]
+        actions.update([attr for attr in attrs if callable(attr) and hasattr(attr, 'category') and attr.category == action_type])
         try:
-            return [UniversalBattleAction(self, f) for f in self._ui_hints[action_type].values()]
+            return [UniversalBattleAction(self, f) for f in actions]
         except KeyError:
             return []
 
