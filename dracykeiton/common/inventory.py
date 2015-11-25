@@ -18,24 +18,32 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""common: package containing common enitty build blocks"""
+"""Inventory"""
 
-from .ap import *
-from .battlefield import *
-from .hit import *
-from .hp import *
-from .inspire import *
-from .kind import *
-from .meta import *
-from .xp import *
-from .kill import *
-from .level import *
-from .calling import *
-from .accuracy import *
-from .dexterity import *
-from .evasion import *
-from .attribute import *
-from .heal import *
-from .dice import *
-from .grid import *
-from .inventory import *
+from ..compat import *
+from ..entity import Entity
+
+class SimpleInventory(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('inv', list())
+    
+    @unbound
+    def put_to_inv(self, thing):
+        self.inv.append(thing)
+    
+    @unbound
+    def take_from_inv(self, thing):
+        if thing in self.inv:
+            self.inv.remove(thing)
+            return thing
+        return None
+
+class Wield(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('wielded', None)
+    
+    @unbound
+    def wield(self, obj):
+        self.wielded = obj
