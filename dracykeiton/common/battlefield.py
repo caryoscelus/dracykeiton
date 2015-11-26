@@ -24,6 +24,7 @@
 from ..compat import *
 from ..entity import Entity, listener, mod_dep
 from ..tb import battle
+from .xy import XY
 
 class Sided(Entity):
     @unbound
@@ -212,11 +213,10 @@ class GridCell(Entity):
     def get(self, layer=None):
         return self.content.get(layer)
 
+@mod_dep(XY)
 class GridEntity(Entity):
     @unbound
     def _init(self, x=None, y=None, layer=None):
-        self.dynamic_property('x', x)
-        self.dynamic_property('y', y)
         self.dynamic_property('layer', layer)
 
 @mod_dep(SimpleField)

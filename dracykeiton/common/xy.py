@@ -18,25 +18,11 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""common: package containing common enitty build blocks"""
+from ..compat import *
+from ..entity import Entity
 
-from .ap import *
-from .battlefield import *
-from .hit import *
-from .hp import *
-from .inspire import *
-from .kind import *
-from .meta import *
-from .xp import *
-from .kill import *
-from .level import *
-from .calling import *
-from .accuracy import *
-from .dexterity import *
-from .evasion import *
-from .attribute import *
-from .heal import *
-from .dice import *
-from .grid import *
-from .inventory import *
-from .xy import *
+class XY(Entity):
+    @unbound
+    def _init(self):
+        self.dynamic_property('x')
+        self.dynamic_property('y')
