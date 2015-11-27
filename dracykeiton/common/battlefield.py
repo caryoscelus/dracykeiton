@@ -202,12 +202,15 @@ class SimpleField(Entity):
             if not self.keep_dead:
                 self.unspawn(target)
 
+@mod_dep(XY)
 class GridCell(Entity):
     @unbound
-    def _init(self, content=None):
+    def _init(self, x=None, y=None, content=None):
         if not content:
             content = dict()
         self.dynamic_property('content', content)
+        self.x = x
+        self.y = y
     
     @unbound
     def get(self, layer=None):
@@ -229,7 +232,7 @@ class GridField(Entity):
     
     @unbound
     def init_grid(self, w, h):
-        self.grid = [[GridCell() for _ in range(w)] for _ in range(h)]
+        self.grid = [[GridCell(x, y) for x in range(w)] for y in range(h)]
         self.size = (w, h)
     
     @unbound
