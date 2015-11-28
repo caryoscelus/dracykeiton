@@ -21,7 +21,7 @@
 """Test declarative Entity definitions"""
 
 from dracykeiton.compat import *
-from dracykeiton.entity import Entity, properties
+from dracykeiton.entity import Entity, properties, mod_dep
 
 def test_declarative_properties():
     @properties({
@@ -41,3 +41,14 @@ def test_no_init():
     class Foo(Entity):
         pass
     assert Foo().n == None
+
+def test_mod():
+    @properties({'n' : 3})
+    class Foo(Entity):
+        pass
+    
+    @mod_dep(Foo)
+    class Bar(Entity):
+        pass
+    
+    assert Bar().n == 3

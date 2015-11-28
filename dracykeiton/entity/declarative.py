@@ -31,6 +31,7 @@ def properties(props):
         old_init = None
         if '_init' in cl.__dict__:
             old_init = cl._init
+        @unbound
         def new_init(self, *args, **kwargs):
             for name in props:
                 self.dynamic_property(name, props[name])
