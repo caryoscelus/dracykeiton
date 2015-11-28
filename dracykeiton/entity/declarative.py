@@ -24,6 +24,7 @@ This means more separation between data structures and actual code.
 """
 
 from ..compat import *
+from .entity import Entity, depends, simplenode
 
 def properties(props):
     """Decorator on Entity class defining dynamic properties"""
@@ -38,5 +39,20 @@ def properties(props):
             if old_init:
                 old_init(self, *args, **kwargs)
         cl._init = new_init
+        return cl
+    return decorator
+
+def data_node(tp, target, deps=(), priority=None):
+    """Decorator making simple node Entity mod from node function"""
+    def decorator(f):
+        node = depends(deps)(simplenode(f))(None)
+        class cl(Entity):
+            @unbound
+            def _load(self):
+                node_f = {
+                    'get' : self.add_get_node,
+                    'set' : self.add_set_node,
+                }
+                node_f[tp](target, node, priority)
         return cl
     return decorator
