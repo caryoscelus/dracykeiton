@@ -21,7 +21,7 @@
 """Test declarative Entity definitions"""
 
 from dracykeiton.compat import *
-from dracykeiton.entity import Entity, properties, mod_dep
+from dracykeiton.entity import Entity, properties, mod_dep, data_node
 
 def test_declarative_properties():
     @properties({
@@ -52,3 +52,24 @@ def test_mod():
         pass
     
     assert Bar().n == 3
+
+def test_declarative_nodes():
+    @properties({'n' : 5, 'm' : 1})
+    class Foo(Entity):
+        pass
+    
+    @mod_dep(Foo)
+    @data_node('get', 'n', deps=('m'))
+    def NPlusM(value, m):
+        return value+m
+    
+    @mod_dep(Foo, NPlusM)
+    class Bar(Entity):
+        pass
+    
+    bar = Bar()
+    assert bar.n == 6
+    bar.m = 2
+    assert bar.n == 7
+    bar.n = 0
+    assert bar.n == 2
