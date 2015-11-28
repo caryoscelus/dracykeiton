@@ -24,10 +24,10 @@ import functools
 import collections
 from six import add_metaclass
 
-from .compat import *
-from .util.priorityqueue import PriorityQueue
-from .util.dependency import DependencyTree
-from .util import curry
+from ..compat import *
+from ..util.priorityqueue import PriorityQueue
+from ..util.dependency import DependencyTree
+from ..util import curry
 
 class DynamicProperty(object):
     """Stores dynamic property and modifiers associated with it."""

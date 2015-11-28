@@ -23,8 +23,8 @@
 
 from dracykeiton.compat import *
 from dracykeiton.entity import Entity, simplenode, writernode
-from dracykeiton.proxyentity import ProxyEntity, CachedEntity
-from dracykeiton.interpolate import InterpolatingCache
+from dracykeiton.entity.proxyentity import ProxyEntity, CachedEntity
+from dracykeiton.entity.interpolate import InterpolatingCache
 import pytest
 
 class FooEntity(Entity):

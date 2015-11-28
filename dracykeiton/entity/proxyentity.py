@@ -20,7 +20,7 @@
 
 """"""
 
-from .compat import *
+from ..compat import *
 from .entity import Entity, SimpleNode, listener, NodeDependencyError, mod_dep
 
 class ProxyEntity(Entity):

@@ -21,7 +21,7 @@
 """
 """
 
-from .compat import *
+from ..compat import *
 from .entity import Entity
 from .proxyentity import ProxyEntity, CachedEntity
 
