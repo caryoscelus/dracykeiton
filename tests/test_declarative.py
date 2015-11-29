@@ -73,3 +73,12 @@ def test_declarative_nodes():
     assert bar.n == 7
     bar.n = 0
     assert bar.n == 2
+
+def test_declarative_lists():
+    @properties({'lst' : list})
+    class Foo(Entity):
+        pass
+    
+    foo0 = Foo()
+    foo1 = Foo()
+    assert not foo0.lst is foo1.lst

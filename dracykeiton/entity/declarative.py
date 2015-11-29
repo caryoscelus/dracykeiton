@@ -27,7 +27,13 @@ from ..compat import *
 from .entity import Entity, depends, simplenode
 
 def properties(props):
-    """Decorator on Entity class defining dynamic properties"""
+    """Decorator on Entity class defining dynamic properties
+    
+    Property default values can either be persistent values
+    (numberes, strings, boolean) or functions creating complex
+    values. DO NOT pass complex (i.e. changable) objects there, that
+    will result in every instance having same object!
+    """
     def decorator(cl):
         old_init = None
         if '_init' in cl.__dict__:
@@ -35,7 +41,10 @@ def properties(props):
         @unbound
         def new_init(self, *args, **kwargs):
             for name in props:
-                self.dynamic_property(name, props[name])
+                value = props[name]
+                if callable(value):
+                    value = value()
+                self.dynamic_property(name, value)
             if old_init:
                 old_init(self, *args, **kwargs)
         cl._init = new_init
