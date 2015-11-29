@@ -59,7 +59,7 @@ def test_declarative_nodes():
         pass
     
     @mod_dep(Foo)
-    @data_node('get', 'n', deps=('m'))
+    @data_node('get', 'n', deps=('m',))
     def NPlusM(value, m):
         return value+m
     

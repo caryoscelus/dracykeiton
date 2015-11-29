@@ -45,7 +45,7 @@ def properties(props):
 def data_node(tp, target, deps=(), priority=None):
     """Decorator making simple node Entity mod from node function"""
     def decorator(f):
-        node = depends(deps)(simplenode(f))(None)
+        node = depends(*deps)(simplenode(f))(None)
         class cl(Entity):
             @unbound
             def _load(self):
