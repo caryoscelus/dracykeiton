@@ -102,6 +102,7 @@ class Entity(object):
         self._priorities = ('early', 'normal', 'late')
         self._default = 'normal'
         self._mods = list([type(self)])
+        self._mods_amount = dict({type(self):1})
         self._get_depends_on = {}
         fix_methods(self)
         self._init_depmods()
@@ -234,6 +235,7 @@ class Entity(object):
     def __setstate__(self, state):
         self.__dict__.update(state)
         self._mods = list([type(self)])
+        self._mods_amount = dict({type(self):1})
         self._listeners = dict({prop:list() for prop in self._props})
         self._load_depmods()
         self._load()
@@ -287,7 +289,10 @@ class Entity(object):
         """Add mod to this entity (for internal use)"""
         if not mod in self._mods:
             self._mods.append(mod)
+            self._mods_amount[mod] = 1
             mod.enable(self, first_load, *args, **kwargs)
+        else:
+            self._mods_amount[mod] += 1
     
     def add_mod(self, mod, *args, **kwargs):
         """Add mod dynamically"""
@@ -299,7 +304,12 @@ class Entity(object):
     
     def del_mod(self, mod):
         """Remove mod dynamically"""
-        raise NotImplementedError
+        mod_deps = DependencyTree.collect(mod, get_mods_deps)
+        for dep in mod_deps:
+            self._mods_amount[dep] -= 1
+            if self._mods_amount[dep] <= 0:
+                dep.disable(self)
+                self._mods.remove(dep)
     
     def has_mod(self, mod):
         """Check if this Entity has mod.
@@ -308,13 +318,6 @@ class Entity(object):
         be implemented by different mods.
         """
         return mod in self._mods
-    
-    def remove_mod(self, mod):
-        """Remove mod from this entity.
-        mod should have correct disable method.
-        """
-        mod.disable(self)
-        self._mods.remove(mod)
     
     def no_set(self, prop):
         """Forbid setting prop"""

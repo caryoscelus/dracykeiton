@@ -100,7 +100,7 @@ def test_mod():
     entity = Entity()
     entity.add_mod(Foo)
     assert entity.n == 5
-    entity.remove_mod(Foo)
+    entity.del_mod(Foo)
     with pytest.raises(AttributeError):
         entity.n
 
