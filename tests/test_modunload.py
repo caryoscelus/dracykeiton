@@ -58,3 +58,22 @@ def test_dependency_unload():
     entity.add_mod(Bar)
     entity.del_mod(Bar)
     assert entity.m is None
+
+def test_unload_node():
+    foo = Foo()
+    foo.add_mod(NPlus1)
+    assert foo.n == 6
+    foo.del_mod(NPlus1)
+    assert foo.n == 5
+
+def test_unload_properties():
+    entity = Entity()
+    with pytest.raises(AttributeError):
+        entity.n
+    entity.add_mod(Foo)
+    assert entity.n == 5
+    entity.n = 6
+    assert entity.n == 6
+    entity.del_mod(Foo)
+    with pytest.raises(AttributeError):
+        entity.n

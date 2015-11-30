@@ -38,6 +38,9 @@ def properties(props):
         old_init = None
         if '_init' in cl.__dict__:
             old_init = cl._init
+        old_uninit = None
+        if '_uninit' in cl.__dict__:
+            old_uninit = cl._uninit
         @unbound
         def new_init(self, *args, **kwargs):
             for name in props:
@@ -47,7 +50,14 @@ def properties(props):
                 self.dynamic_property(name, value)
             if old_init:
                 old_init(self, *args, **kwargs)
+        @unbound
+        def new_uninit(self):
+            for name in props:
+                self.remove_property(name)
+            if old_uninit:
+                old_uninit(self)
         cl._init = new_init
+        cl._uninit = new_uninit
         return cl
     return decorator
 
@@ -63,5 +73,13 @@ def data_node(tp, target, deps=(), priority=None):
                     'set' : self.add_set_node,
                 }
                 node_f[tp](target, node, priority)
+            
+            @unbound
+            def _uninit(self):
+                node_f = {
+                    'get' : self.del_get_node,
+                    'set' : self.del_set_node,
+                }
+                node_f[tp](target, node)
         return cl
     return decorator

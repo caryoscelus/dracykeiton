@@ -26,12 +26,12 @@ from dracykeiton.common.sandbox.goblin import GoblinLeader
 from dracykeiton import pickle
 
 def test_pickle_property():
-    p = DynamicProperty(empty=0)
+    p = DynamicProperty(None, empty=0)
     s = pickle.dumps(p)
     p1 = pickle.loads(s)
     assert p1.value == 0
-    p = DynamicProperty(empty=0)
-    def node(value):
+    p = DynamicProperty(None, empty=0)
+    def node(self, value):
         return value+1
     p.add_get_node(node)
     s = pickle.dumps(p)

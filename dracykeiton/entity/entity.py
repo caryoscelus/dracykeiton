@@ -31,10 +31,11 @@ from ..util import curry
 
 class DynamicProperty(object):
     """Stores dynamic property and modifiers associated with it."""
-    def __init__(self, empty=None, priorities=(), default=None):
+    def __init__(self, owner, empty=None, priorities=(), default=None):
         self.getters = PriorityQueue(*priorities, default=default)
         self.setters = PriorityQueue(*priorities, default=default)
         self._value = empty
+        self.owner = owner
     
     def __str__(self):
         return str(self.value)
@@ -46,7 +47,7 @@ class DynamicProperty(object):
         # we expect somebody else to add all the nodes since we can't
         # store them from here
         if self.getters or self.setters:
-            self_copy = DynamicProperty(self._value, priorities=self.getters.priorities, default=self.getters.default)
+            self_copy = DynamicProperty(self.owner, self._value, priorities=self.getters.priorities, default=self.getters.default)
             return self_copy.__getstate__()
         return self.__dict__
     
@@ -54,13 +55,13 @@ class DynamicProperty(object):
     def value(self):
         value = self._value
         for mod in self.getters:
-            value = mod(value)
+            value = mod(self.owner, value)
         return value
     
     @value.setter
     def value(self, value):
         for mod in self.setters:
-            value = mod(value)
+            value = mod(self.owner, value)
         self._value = value
     
     def add_set_node(self, f, priority=None):
@@ -68,6 +69,12 @@ class DynamicProperty(object):
     
     def add_get_node(self, f, priority=None):
         self.getters.add(f, priority)
+    
+    def del_set_node(self, f):
+        self.setters.remove(f)
+    
+    def del_get_node(self, f):
+        self.getters.remove(f)
 
 class EntityMeta(type):
     def __init__(self, name, bases, d):
@@ -272,7 +279,7 @@ class Entity(object):
             return
         if priorities is None:
             priorities = self._priorities
-        self._props[name] = DynamicProperty(empty=empty, priorities=priorities, default=self._default)
+        self._props[name] = DynamicProperty(self, empty=empty, priorities=priorities, default=self._default)
         self._get_depends_on[name] = dict()
         self._listeners[name] = list()
     
@@ -325,11 +332,11 @@ class Entity(object):
     
     def add_set_node(self, prop, node, priority=None):
         """Add setter node"""
-        self._props[prop].add_set_node(functools.partial(node, self), priority)
+        self._props[prop].add_set_node(node, priority)
     
     def add_get_node(self, prop, node, priority=None):
         """Add getter node"""
-        self._props[prop].add_get_node(functools.partial(node, self), priority)
+        self._props[prop].add_get_node(node, priority)
         for dependency in node.deps():
             self.inc_get_dependency(dependency, prop)
         try:
@@ -337,10 +344,24 @@ class Entity(object):
         except RuntimeError:
             raise NodeDependencyError('circular dependency on {}'.format(prop))
     
+    def del_set_node(self, prop, node):
+        self._props[prop].del_set_node(node)
+    
+    def del_get_node(self, prop, node):
+        self._props[prop].del_get_node(node)
+        for dependency in node.deps():
+            self.dec_get_dependency(dependency, prop)
+    
     def inc_get_dependency(self, dependency, dependant):
         if not dependant in self._get_depends_on[dependency]:
             self._get_depends_on[dependency][dependant] = 0
         self._get_depends_on[dependency][dependant] += 1
+    
+    def dec_get_dependency(self, dependency, dependant):
+        if not dependant in self._get_depends_on[dependency]:
+            self._get_depends_on[dependency][dependant] = 0
+        else:
+            self._get_depends_on[dependency][dependant] -= 1
     
     def add_listener_node(self, prop, listener):
         """Add listner node to the prop.
