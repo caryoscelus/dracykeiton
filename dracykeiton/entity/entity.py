@@ -91,7 +91,7 @@ class Entity(object):
     """Base entity, including dynamic property and modding mechanism.
     
     Do not create class hierarchy. All entity classes should inherit this
-    directly and use .req_mod() for dependencies.
+    directly and use @mod_dep for dependencies.
     """
     def __init__(self, *args, **kwargs):
         super(Entity, self).__init__()
@@ -243,7 +243,7 @@ class Entity(object):
     
     @classmethod
     def enable(cl, target, first_load, *args, **kwargs):
-        """Enable this mod on target entity"""
+        """Enable this mod on target entity (internal use)"""
         for attr in cl.__dict__:
             if attr[0] != '_':
                 target.dynamic_method(attr)
@@ -255,7 +255,7 @@ class Entity(object):
     
     @classmethod
     def disable(cl, target):
-        """Disable this mod on target entity
+        """Disable this mod on target entity (internal use)
         
         NOTE: not really used or tested yet
         """
@@ -280,16 +280,27 @@ class Entity(object):
         del self._get_depends_on[name]
     
     def load_mod(self, mod, *args, **kwargs):
-        """Load mod to this entity after reloading"""
+        """Load mod to this entity after reloading (for internal use)"""
         if not mod in self._mods:
             self._mods.append(mod)
             mod.enable(self, False, *args, **kwargs)
     
     def req_mod(self, mod, *args, **kwargs):
-        """Add mod to this entity"""
+        """Add mod to this entity (for internal use)"""
         if not mod in self._mods:
             self._mods.append(mod)
             mod.enable(self, True, *args, **kwargs)
+    
+    def add_mod(self, mod, *args, **kwargs):
+        """Add mod dynamically"""
+        mod_deps = DependencyTree.collect(mod, get_mods_deps)
+        for dep in mod_deps:
+            self.req_mod(dep)
+        self.req_mod(mod)
+    
+    def del_mod(self, mod):
+        """Remove mod dynamically"""
+        raise NotImplementedError
     
     def has_mod(self, mod):
         """Check if this Entity has mod.
