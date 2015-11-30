@@ -147,10 +147,11 @@ class Entity(object):
     def _uninit(self):
         """This is called when unloading mod.
         
-        Not really used much for now. You should implement this in your
-        unloadable mod if you want to use it.
+        You should implement this in your unloadable mod if you use `_init`.
+        `_uninit` is implemented for declarative mods
         """
-        raise NotImplementedError
+        if '_init' in type(self).__dict__:
+            raise NotImplementedError
     
     @classmethod
     def dep_mod(cl, mod):
