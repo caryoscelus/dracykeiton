@@ -37,7 +37,7 @@ def test_action_name():
     a = ActionEntity()
     assert a.foo.__name__ == 'foo'
     b = Entity()
-    b.req_mod(ActionEntity)
+    b.add_mod(ActionEntity)
     #assert b.foo.__name__ == 'foo' # <- doesn't work
     # unfortunatelly we can't fix it :(
     # python creates ugly functools.partial when we call non-class method on instance

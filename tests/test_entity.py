@@ -98,7 +98,7 @@ def test_mod():
         def get5(value):
             return 5
     entity = Entity()
-    entity.req_mod(Foo)
+    entity.add_mod(Foo)
     assert entity.n == 5
     entity.remove_mod(Foo)
     with pytest.raises(AttributeError):
@@ -145,7 +145,7 @@ class PatchedBase(Entity):
 class UnpatchedSub(Entity):
     @unbound
     def _init(self):
-        self.req_mod(PatchedBase)
+        self.add_mod(PatchedBase)
 
 class Patch(Entity):
     @unbound

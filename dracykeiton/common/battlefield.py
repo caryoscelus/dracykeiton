@@ -84,7 +84,7 @@ class SidedCombat(Entity):
     @unbound
     def add_side(self, name, side):
         self.ensure_registration()
-        side.req_mod(Sided, name)
+        side.add_mod(Sided, name)
         side.ally_group = name
         self.sides[name] = side
         self.win_conditions[name] = set()
@@ -151,8 +151,8 @@ class SimpleField(Entity):
         if entity.living == 'unborn':
             entity.be_born()
         self.reg_entity(entity)
-        entity.req_mod(Sided, side)
-        entity.req_mod(BattlefieldEntity)
+        entity.add_mod(Sided, side)
+        entity.add_mod(BattlefieldEntity)
         entity.field = self
     
     @unbound
@@ -238,7 +238,7 @@ class GridField(Entity):
     @unbound
     def put_on(self, x, y, entity, layer=None):
         if not entity.has_mod(GridEntity):
-            entity.req_mod(GridEntity, x, y, layer)
+            entity.add_mod(GridEntity, x, y, layer)
         else:
             x0, y0 = entity.x, entity.y
             layer0 = entity.layer

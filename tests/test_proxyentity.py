@@ -77,7 +77,7 @@ def test_modded_proxy():
     foo = FooEntity()
     proxy = ProxyEntity(foo)
     assert proxy.n == 0
-    proxy.req_mod(SlideNProxy)
+    proxy.add_mod(SlideNProxy)
     foo.n = 5
     assert proxy.n == 0
     proxy.step()
@@ -89,7 +89,7 @@ def linear(t):
 def test_cached_interpolating_proxy():
     foo = FooEntity()
     proxy = ProxyEntity(foo)
-    proxy.req_mod(InterpolatingCache)
+    proxy.add_mod(InterpolatingCache)
     proxy.cache_interpolate_float('n', linear)
     foo.n = 0
     foo.n = 1
@@ -103,13 +103,13 @@ def test_cached_interpolating_proxy():
 class ProxyFoo(Entity):
     @unbound
     def _init(self):
-        self.req_mod(ProxyEntity)
+        self.add_mod(ProxyEntity)
 
 def test_proxy_instance():
     with pytest.raises(TypeError):
         ProxyFoo()
     a = ProxyEntity()
-    a.req_mod(ProxyFoo)
+    a.add_mod(ProxyFoo)
 
 def test_equality():
     entity = Entity()

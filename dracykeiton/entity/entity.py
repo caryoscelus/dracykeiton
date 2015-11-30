@@ -279,24 +279,23 @@ class Entity(object):
         del self._props[name]
         del self._get_depends_on[name]
     
-    def load_mod(self, mod, *args, **kwargs):
+    def load_mod(self, mod):
         """Load mod to this entity after reloading (for internal use)"""
-        if not mod in self._mods:
-            self._mods.append(mod)
-            mod.enable(self, False, *args, **kwargs)
+        self.req_mod(mod, first_load=False)
     
-    def req_mod(self, mod, *args, **kwargs):
+    def req_mod(self, mod, args=(), kwargs={}, first_load=True):
         """Add mod to this entity (for internal use)"""
         if not mod in self._mods:
             self._mods.append(mod)
-            mod.enable(self, True, *args, **kwargs)
+            mod.enable(self, first_load, *args, **kwargs)
     
     def add_mod(self, mod, *args, **kwargs):
         """Add mod dynamically"""
         mod_deps = DependencyTree.collect(mod, get_mods_deps)
         for dep in mod_deps:
-            self.req_mod(dep)
-        self.req_mod(mod)
+            if dep != mod:
+                self.req_mod(dep)
+        self.req_mod(mod, args, kwargs)
     
     def del_mod(self, mod):
         """Remove mod dynamically"""

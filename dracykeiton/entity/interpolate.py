@@ -28,8 +28,8 @@ from .proxyentity import ProxyEntity, CachedEntity
 class InterpolatingCache(Entity):
     @unbound
     def _init(self, delay=1.0):
-        self.req_mod(ProxyEntity)
-        self.req_mod(CachedEntity)
+        self.add_mod(ProxyEntity)
+        self.add_mod(CachedEntity)
         self.dynamic_property('_interpolating_st', None)
     
     @unbound

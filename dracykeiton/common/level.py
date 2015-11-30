@@ -55,4 +55,4 @@ class LevelAbility(Entity):
     
     @unbound
     def mod_on_level(self, level, mod, *args, **kwargs):
-        self.on_level(level, curry.curry(self.req_mod)(mod, *args, **kwargs))
+        self.on_level(level, curry.curry(self.add_mod)(mod, *args, **kwargs))

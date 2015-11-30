@@ -62,7 +62,7 @@ def test_pickle_entity():
 
 def test_mod_entity():
     entity = Entity()
-    entity.req_mod(FooEntity)
+    entity.add_mod(FooEntity)
     entity1 = pickle.loads(pickle.dumps(entity))
     assert entity.n == entity1.n
     entity.n = 6
