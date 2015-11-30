@@ -150,8 +150,7 @@ class Entity(object):
         You should implement this in your unloadable mod if you use `_init`.
         `_uninit` is implemented for declarative mods
         """
-        if '_init' in type(self).__dict__:
-            raise NotImplementedError
+        pass
     
     @classmethod
     def dep_mod(cl, mod):
@@ -265,10 +264,7 @@ class Entity(object):
     
     @classmethod
     def disable(cl, target):
-        """Disable this mod on target entity (internal use)
-        
-        NOTE: not really used or tested yet
-        """
+        """Disable this mod on target entity (internal use)"""
         cl._uninit(target)
     
     def dynamic_method(self, name):

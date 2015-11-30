@@ -45,6 +45,11 @@ class Bar(Entity):
 class Bar2(Entity):
     pass
 
+class NoInit(Entity):
+    @unbound
+    def t(self):
+        pass
+
 def test_manual_unload():
     entity = Entity()
     entity.add_mod(Bar)
@@ -58,6 +63,11 @@ def test_dependency_unload():
     entity.add_mod(Bar)
     entity.del_mod(Bar)
     assert entity.m is None
+
+def test_noinit_unload():
+    entity = Entity()
+    entity.add_mod(NoInit)
+    entity.del_mod(NoInit)
 
 def test_unload_node():
     foo = Foo()
