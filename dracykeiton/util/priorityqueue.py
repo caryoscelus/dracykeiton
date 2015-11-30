@@ -49,6 +49,7 @@ class PriorityQueue(object):
         self.priorities = priorities
         self.default = default
         self.store = {p : [] for p in priorities}
+        self.reverse = dict()
     
     def __len__(self):
         return len([x for x in self])
@@ -70,3 +71,15 @@ class PriorityQueue(object):
         if not priority in self.priorities:
             raise NameError('no such priority: {}'.format(priority))
         self.store[priority].append(value)
+        if not value in self.reverse:
+            self.reverse[value] = list()
+        self.reverse[value].append(priority)
+    
+    def remove(self, value):
+        try:
+            priority = self.reverse[value].pop(0)
+            self.store[priority].remove(value)
+        except KeyError:
+            raise ValueError('PriorityQueue {} does not have value {}'.format(self, value))
+        except IndexError:
+            raise ValueError('PriorityQueue {} does not have value {}'.format(self, value))

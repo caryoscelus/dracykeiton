@@ -55,3 +55,24 @@ def test_bad_priority():
     queue = PriorityQueue()
     with pytest.raises(NameError):
         queue.add(0, 'bad')
+
+def test_remove():
+    queue = PriorityQueue('early', 'normal', default='normal')
+    with pytest.raises(ValueError):
+        queue.remove(3)
+    queue.add(3)
+    queue.remove(3)
+    assert not list(queue)
+    queue.add(5, 'early')
+    queue.remove(5)
+    assert not list(queue)
+
+def test_multi_remove():
+    queue = PriorityQueue()
+    queue.add(1)
+    queue.add(1)
+    assert len(queue) == 2
+    queue.remove(1)
+    assert len(queue) == 1
+    queue.remove(1)
+    assert len(queue) == 0
