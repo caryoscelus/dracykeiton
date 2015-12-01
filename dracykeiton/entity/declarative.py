@@ -66,6 +66,10 @@ def data_node(tp, target, deps=(), priority=None):
     def decorator(f):
         node = depends(*deps)(simplenode(f))(None)
         class cl(Entity):
+            def __reduce__(self):
+                import sys
+                return (getattr(sys.modules[f.__module__], f.__name__), ())
+            
             @unbound
             def _load(self):
                 node_f = {
@@ -81,5 +85,11 @@ def data_node(tp, target, deps=(), priority=None):
                     'set' : self.del_set_node,
                 }
                 node_f[tp](target, node)
+        cl.__module__ = f.__module__
+        cl.__name__ = f.__name__
+        try:
+            cl.__qualname__ = f.__qualname__
+        except AttributeError:
+            pass
         return cl
     return decorator

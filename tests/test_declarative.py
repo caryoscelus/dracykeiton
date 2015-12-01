@@ -82,3 +82,26 @@ def test_declarative_lists():
     foo0 = Foo()
     foo1 = Foo()
     assert not foo0.lst is foo1.lst
+
+@properties({'n' : 13})
+class Foo(Entity):
+    pass
+
+@mod_dep(Foo)
+@data_node('get', 'n')
+def Bar(value):
+    return value*2
+
+def test_pickle_properties():
+    from dracykeiton import pickle
+    foo = Foo()
+    foo.n = 1
+    foo = pickle.loads(pickle.dumps(foo))
+    assert foo.n == 1
+
+def test_pickle_node():
+    from dracykeiton import pickle
+    foo = Bar()
+    print(globals()['Bar'])
+    foo = pickle.loads(pickle.dumps(foo))
+    assert foo.n == 26
