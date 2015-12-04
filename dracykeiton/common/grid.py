@@ -40,6 +40,6 @@ class Movable(Entity):
     
     @unbound
     def can_move(self, x, y):
-        if not all([constraint(self, x, y) for constraint in self.move_constraints]):
+        if not all([constraint(x, y) for constraint in self.move_constraints]):
             return False
         return self.spend_ap(1)
