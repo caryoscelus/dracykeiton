@@ -255,6 +255,12 @@ class GridField(Entity):
         if not (x is None) and not (y is None):
             self.grid[y][x].content[layer] = None
 
+@mod_dep(GridField)
+class FieldRange(Entity):
+    @unbound
+    def get_range(self, axy, bxy):
+        return abs(axy[0]-bxy[0])+abs(axy[1]-bxy[1])
+
 @mod_dep(SimpleField)
 class TwoSideField(Entity):
     @unbound
