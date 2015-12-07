@@ -23,7 +23,7 @@
 from ..compat import *
 from ..entity import Entity, properties
 
-@properties({'action' : None})
+@properties(action=None)
 class Actor(Entity):
     """Entity with a planned action
     

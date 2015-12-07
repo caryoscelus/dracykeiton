@@ -26,7 +26,7 @@ This means more separation between data structures and actual code.
 from ..compat import *
 from .entity import Entity, depends, simplenode
 
-def properties(props):
+def properties(**props):
     """Decorator on Entity class defining dynamic properties
     
     Property default values can either be persistent values

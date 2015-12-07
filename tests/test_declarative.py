@@ -24,10 +24,10 @@ from dracykeiton.compat import *
 from dracykeiton.entity import Entity, properties, mod_dep, data_node
 
 def test_declarative_properties():
-    @properties({
-        'n' : 5,
-        'm' : 4,
-    })
+    @properties(
+        n = 5,
+        m = 4,
+    )
     class Foo(Entity):
         def _init(self, m=None):
             if not m is None:
@@ -37,13 +37,13 @@ def test_declarative_properties():
     assert Foo(7).m == 7
 
 def test_no_init():
-    @properties({'n' : None})
+    @properties(n=None)
     class Foo(Entity):
         pass
     assert Foo().n == None
 
 def test_mod():
-    @properties({'n' : 3})
+    @properties(n=3)
     class Foo(Entity):
         pass
     
@@ -54,7 +54,7 @@ def test_mod():
     assert Bar().n == 3
 
 def test_declarative_nodes():
-    @properties({'n' : 5, 'm' : 1})
+    @properties(n=5, m=1)
     class Foo(Entity):
         pass
     
@@ -75,7 +75,7 @@ def test_declarative_nodes():
     assert bar.n == 2
 
 def test_declarative_lists():
-    @properties({'lst' : list})
+    @properties(lst=list)
     class Foo(Entity):
         pass
     
@@ -83,7 +83,7 @@ def test_declarative_lists():
     foo1 = Foo()
     assert not foo0.lst is foo1.lst
 
-@properties({'n' : 13})
+@properties(n=13)
 class Foo(Entity):
     pass
 

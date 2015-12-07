@@ -25,7 +25,7 @@ import pytest
 from dracykeiton.compat import *
 from dracykeiton.entity import Entity, mod_dep, properties, data_node
 
-@properties({'n' : 5})
+@properties(n=5)
 class Foo(Entity):
     pass
 
