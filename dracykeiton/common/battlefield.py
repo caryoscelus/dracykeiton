@@ -201,6 +201,7 @@ class SimpleField(Entity):
         if value == 'dead':
             if not self.keep_dead:
                 self.unspawn(target)
+            self.check_conditions()
 
 @mod_dep(XY)
 class GridCell(Entity):
