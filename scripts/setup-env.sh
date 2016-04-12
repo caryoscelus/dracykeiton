@@ -7,12 +7,14 @@ pyvenv env
 # ..and python 2
 virtualenv env2
 
-# install py.test & dracykeiton
+# install py.test, sphinx & dracykeiton
 source env/bin/activate
 pip install pytest
+pip install sphinx
 pip install -e .
 deactivate
 
+# install py.test & dracykeiton
 source env2/bin/activate
 pip install pytest
 pip install -e .
