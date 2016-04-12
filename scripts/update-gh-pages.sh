@@ -14,6 +14,7 @@ if [ ${BRANCH} =  "master" ]; then
     
     pushd ../dracykeiton-docs
     git checkout --detach master
+    git diff-tree --quiet ${FIRST_COMMIT} ${LAST_COMMIT} -- dracykeiton/ docs/ && exit 0
     ( echo "auto-update docs on $(date +%F)" ; echo ; git log --pretty=format:"%H by %an @ %ad: %s" --date=format:"%F" ${FIRST_COMMIT}..${LAST_COMMIT} -- dracykeiton/ docs/; ) > commit-message.tmp
     
     ./scripts/build-docs.sh
@@ -22,7 +23,9 @@ if [ ${BRANCH} =  "master" ]; then
     
     cp -r ./docs/build/html/* .
     git add .
-    # exit if there are no changes
+    # exit if there are no changes - unfortunately this doesn't seem to work
+    # due to sphinx regenerating searchindex.js every time..
+    # TODO: check if only searchindex.js is changed instead
     git diff-index --quiet --cached HEAD && exit 0
     git commit -F commit-message.tmp
     
