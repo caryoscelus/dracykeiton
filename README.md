@@ -21,7 +21,9 @@ by running `scripts/setup-env.sh`. Tests for both py2 & py3 can be then run by
 
 ## documentation
 
-Coming soon. For now, look for docstrings.
+Currently in early stage, can be found at http://caryoscelus.github.io/dracykeiton/
+
+Check out docstrings if you haven't found proper docs.
 
 ## license
 
