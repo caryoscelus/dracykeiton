@@ -20,6 +20,8 @@
 
 """Generic parts of encounter advanced menu"""
 
+from .option import Option
+
 class Requirement(object):
     """Requirement & price for encounter option.
     
@@ -53,9 +55,9 @@ class AdvancedMenu(object):
     ...
     ```
     """
-    def __init__(self, option_class):
+    option_class = Option
+    def __init__(self):
         super(AdvancedMenu, self).__init__()
-        self.option_class = option_class
         self.caption = None
         self.options = list()
         self.active_option = None
