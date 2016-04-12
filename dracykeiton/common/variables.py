@@ -48,4 +48,4 @@ class LocalVariables(Entity):
         for name in self.locals:
             for callback in self.callbacks:
                 callback(name)
-            self.locals.remove(name)
+        self.locals.clear()
