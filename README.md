@@ -1,6 +1,6 @@
 # dracykeiton
 
-Dracykeiton [draʃəkɛjton] is yet another RPG-oriented gamedev
+*dracykeiton* [draʃəkɛjton] is yet another RPG-oriented gamedev
 toolkit/library for Python. More specifically, it was created to be used
 with Ren'Py, however it can be used stand-alone or in combination with
 another libraries. Python 2 will be somewhat supported as long as Ren'Py
@@ -14,20 +14,10 @@ project (coming soon)
 
 ## testing
 
-    # setup virtual environments for python 3..
-    pyvenv env
-    # ..and python 2
-    virtualenv env2
-    
-    # install py.test
-    source env/bin/activate && pip install pytest && deactivate
-    source env2/bin/activate && pip install pytest && deactivate
-    
-    # install git hooks
-    ln -s `pwd`/githooks/pre-commit .git/hooks/
-    
-    # launching tests
-    ./run-all-tests.sh
+*dracykeiton* uses py.test for testing. If you want to run tests automatically,
+you need to setup virtualenv(s) with py.test installed. You can easily do this
+by running `scripts/setup-env.sh`. Tests for both py2 & py3 can be then run by
+`scripts/run-all-tests.sh`, which will also be triggered by git pre-commit hook.
 
 ## documentation
 
@@ -35,7 +25,7 @@ Coming soon. For now, look for docstrings.
 
 ## license
 
-    Copyright (C) 2015 caryoscelus
+    Copyright (C) 2015-2016 caryoscelus
     
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

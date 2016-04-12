@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-pushd `dirname $0`
+pushd `dirname $0`/..
 
 source env/bin/activate
 py.test tests/

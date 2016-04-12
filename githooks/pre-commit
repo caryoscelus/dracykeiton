@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-bash run-all-tests.sh
+bash scripts/run-all-tests.sh
 RESULT=$?
 [ $RESULT -ne 0 ] && exit 1
 exit 0
