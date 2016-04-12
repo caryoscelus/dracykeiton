@@ -25,19 +25,22 @@ from .outcome import Outcome
 from collections import OrderedDict
 
 class Option(object):
+    """Base encounter menu option class"""
     def __init__(self):
         super(Option, self).__init__()
         self.requires = list()
     
     def can_do(self):
+        """Check if option's requirements are satisfied"""
         return all([req.check() for req in self.requires])
     
     def pay_costs(self):
+        """Pay all the costs for this option."""
         for req in self.requires:
             req.pay()
 
 class OutcomeOption(Option):
-    """AdvancedMenuOption supporting various outcomes
+    """Option supporting various outcomes
     """
     
     """Which class to use for outcome storage."""
@@ -62,7 +65,7 @@ class OutcomeOption(Option):
         self.outcomes[name].set_result(*args, **kwargs)
 
 class RollOutcomeOption(OutcomeOption):
-    """Option which outcome depends on rolls."""
+    """Option whose outcome depends on rolls."""
     def __init__(self):
         super(RollOutcomeOption, self).__init__()
         self.roll_n = None
@@ -96,6 +99,10 @@ class RollOutcomeOption(OutcomeOption):
             self.after_roll()
     
     def after_roll(self, result=None, forced=None):
+        """Launch outcome according to roll result
+        
+        This should be called by .call_roll or .launch if no roll happened
+        """
         if forced:
             self.outcomes[forced].launch()
             return

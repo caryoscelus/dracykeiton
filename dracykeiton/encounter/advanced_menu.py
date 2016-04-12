@@ -18,16 +18,41 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""Generic parts of advanced menu"""
+"""Generic parts of encounter advanced menu"""
 
 class Requirement(object):
+    """Requirement & price for encounter option.
+    
+    Subclass this for your requirements
+    """
     def check(self):
+        """Check if requirement is satisfied."""
         return False
     
     def pay(self):
+        """Pay the price of the option.
+        
+        This is called if Requirement is satisfied and option is chosen. No
+        additional checks should be performed at this stage: they should go in
+        .check()
+        """
         pass
 
 class AdvancedMenu(object):
+    """Central class for encounter advanced menu.
+    
+    Usage example:
+    ```
+    am = AdvancedMenu()
+    ...
+    am.start('choice')
+    am.option(...)
+    am.set_option_custom_property(...)'
+    ...
+    am.option(...)
+    ...
+    ```
+    """
     def __init__(self, option_class):
         super(AdvancedMenu, self).__init__()
         self.option_class = option_class
@@ -39,13 +64,17 @@ class AdvancedMenu(object):
         return getattr(self.active_option, name)
     
     def start(self, caption):
+        """Clean advanced menu & set caption."""
         self.caption = caption
         self.options = list()
         self.active_option = None
     
-    def option(self, name):
-        self.active_option = self.option_class(name)
+    def option(self, *args, **kwargs):
+        """Add option of class .options_class
+        
+        Additional arguments are passed to constructor. This option
+        becomes active and all subsequent calls of unknown methods are
+        directed to it.
+        """
+        self.active_option = self.option_class(*args, **kwargs)
         self.options.append(self.active_option)
-    
-    def launch(self):
-        pass
