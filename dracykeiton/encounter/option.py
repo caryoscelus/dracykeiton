@@ -43,8 +43,8 @@ class OutcomeOption(Option):
     """Option supporting various outcomes
     """
     
-    """Which class to use for outcome storage."""
     outcome_class = Outcome
+    """Which class to use for outcome storage."""
     
     def __init__(self):
         super(OutcomeOption, self).__init__()

@@ -55,7 +55,10 @@ class AdvancedMenu(object):
     ...
     ```
     """
+    
     option_class = Option
+    """Class to be used for creating options."""
+    
     def __init__(self, option_class=None):
         super(AdvancedMenu, self).__init__()
         if option_class:
