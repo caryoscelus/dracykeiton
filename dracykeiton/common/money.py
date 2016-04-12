@@ -27,6 +27,8 @@ from ..entity import Entity, properties
 class Money(Entity):
     @unbound
     def pay(self, amount):
+        if amount < 0:
+            raise ValueError('attempt to pay negative value')
         self.money -= amount
         if self.money < 0:
             raise ValueError('{} is bankrupt! Balance: {}'.format(self, self.money))
@@ -37,3 +39,9 @@ class Money(Entity):
             self.pay(amount)
             return True
         return False
+
+@properties(payment=0)
+class Payment(Entity):
+    @unbound
+    def receive_payment(self, other):
+        other.money += self.payment
