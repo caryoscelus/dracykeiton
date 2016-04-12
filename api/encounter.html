@@ -47,17 +47,26 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#module-dracykeiton.encounter.advanced_menu" title="dracykeiton.encounter.advanced_menu"><code class="xref py py-obj docutils literal"><span class="pre">dracykeiton.encounter.advanced_menu</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#module-dracykeiton.encounter" title="dracykeiton.encounter"><code class="xref py py-obj docutils literal"><span class="pre">dracykeiton.encounter</span></code></a></td>
+<td>Utils to generate encounter menus</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#module-dracykeiton.encounter.advanced_menu" title="dracykeiton.encounter.advanced_menu"><code class="xref py py-obj docutils literal"><span class="pre">dracykeiton.encounter.advanced_menu</span></code></a></td>
 <td>Generic parts of encounter advanced menu</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#module-dracykeiton.encounter.option" title="dracykeiton.encounter.option"><code class="xref py py-obj docutils literal"><span class="pre">dracykeiton.encounter.option</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#module-dracykeiton.encounter.option" title="dracykeiton.encounter.option"><code class="xref py py-obj docutils literal"><span class="pre">dracykeiton.encounter.option</span></code></a></td>
 <td>Advanced menu option classes</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#module-dracykeiton.encounter.outcome" title="dracykeiton.encounter.outcome"><code class="xref py py-obj docutils literal"><span class="pre">dracykeiton.encounter.outcome</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#module-dracykeiton.encounter.outcome" title="dracykeiton.encounter.outcome"><code class="xref py py-obj docutils literal"><span class="pre">dracykeiton.encounter.outcome</span></code></a></td>
 <td>Advanced menu outcome classes</td>
 </tr>
 </tbody>
 </table>
+<span class="target" id="module-dracykeiton.encounter"></span><p>Utils to generate encounter menus</p>
+<p>This package contains utils to build API for generating &#8220;menus&#8221;. The menu
+(represented by AdvancedMenu object) contains list of options and each of them
+can have it&#8217;s own requirements and outcomes. It is possible to create separate
+menu object for each menu you generate or use single instance and clear it with
+.start method.</p>
 <span class="target" id="module-dracykeiton.encounter.advanced_menu"></span><p>Generic parts of encounter advanced menu</p>
 <dl class="class">
 <dt id="dracykeiton.encounter.advanced_menu.AdvancedMenu">
@@ -265,7 +274,7 @@ Requirement.api_name or __name__</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2015, caryoscelus.
+      &copy;2015-2016, caryoscelus.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
