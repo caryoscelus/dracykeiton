@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -18,28 +18,15 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""common: package containing common enitty build blocks"""
+"""Container-like entities"""
 
-from .accuracy import *
-from .actor import *
-from .ap import *
-from .attribute import *
-from .battlefield import *
-from .calling import *
-from .container import *
-from .dice import *
-from .dexterity import *
-from .evasion import *
-from .grid import *
-from .heal import *
-from .hit import *
-from .hp import *
-from .inspire import *
-from .inventory import *
-from .kill import *
-from .kind import *
-from .level import *
-from .meta import *
-from .variables import *
-from .xp import *
-from .xy import *
+from ..compat import *
+from ..entity import Entity, properties
+
+@properties(selected=None)
+class Select(Entity):
+    def select(self, selected):
+        self.selected = selected
+    
+    def unselect(self):
+        self.selected = None
