@@ -18,34 +18,29 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""Generic parts of advanced menu"""
+"""Advanced menu outcome classes"""
 
-class Requirement(object):
-    def check(self):
-        return False
+class Outcome(object):
+    """Outcome for multi-outcome advanced menu"""
+    def __init__(self):
+        self.condition = None
     
-    def pay(self):
+    def set_result(self):
+        """Implement this to store outcome result to be used in launch.
+        
+        Can accept any number of args or kwargs - they are passed unchanged
+        """
         pass
-
-class AdvancedMenu(object):
-    def __init__(self, option_class):
-        super(AdvancedMenu, self).__init__()
-        self.option_class = option_class
-        self.caption = None
-        self.options = list()
-        self.active_option = None
-    
-    def __getattr__(self, name):
-        return getattr(self.active_option, name)
-    
-    def start(self, caption):
-        self.caption = caption
-        self.options = list()
-        self.active_option = None
-    
-    def option(self, name):
-        self.active_option = self.option_class(name)
-        self.options.append(self.active_option)
     
     def launch(self):
+        """This is called when outcome happens. Implement in your subclass."""
         pass
+
+class LabelOutcome(Outcome):
+    """Outcome storing a simple label"""
+    def __init__(self):
+        super(LabelOutcome, self).__init__()
+        self.label = None
+    
+    def set_result(self, label):
+        self.label = label
