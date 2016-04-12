@@ -56,8 +56,10 @@ class AdvancedMenu(object):
     ```
     """
     option_class = Option
-    def __init__(self):
+    def __init__(self, option_class=None):
         super(AdvancedMenu, self).__init__()
+        if option_class:
+            self.option_class = option_class
         self.caption = None
         self.options = list()
         self.active_option = None
