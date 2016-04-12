@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -19,20 +19,25 @@
 ##
 
 from ..compat import *
-from ..entity import Entity
+from ..entity import Entity, properties
 
+@properties(name='')
 class Name(Entity):
     """Entity with a name"""
     @unbound
     def _init(self, name=''):
-        self.dynamic_property('name', name)
+        self.name = name
 
+@properties(id='')
 class Id(Entity):
     @unbound
     def _init(self, id=''):
-        self.dynamic_property('id', id)
+        self.id = id
 
+@properties(description='')
 class Description(Entity):
-    @unbound
-    def _init(self):
-        self.dynamic_property('description', '')
+    pass
+
+@properties(tags=set)
+class Tags(Entity):
+    pass
