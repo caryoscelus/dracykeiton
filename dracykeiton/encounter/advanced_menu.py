@@ -82,3 +82,7 @@ class AdvancedMenu(object):
         """
         self.active_option = self.option_class(*args, **kwargs)
         self.options.append(self.active_option)
+    
+    def available_options(self):
+        """Return currently available options"""
+        return [option for option in self.options if option.can_do()]
