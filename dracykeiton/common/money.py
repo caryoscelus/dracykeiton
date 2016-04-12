@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -18,29 +18,22 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""common: package containing common enitty build blocks"""
+"""Money-related stuff"""
 
-from .accuracy import *
-from .actor import *
-from .ap import *
-from .attribute import *
-from .battlefield import *
-from .calling import *
-from .container import *
-from .dice import *
-from .dexterity import *
-from .evasion import *
-from .grid import *
-from .heal import *
-from .hit import *
-from .hp import *
-from .inspire import *
-from .inventory import *
-from .kill import *
-from .kind import *
-from .level import *
-from .meta import *
-from .money import *
-from .variables import *
-from .xp import *
-from .xy import *
+from ..compat import *
+from ..entity import Entity, properties
+
+@properties(money=0)
+class Money(Entity):
+    @unbound
+    def pay(self, amount):
+        self.money -= amount
+        if self.money < 0:
+            raise ValueError('{} is bankrupt! Balance: {}'.format(self, self.money))
+    
+    @unbound
+    def spend_money(self, amount):
+        if amount <= self.money:
+            self.pay(amount)
+            return True
+        return False
