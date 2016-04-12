@@ -39,5 +39,6 @@ from .kill import *
 from .kind import *
 from .level import *
 from .meta import *
+from .variables import *
 from .xp import *
 from .xy import *
