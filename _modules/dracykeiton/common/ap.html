@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dracykeiton.common.ap &mdash; dracykeiton 0.0.0a documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.0a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="dracykeiton 0.0.0a documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for dracykeiton.common.ap</h1><div class="highlight"><pre>
+<span></span><span class="c1">##</span>
+<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##</span>
+<span class="c1">##  This file is part of Dracykeiton</span>
+<span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
+<span class="c1">##  </span>
+<span class="c1">##  This program is free software: you can redistribute it and/or modify</span>
+<span class="c1">##  it under the terms of the GNU General Public License as published by</span>
+<span class="c1">##  the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1">##  (at your option) any later version.</span>
+<span class="c1">##  </span>
+<span class="c1">##  This program is distributed in the hope that it will be useful,</span>
+<span class="c1">##  but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1">##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1">##  GNU General Public License for more details.</span>
+<span class="c1">##  </span>
+<span class="c1">##  You should have received a copy of the GNU General Public License</span>
+<span class="c1">##  along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">##</span>
+
+<span class="sd">&quot;&quot;&quot;Action point system and stuff related to acting entities in general.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">depends</span><span class="p">,</span> <span class="n">mod_dep</span>
+<span class="kn">from</span> <span class="nn">.hp</span> <span class="kn">import</span> <span class="n">Living</span>
+<span class="kn">from</span> <span class="nn">.turn</span> <span class="kn">import</span> <span class="n">TurnEntity</span>
+<span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">curry</span>
+
+<div class="viewcode-block" id="Acting"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.ap.Acting">[docs]</a><span class="k">class</span> <span class="nc">Acting</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Basic acting entity, only defines can_act property.</span>
+<span class="sd">    </span>
+<span class="sd">    This can be used as basis to various possible acting systems.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;can_act&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span></div>
+
+<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">Acting</span><span class="p">,</span> <span class="n">Living</span><span class="p">)</span>
+<div class="viewcode-block" id="LivingActing"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.ap.LivingActing">[docs]</a><span class="k">class</span> <span class="nc">LivingActing</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Ensure only alive entities can act.&quot;&quot;&quot;</span>
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+    
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_get_node</span><span class="p">(</span><span class="s1">&#39;can_act&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_if_alive</span><span class="p">())</span>
+    
+    <span class="nd">@depends</span><span class="p">(</span><span class="s1">&#39;living&#39;</span><span class="p">)</span>
+    <span class="nd">@simplenode</span>
+<div class="viewcode-block" id="LivingActing.check_if_alive"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.ap.LivingActing.check_if_alive">[docs]</a>    <span class="k">def</span> <span class="nf">check_if_alive</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">living</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">living</span> <span class="o">==</span> <span class="s1">&#39;alive&#39;</span> <span class="ow">and</span> <span class="n">value</span></div></div>
+
+<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">Acting</span><span class="p">,</span> <span class="n">TurnEntity</span><span class="p">)</span>
+<div class="viewcode-block" id="ActionPoint"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.ap.ActionPoint">[docs]</a><span class="k">class</span> <span class="nc">ActionPoint</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;AP entity, defining AP and maxAP properties and helper functions.&quot;&quot;&quot;</span>
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxap</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_turn_end</span><span class="p">(</span><span class="s1">&#39;restore_ap&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;ap&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;maxap&#39;</span><span class="p">,</span> <span class="n">maxap</span><span class="p">)</span>
+    
+    <span class="nd">@unbound</span>
+<div class="viewcode-block" id="ActionPoint.spend_ap"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.ap.ActionPoint.spend_ap">[docs]</a>    <span class="k">def</span> <span class="nf">spend_ap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ap</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This can be used by action checker.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns True if there was enough AP and it&#39;s spent, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_act</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ap</span> <span class="o">&lt;</span> <span class="n">ap</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ap</span> <span class="o">-=</span> <span class="n">ap</span>
+            <span class="k">return</span> <span class="bp">True</span></div>
+    
+    <span class="nd">@unbound</span>
+<div class="viewcode-block" id="ActionPoint.restore_ap"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.ap.ActionPoint.restore_ap">[docs]</a>    <span class="k">def</span> <span class="nf">restore_ap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Mainly to use when new turn starts&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxap</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2016, caryoscelus.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

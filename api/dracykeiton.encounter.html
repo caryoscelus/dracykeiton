@@ -1,0 +1,333 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dracykeiton.encounter package &mdash; dracykeiton 0.0.0a documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="dracykeiton 0.0.0a documentation" href="../index.html" />
+    <link rel="up" title="dracykeiton package" href="dracykeiton.html" />
+    <link rel="next" title="dracykeiton.entity package" href="dracykeiton.entity.html" />
+    <link rel="prev" title="dracykeiton.common.sandbox package" href="dracykeiton.common.sandbox.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dracykeiton-encounter-package">
+<h1>dracykeiton.encounter package<a class="headerlink" href="#dracykeiton-encounter-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-dracykeiton.encounter.advanced_menu">
+<span id="dracykeiton-encounter-advanced-menu-module"></span><h2>dracykeiton.encounter.advanced_menu module<a class="headerlink" href="#module-dracykeiton.encounter.advanced_menu" title="Permalink to this headline">¶</a></h2>
+<p>Generic parts of encounter advanced menu</p>
+<dl class="class">
+<dt id="dracykeiton.encounter.advanced_menu.AdvancedMenu">
+<em class="property">class </em><code class="descclassname">dracykeiton.encounter.advanced_menu.</code><code class="descname">AdvancedMenu</code><span class="sig-paren">(</span><em>option_class=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/advanced_menu.html#AdvancedMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.advanced_menu.AdvancedMenu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Central class for encounter advanced menu.</p>
+<p>Usage example:
+<code class="docutils literal"><span class="pre">`</span>
+<span class="pre">am</span> <span class="pre">=</span> <span class="pre">AdvancedMenu()</span>
+<span class="pre">...</span>
+<span class="pre">am.start('choice')</span>
+<span class="pre">am.option(...)</span>
+<span class="pre">am.set_option_custom_property(...)'</span>
+<span class="pre">...</span>
+<span class="pre">am.option(...)</span>
+<span class="pre">...</span>
+<span class="pre">`</span></code></p>
+<dl class="method">
+<dt id="dracykeiton.encounter.advanced_menu.AdvancedMenu.available_options">
+<code class="descname">available_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/advanced_menu.html#AdvancedMenu.available_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.advanced_menu.AdvancedMenu.available_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return currently available options</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.encounter.advanced_menu.AdvancedMenu.option">
+<code class="descname">option</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/advanced_menu.html#AdvancedMenu.option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.advanced_menu.AdvancedMenu.option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add option of class .options_class</p>
+<p>Additional arguments are passed to constructor. This option
+becomes active and all subsequent calls of unknown methods are
+directed to it.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dracykeiton.encounter.advanced_menu.AdvancedMenu.option_class">
+<code class="descname">option_class</code><a class="headerlink" href="#dracykeiton.encounter.advanced_menu.AdvancedMenu.option_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to be used for creating options.</p>
+<p>alias of <code class="xref py py-class docutils literal"><span class="pre">Option</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.encounter.advanced_menu.AdvancedMenu.start">
+<code class="descname">start</code><span class="sig-paren">(</span><em>caption</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/advanced_menu.html#AdvancedMenu.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.advanced_menu.AdvancedMenu.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clean advanced menu &amp; set caption.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.encounter.advanced_menu.Requirement">
+<em class="property">class </em><code class="descclassname">dracykeiton.encounter.advanced_menu.</code><code class="descname">Requirement</code><a class="reference internal" href="../_modules/dracykeiton/encounter/advanced_menu.html#Requirement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.advanced_menu.Requirement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Requirement &amp; price for encounter option.</p>
+<p>Subclass this for your requirements</p>
+<dl class="method">
+<dt id="dracykeiton.encounter.advanced_menu.Requirement.check">
+<code class="descname">check</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/advanced_menu.html#Requirement.check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.advanced_menu.Requirement.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if requirement is satisfied.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.encounter.advanced_menu.Requirement.pay">
+<code class="descname">pay</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/advanced_menu.html#Requirement.pay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.advanced_menu.Requirement.pay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pay the price of the option.</p>
+<p>This is called if Requirement is satisfied and option is chosen. No
+additional checks should be performed at this stage: they should go in
+.check()</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dracykeiton.encounter.option">
+<span id="dracykeiton-encounter-option-module"></span><h2>dracykeiton.encounter.option module<a class="headerlink" href="#module-dracykeiton.encounter.option" title="Permalink to this headline">¶</a></h2>
+<p>Advanced menu option classes</p>
+<dl class="class">
+<dt id="dracykeiton.encounter.option.APIOption">
+<em class="property">class </em><code class="descclassname">dracykeiton.encounter.option.</code><code class="descname">APIOption</code><a class="reference internal" href="../_modules/dracykeiton/encounter/option.html#APIOption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.option.APIOption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.encounter.option.Option" title="dracykeiton.encounter.option.Option"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.encounter.option.Option</span></code></a></p>
+<p>AdvancedMenuOption that automatically generates api.</p>
+<p>Inherit this and put list of Requirement classes into api_classes and
+you&#8217;ll get automatic api for adding requirements, based on
+Requirement.api_name or __name__</p>
+<dl class="attribute">
+<dt id="dracykeiton.encounter.option.APIOption.api_classes">
+<code class="descname">api_classes</code><em class="property"> = []</em><a class="headerlink" href="#dracykeiton.encounter.option.APIOption.api_classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.encounter.option.Option">
+<em class="property">class </em><code class="descclassname">dracykeiton.encounter.option.</code><code class="descname">Option</code><a class="reference internal" href="../_modules/dracykeiton/encounter/option.html#Option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.option.Option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Base encounter menu option class</p>
+<dl class="method">
+<dt id="dracykeiton.encounter.option.Option.can_do">
+<code class="descname">can_do</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/option.html#Option.can_do"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.option.Option.can_do" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if option&#8217;s requirements are satisfied</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.encounter.option.Option.pay_costs">
+<code class="descname">pay_costs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/option.html#Option.pay_costs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.option.Option.pay_costs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pay all the costs for this option.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.encounter.option.OutcomeOption">
+<em class="property">class </em><code class="descclassname">dracykeiton.encounter.option.</code><code class="descname">OutcomeOption</code><a class="reference internal" href="../_modules/dracykeiton/encounter/option.html#OutcomeOption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.option.OutcomeOption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.encounter.option.Option" title="dracykeiton.encounter.option.Option"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.encounter.option.Option</span></code></a></p>
+<p>Option supporting various outcomes</p>
+<dl class="method">
+<dt id="dracykeiton.encounter.option.OutcomeOption.force_outcome">
+<code class="descname">force_outcome</code><span class="sig-paren">(</span><em>name</em>, <em>condition</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/option.html#OutcomeOption.force_outcome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.option.OutcomeOption.force_outcome" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dracykeiton.encounter.option.OutcomeOption.outcome_class">
+<code class="descname">outcome_class</code><a class="headerlink" href="#dracykeiton.encounter.option.OutcomeOption.outcome_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Which class to use for outcome storage.</p>
+<p>alias of <code class="xref py py-class docutils literal"><span class="pre">Outcome</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.encounter.option.OutcomeOption.outcome_condition">
+<code class="descname">outcome_condition</code><span class="sig-paren">(</span><em>name</em>, <em>condition</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/option.html#OutcomeOption.outcome_condition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.option.OutcomeOption.outcome_condition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.encounter.option.OutcomeOption.outcome_result">
+<code class="descname">outcome_result</code><span class="sig-paren">(</span><em>name</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/option.html#OutcomeOption.outcome_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.option.OutcomeOption.outcome_result" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.encounter.option.RollOutcomeOption">
+<em class="property">class </em><code class="descclassname">dracykeiton.encounter.option.</code><code class="descname">RollOutcomeOption</code><a class="reference internal" href="../_modules/dracykeiton/encounter/option.html#RollOutcomeOption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.option.RollOutcomeOption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.encounter.option.OutcomeOption" title="dracykeiton.encounter.option.OutcomeOption"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.encounter.option.OutcomeOption</span></code></a></p>
+<p>Option whose outcome depends on rolls.</p>
+<dl class="method">
+<dt id="dracykeiton.encounter.option.RollOutcomeOption.after_roll">
+<code class="descname">after_roll</code><span class="sig-paren">(</span><em>result=None</em>, <em>forced=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/option.html#RollOutcomeOption.after_roll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.option.RollOutcomeOption.after_roll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Launch outcome according to roll result</p>
+<p>This should be called by .call_roll or .launch if no roll happened</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.encounter.option.RollOutcomeOption.call_roll">
+<code class="descname">call_roll</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/option.html#RollOutcomeOption.call_roll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.option.RollOutcomeOption.call_roll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Roll n dices and call after_roll</p>
+<p>Implement this in your subclass.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.encounter.option.RollOutcomeOption.launch">
+<code class="descname">launch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/option.html#RollOutcomeOption.launch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.option.RollOutcomeOption.launch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.encounter.option.RollOutcomeOption.roll">
+<code class="descname">roll</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/option.html#RollOutcomeOption.roll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.option.RollOutcomeOption.roll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set roll result</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dracykeiton.encounter.outcome">
+<span id="dracykeiton-encounter-outcome-module"></span><h2>dracykeiton.encounter.outcome module<a class="headerlink" href="#module-dracykeiton.encounter.outcome" title="Permalink to this headline">¶</a></h2>
+<p>Advanced menu outcome classes</p>
+<dl class="class">
+<dt id="dracykeiton.encounter.outcome.LabelOutcome">
+<em class="property">class </em><code class="descclassname">dracykeiton.encounter.outcome.</code><code class="descname">LabelOutcome</code><a class="reference internal" href="../_modules/dracykeiton/encounter/outcome.html#LabelOutcome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.outcome.LabelOutcome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.encounter.outcome.Outcome" title="dracykeiton.encounter.outcome.Outcome"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.encounter.outcome.Outcome</span></code></a></p>
+<p>Outcome storing a simple label</p>
+<dl class="method">
+<dt id="dracykeiton.encounter.outcome.LabelOutcome.set_result">
+<code class="descname">set_result</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/outcome.html#LabelOutcome.set_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.outcome.LabelOutcome.set_result" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.encounter.outcome.Outcome">
+<em class="property">class </em><code class="descclassname">dracykeiton.encounter.outcome.</code><code class="descname">Outcome</code><a class="reference internal" href="../_modules/dracykeiton/encounter/outcome.html#Outcome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.outcome.Outcome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Outcome for multi-outcome advanced menu</p>
+<dl class="method">
+<dt id="dracykeiton.encounter.outcome.Outcome.launch">
+<code class="descname">launch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/outcome.html#Outcome.launch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.outcome.Outcome.launch" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is called when outcome happens. Implement in your subclass.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.encounter.outcome.Outcome.set_result">
+<code class="descname">set_result</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/encounter/outcome.html#Outcome.set_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.encounter.outcome.Outcome.set_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implement this to store outcome result to be used in launch.</p>
+<p>Can accept any number of args or kwargs - they are passed unchanged</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dracykeiton.encounter">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dracykeiton.encounter" title="Permalink to this headline">¶</a></h2>
+<p>Utils to generate encounter menus</p>
+<p>This package contains utils to build API for generating &#8220;menus&#8221;. The menu
+(represented by AdvancedMenu object) contains list of options and each of them
+can have it&#8217;s own requirements and outcomes. It is possible to create separate
+menu object for each menu you generate or use single instance and clear it with
+.start method.</p>
+<p>option module contains several Option classes which you can combine &amp; inherit to
+make your own custom Option.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">dracykeiton.encounter package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.encounter.advanced_menu">dracykeiton.encounter.advanced_menu module</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.encounter.option">dracykeiton.encounter.option module</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.encounter.outcome">dracykeiton.encounter.outcome module</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.encounter">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="dracykeiton.html">dracykeiton package</a><ul>
+      <li>Previous: <a href="dracykeiton.common.sandbox.html" title="previous chapter">dracykeiton.common.sandbox package</a></li>
+      <li>Next: <a href="dracykeiton.entity.html" title="next chapter">dracykeiton.entity package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/dracykeiton.encounter.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2016, caryoscelus.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/api/dracykeiton.encounter.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

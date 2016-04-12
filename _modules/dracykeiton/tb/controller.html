@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dracykeiton.tb.controller &mdash; dracykeiton 0.0.0a documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.0a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="dracykeiton 0.0.0a documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for dracykeiton.tb.controller</h1><div class="highlight"><pre>
+<span></span><span class="c1">##</span>
+<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##</span>
+<span class="c1">##  This file is part of Dracykeiton</span>
+<span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
+<span class="c1">##  </span>
+<span class="c1">##  This program is free software: you can redistribute it and/or modify</span>
+<span class="c1">##  it under the terms of the GNU General Public License as published by</span>
+<span class="c1">##  the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1">##  (at your option) any later version.</span>
+<span class="c1">##  </span>
+<span class="c1">##  This program is distributed in the hope that it will be useful,</span>
+<span class="c1">##  but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1">##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1">##  GNU General Public License for more details.</span>
+<span class="c1">##  </span>
+<span class="c1">##  You should have received a copy of the GNU General Public License</span>
+<span class="c1">##  along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">##</span>
+
+<span class="sd">&quot;&quot;&quot;Controller: thing that controlls Entity. Can be AI or user or remote..</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">curry</span>
+<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span>
+
+<div class="viewcode-block" id="WorldEntity"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.controller.WorldEntity">[docs]</a><span class="k">class</span> <span class="nc">WorldEntity</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Perhaps this can be useful for incomplete information games.&quot;&quot;&quot;</span>
+    <span class="nd">@unbound</span>
+<div class="viewcode-block" id="WorldEntity.observe"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.controller.WorldEntity.observe">[docs]</a>    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observer</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span></div></div>
+
+<div class="viewcode-block" id="Controller"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.controller.Controller">[docs]</a><span class="k">class</span> <span class="nc">Controller</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">world</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Controller</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entity</span> <span class="o">=</span> <span class="n">entity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">world</span> <span class="o">=</span> <span class="n">world</span>
+    
+<div class="viewcode-block" id="Controller.set_world"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.controller.Controller.set_world">[docs]</a>    <span class="k">def</span> <span class="nf">set_world</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">world</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">world</span> <span class="o">=</span> <span class="n">world</span></div>
+    
+<div class="viewcode-block" id="Controller.set_entity"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.controller.Controller.set_entity">[docs]</a>    <span class="k">def</span> <span class="nf">set_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entity</span> <span class="o">=</span> <span class="n">entity</span></div>
+    
+<div class="viewcode-block" id="Controller.act"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.controller.Controller.act">[docs]</a>    <span class="k">def</span> <span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return next action.</span>
+<span class="sd">        </span>
+<span class="sd">        Or False if action is not ready or None if turn is over</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">None</span></div></div>
+
+<div class="viewcode-block" id="ProxyController"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.controller.ProxyController">[docs]</a><span class="k">class</span> <span class="nc">ProxyController</span><span class="p">(</span><span class="n">Controller</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Controller which is controlled from outside.</span>
+<span class="sd">    </span>
+<span class="sd">    Typical usage for this is player&#39;s controller which is controlled by UI,</span>
+<span class="sd">    but other usecases can include remote users and even some kind of AI</span>
+<span class="sd">    (e.g. running in separate thread)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ProxyController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_turn</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_next_action</span> <span class="o">=</span> <span class="bp">None</span>
+    
+<div class="viewcode-block" id="ProxyController.end_turn"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.controller.ProxyController.end_turn">[docs]</a>    <span class="k">def</span> <span class="nf">end_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Mark current turn as finished&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_turn</span> <span class="o">=</span> <span class="bp">True</span></div>
+    
+<div class="viewcode-block" id="ProxyController.do_action"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.controller.ProxyController.do_action">[docs]</a>    <span class="k">def</span> <span class="nf">do_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Next time we&#39;re asked for an action (through act) we&#39;ll return this.</span>
+<span class="sd">        </span>
+<span class="sd">        NOTE: currently only one action is stored!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_next_action</span> <span class="o">=</span> <span class="n">action</span></div>
+    
+<div class="viewcode-block" id="ProxyController.act"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.controller.ProxyController.act">[docs]</a>    <span class="k">def</span> <span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_end_turn</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_end_turn</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_next_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_action</span><span class="p">:</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_action</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_next_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">return</span> <span class="n">action</span>
+        <span class="k">return</span> <span class="bp">False</span></div></div>
+
+<div class="viewcode-block" id="UserController"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.controller.UserController">[docs]</a><span class="k">class</span> <span class="nc">UserController</span><span class="p">(</span><span class="n">ProxyController</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A proxy controller, marked as UserController for UI systems convenience&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2016, caryoscelus.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

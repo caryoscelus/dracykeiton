@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dracykeiton.ui package &mdash; dracykeiton 0.0.0a documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="dracykeiton 0.0.0a documentation" href="../index.html" />
+    <link rel="up" title="dracykeiton package" href="dracykeiton.html" />
+    <link rel="next" title="dracykeiton.util package" href="dracykeiton.util.html" />
+    <link rel="prev" title="dracykeiton.tb package" href="dracykeiton.tb.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dracykeiton-ui-package">
+<h1>dracykeiton.ui package<a class="headerlink" href="#dracykeiton-ui-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-dracykeiton.ui.battleuimanager">
+<span id="dracykeiton-ui-battleuimanager-module"></span><h2>dracykeiton.ui.battleuimanager module<a class="headerlink" href="#module-dracykeiton.ui.battleuimanager" title="Permalink to this headline">¶</a></h2>
+<p>BattleUIManager - interface connecting UI and Turnman/Battle</p>
+<dl class="class">
+<dt id="dracykeiton.ui.battleuimanager.BattleUIHints">
+<em class="property">class </em><code class="descclassname">dracykeiton.ui.battleuimanager.</code><code class="descname">BattleUIHints</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#BattleUIHints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.BattleUIHints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="dracykeiton.entity.html#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.BattleUIHints.ui_action">
+<code class="descname">ui_action</code><span class="sig-paren">(</span><em>tp</em>, <em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#BattleUIHints.ui_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.BattleUIHints.ui_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark the action as available to UI</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.BattleUIHints.ui_hints">
+<code class="descname">ui_hints</code><span class="sig-paren">(</span><em>action_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#BattleUIHints.ui_hints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.BattleUIHints.ui_hints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.ui.battleuimanager.BattleUIManager">
+<em class="property">class </em><code class="descclassname">dracykeiton.ui.battleuimanager.</code><code class="descname">BattleUIManager</code><span class="sig-paren">(</span><em>turnman</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#BattleUIManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.BattleUIManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Helper class which can be used to build battle-controlling UI.</p>
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.BattleUIManager.active_controller">
+<code class="descname">active_controller</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#BattleUIManager.active_controller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.BattleUIManager.active_controller" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.BattleUIManager.can_finish">
+<code class="descname">can_finish</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#BattleUIManager.can_finish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.BattleUIManager.can_finish" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.BattleUIManager.clicked">
+<code class="descname">clicked</code><span class="sig-paren">(</span><em>side</em>, <em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#BattleUIManager.clicked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.BattleUIManager.clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process simple click on entity.</p>
+<p>Right now, it selects/&#8221;heals&#8221; player entity and attacks enemy entity</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.BattleUIManager.deselect">
+<code class="descname">deselect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#BattleUIManager.deselect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.BattleUIManager.deselect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.BattleUIManager.do_action">
+<code class="descname">do_action</code><span class="sig-paren">(</span><em>action</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#BattleUIManager.do_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.BattleUIManager.do_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tell turnman that user wants to perform action</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.BattleUIManager.end_encounter">
+<code class="descname">end_encounter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#BattleUIManager.end_encounter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.BattleUIManager.end_encounter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.BattleUIManager.end_turn">
+<code class="descname">end_turn</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#BattleUIManager.end_turn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.BattleUIManager.end_turn" title="Permalink to this definition">¶</a></dt>
+<dd><p>End turn.</p>
+<p>This marks player&#8217;s turn as being over and processes AI turns</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.BattleUIManager.get_actions">
+<code class="descname">get_actions</code><span class="sig-paren">(</span><em>entity</em>, <em>action_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#BattleUIManager.get_actions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.BattleUIManager.get_actions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.BattleUIManager.select_action">
+<code class="descname">select_action</code><span class="sig-paren">(</span><em>action</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#BattleUIManager.select_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.BattleUIManager.select_action" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.BattleUIManager.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#BattleUIManager.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.BattleUIManager.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start manager: this simply starts new turn for user right now.</p>
+<p>(this can mean allocating AP for example)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.ui.battleuimanager.SingleAllyAction">
+<em class="property">class </em><code class="descclassname">dracykeiton.ui.battleuimanager.</code><code class="descname">SingleAllyAction</code><span class="sig-paren">(</span><em>owner</em>, <em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#SingleAllyAction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.SingleAllyAction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.ui.battleuimanager.UIAction" title="dracykeiton.ui.battleuimanager.UIAction"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.ui.battleuimanager.UIAction</span></code></a></p>
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.SingleAllyAction.accept">
+<code class="descname">accept</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#SingleAllyAction.accept"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.SingleAllyAction.accept" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.SingleAllyAction.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#SingleAllyAction.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.SingleAllyAction.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.SingleAllyAction.get">
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#SingleAllyAction.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.SingleAllyAction.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.SingleAllyAction.ready">
+<code class="descname">ready</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#SingleAllyAction.ready"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.SingleAllyAction.ready" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.ui.battleuimanager.SingleEnemyAction">
+<em class="property">class </em><code class="descclassname">dracykeiton.ui.battleuimanager.</code><code class="descname">SingleEnemyAction</code><span class="sig-paren">(</span><em>owner</em>, <em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#SingleEnemyAction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.SingleEnemyAction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.ui.battleuimanager.UIAction" title="dracykeiton.ui.battleuimanager.UIAction"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.ui.battleuimanager.UIAction</span></code></a></p>
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.SingleEnemyAction.accept">
+<code class="descname">accept</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#SingleEnemyAction.accept"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.SingleEnemyAction.accept" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.SingleEnemyAction.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#SingleEnemyAction.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.SingleEnemyAction.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.SingleEnemyAction.get">
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#SingleEnemyAction.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.SingleEnemyAction.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.SingleEnemyAction.ready">
+<code class="descname">ready</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#SingleEnemyAction.ready"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.SingleEnemyAction.ready" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.ui.battleuimanager.UIAction">
+<em class="property">class </em><code class="descclassname">dracykeiton.ui.battleuimanager.</code><code class="descname">UIAction</code><span class="sig-paren">(</span><em>owner</em>, <em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#UIAction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.UIAction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.UIAction.accept">
+<code class="descname">accept</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#UIAction.accept"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.UIAction.accept" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.UIAction.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#UIAction.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.UIAction.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.UIAction.get">
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#UIAction.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.UIAction.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.UIAction.ready">
+<code class="descname">ready</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#UIAction.ready"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.UIAction.ready" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.ui.battleuimanager.UniversalBattleAction">
+<em class="property">class </em><code class="descclassname">dracykeiton.ui.battleuimanager.</code><code class="descname">UniversalBattleAction</code><span class="sig-paren">(</span><em>owner</em>, <em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#UniversalBattleAction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.UniversalBattleAction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.ui.battleuimanager.UIAction" title="dracykeiton.ui.battleuimanager.UIAction"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.ui.battleuimanager.UIAction</span></code></a></p>
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.UniversalBattleAction.accept">
+<code class="descname">accept</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#UniversalBattleAction.accept"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.UniversalBattleAction.accept" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.UniversalBattleAction.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#UniversalBattleAction.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.UniversalBattleAction.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.UniversalBattleAction.get">
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#UniversalBattleAction.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.UniversalBattleAction.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.ui.battleuimanager.UniversalBattleAction.ready">
+<code class="descname">ready</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/ui/battleuimanager.html#UniversalBattleAction.ready"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.ui.battleuimanager.UniversalBattleAction.ready" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dracykeiton.ui">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dracykeiton.ui" title="Permalink to this headline">¶</a></h2>
+<p>UI: ui building helper classes</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">dracykeiton.ui package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.ui.battleuimanager">dracykeiton.ui.battleuimanager module</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.ui">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="dracykeiton.html">dracykeiton package</a><ul>
+      <li>Previous: <a href="dracykeiton.tb.html" title="previous chapter">dracykeiton.tb package</a></li>
+      <li>Next: <a href="dracykeiton.util.html" title="next chapter">dracykeiton.util package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/dracykeiton.ui.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2016, caryoscelus.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/api/dracykeiton.ui.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

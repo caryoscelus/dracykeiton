@@ -62,16 +62,16 @@
 
 <span class="kn">from</span> <span class="nn">.option</span> <span class="kn">import</span> <span class="n">Option</span>
 
-<div class="viewcode-block" id="Requirement"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.Requirement">[docs]</a><span class="k">class</span> <span class="nc">Requirement</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Requirement"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.Requirement">[docs]</a><span class="k">class</span> <span class="nc">Requirement</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Requirement &amp; price for encounter option.</span>
 <span class="sd">    </span>
 <span class="sd">    Subclass this for your requirements</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="Requirement.check"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.Requirement.check">[docs]</a>    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Requirement.check"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.Requirement.check">[docs]</a>    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check if requirement is satisfied.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">False</span></div>
     
-<div class="viewcode-block" id="Requirement.pay"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.Requirement.pay">[docs]</a>    <span class="k">def</span> <span class="nf">pay</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Requirement.pay"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.Requirement.pay">[docs]</a>    <span class="k">def</span> <span class="nf">pay</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Pay the price of the option.</span>
 <span class="sd">        </span>
 <span class="sd">        This is called if Requirement is satisfied and option is chosen. No</span>
@@ -80,7 +80,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div></div>
 
-<div class="viewcode-block" id="AdvancedMenu"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.AdvancedMenu">[docs]</a><span class="k">class</span> <span class="nc">AdvancedMenu</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="AdvancedMenu"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.AdvancedMenu">[docs]</a><span class="k">class</span> <span class="nc">AdvancedMenu</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Central class for encounter advanced menu.</span>
 <span class="sd">    </span>
 <span class="sd">    Usage example:</span>
@@ -110,13 +110,13 @@
     <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_option</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     
-<div class="viewcode-block" id="AdvancedMenu.start"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.AdvancedMenu.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">caption</span><span class="p">):</span>
+<div class="viewcode-block" id="AdvancedMenu.start"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.AdvancedMenu.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">caption</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clean advanced menu &amp; set caption.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">caption</span> <span class="o">=</span> <span class="n">caption</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">active_option</span> <span class="o">=</span> <span class="bp">None</span></div>
     
-<div class="viewcode-block" id="AdvancedMenu.option"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.AdvancedMenu.option">[docs]</a>    <span class="k">def</span> <span class="nf">option</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="AdvancedMenu.option"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.AdvancedMenu.option">[docs]</a>    <span class="k">def</span> <span class="nf">option</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add option of class .options_class</span>
 <span class="sd">        </span>
 <span class="sd">        Additional arguments are passed to constructor. This option</span>
@@ -126,7 +126,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">active_option</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option_class</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_option</span><span class="p">)</span></div>
     
-<div class="viewcode-block" id="AdvancedMenu.available_options"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.AdvancedMenu.available_options">[docs]</a>    <span class="k">def</span> <span class="nf">available_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="AdvancedMenu.available_options"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.AdvancedMenu.available_options">[docs]</a>    <span class="k">def</span> <span class="nf">available_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return currently available options&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">option</span> <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="k">if</span> <span class="n">option</span><span class="o">.</span><span class="n">can_do</span><span class="p">()]</span></div></div>
 </pre></div>

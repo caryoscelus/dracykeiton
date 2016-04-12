@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dracykeiton.action &mdash; dracykeiton 0.0.0a documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.0a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="dracykeiton 0.0.0a documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for dracykeiton.action</h1><div class="highlight"><pre>
+<span></span><span class="c1">##</span>
+<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##</span>
+<span class="c1">##  This file is part of Dracykeiton</span>
+<span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
+<span class="c1">##  </span>
+<span class="c1">##  This program is free software: you can redistribute it and/or modify</span>
+<span class="c1">##  it under the terms of the GNU General Public License as published by</span>
+<span class="c1">##  the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1">##  (at your option) any later version.</span>
+<span class="c1">##  </span>
+<span class="c1">##  This program is distributed in the hope that it will be useful,</span>
+<span class="c1">##  but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1">##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1">##  GNU General Public License for more details.</span>
+<span class="c1">##  </span>
+<span class="c1">##  You should have received a copy of the GNU General Public License</span>
+<span class="c1">##  along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">##</span>
+
+<span class="sd">&quot;&quot;&quot;Module containing ActionProcessor, action decorator and related stuff.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">curry</span>
+
+<div class="viewcode-block" id="action"><a class="viewcode-back" href="../../api/dracykeiton.html#dracykeiton.action.action">[docs]</a><span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decorator making callable which checks if action is possible.</span>
+<span class="sd">    </span>
+<span class="sd">    If it&#39;s possible, return actual action callable, else return None. Checker</span>
+<span class="sd">    method should have same name prefixed with can_</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; from entity import Entity</span>
+<span class="sd">    &gt;&gt;&gt; class Foo(Entity):</span>
+<span class="sd">    ...     @action</span>
+<span class="sd">    ...     def bar(self, n):</span>
+<span class="sd">    ...         print(n)</span>
+<span class="sd">    ...     def can_bar(self, n):</span>
+<span class="sd">    ...         return n &gt; 0</span>
+<span class="sd">    &gt;&gt;&gt; foo = Foo()</span>
+<span class="sd">    &gt;&gt;&gt; foo.bar(5).__name__</span>
+<span class="sd">    &#39;bar&#39;</span>
+<span class="sd">    &gt;&gt;&gt; foo.bar(5)()</span>
+<span class="sd">    5</span>
+<span class="sd">    &gt;&gt;&gt; print(foo.bar(0))</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;can_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">__name__</span><span class="p">))(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">curry</span><span class="o">.</span><span class="n">curry</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+    <span class="n">argcount</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_argcount</span>
+    <span class="n">wrap</span><span class="o">.</span><span class="n">arguments</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">__code__</span><span class="o">.</span><span class="n">co_varnames</span><span class="p">[:</span><span class="n">argcount</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">wrap</span></div>
+
+<div class="viewcode-block" id="category"><a class="viewcode-back" href="../../api/dracykeiton.html#dracykeiton.action.category">[docs]</a><span class="k">def</span> <span class="nf">category</span><span class="p">(</span><span class="n">cat</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="n">cat</span>
+        <span class="k">return</span> <span class="n">f</span>
+    <span class="k">return</span> <span class="n">decorator</span></div>
+
+<div class="viewcode-block" id="get_actions"><a class="viewcode-back" href="../../api/dracykeiton.html#dracykeiton.action.get_actions">[docs]</a><span class="k">def</span> <span class="nf">get_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get categorized actions (with their names)</span>
+<span class="sd">    </span>
+<span class="sd">    TODO: maybe move somewhere</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="p">)}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">name</span> <span class="p">:</span> <span class="n">attrs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">attrs</span> <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">attrs</span><span class="p">[</span><span class="n">name</span><span class="p">])</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">attrs</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="s1">&#39;category&#39;</span><span class="p">)}</span></div>
+
+<div class="viewcode-block" id="ActionProcessor"><a class="viewcode-back" href="../../api/dracykeiton.html#dracykeiton.action.ActionProcessor">[docs]</a><span class="k">class</span> <span class="nc">ActionProcessor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Action processing entity.</span>
+<span class="sd">    </span>
+<span class="sd">    Could be asked to process action and either do it or not and maybe do</span>
+<span class="sd">    something else as well.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ActionProcessor.process"><a class="viewcode-back" href="../../api/dracykeiton.html#dracykeiton.action.ActionProcessor.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Takes action and maybe processes it (and possibly side effects)</span>
+<span class="sd">        </span>
+<span class="sd">        Returns True if action was processed, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">True</span></div></div>
+
+<div class="viewcode-block" id="SimpleEffectProcessor"><a class="viewcode-back" href="../../api/dracykeiton.html#dracykeiton.action.SimpleEffectProcessor">[docs]</a><span class="k">class</span> <span class="nc">SimpleEffectProcessor</span><span class="p">(</span><span class="n">ActionProcessor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Action processor capable of performing effects when actions happen.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SimpleEffectProcessor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_effects</span><span class="p">()</span>
+    
+<div class="viewcode-block" id="SimpleEffectProcessor.init_effects"><a class="viewcode-back" href="../../api/dracykeiton.html#dracykeiton.action.SimpleEffectProcessor.init_effects">[docs]</a>    <span class="k">def</span> <span class="nf">init_effects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_effects</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="SimpleEffectProcessor.process"><a class="viewcode-back" href="../../api/dracykeiton.html#dracykeiton.action.SimpleEffectProcessor.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">__name__</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_effects</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">effect</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_effects</span><span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">__name__</span><span class="p">]:</span>
+                <span class="n">effect</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">SimpleEffectProcessor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+    
+<div class="viewcode-block" id="SimpleEffectProcessor.add_effect"><a class="viewcode-back" href="../../api/dracykeiton.html#dracykeiton.action.SimpleEffectProcessor.add_effect">[docs]</a>    <span class="k">def</span> <span class="nf">add_effect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">effect</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add effect to be performed when action happens.</span>
+<span class="sd">        </span>
+<span class="sd">        NOTE: currently all effects will be performed in the same order as</span>
+<span class="sd">        they were added in.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">target</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_effects</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_effects</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_effects</span><span class="p">[</span><span class="n">target</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">effect</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2016, caryoscelus.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

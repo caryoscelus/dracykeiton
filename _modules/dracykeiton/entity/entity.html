@@ -1,0 +1,565 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dracykeiton.entity.entity &mdash; dracykeiton 0.0.0a documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.0a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="dracykeiton 0.0.0a documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for dracykeiton.entity.entity</h1><div class="highlight"><pre>
+<span></span><span class="c1">##</span>
+<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##</span>
+<span class="c1">##  This file is part of Dracykeiton</span>
+<span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
+<span class="c1">##  </span>
+<span class="c1">##  This program is free software: you can redistribute it and/or modify</span>
+<span class="c1">##  it under the terms of the GNU General Public License as published by</span>
+<span class="c1">##  the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1">##  (at your option) any later version.</span>
+<span class="c1">##  </span>
+<span class="c1">##  This program is distributed in the hope that it will be useful,</span>
+<span class="c1">##  but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1">##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1">##  GNU General Public License for more details.</span>
+<span class="c1">##  </span>
+<span class="c1">##  You should have received a copy of the GNU General Public License</span>
+<span class="c1">##  along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">##</span>
+
+<span class="sd">&quot;&quot;&quot;Contains Entity which is the base class for all entities and it&#39;s properties</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">from</span> <span class="nn">six</span> <span class="kn">import</span> <span class="n">add_metaclass</span>
+
+<span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..util.priorityqueue</span> <span class="kn">import</span> <span class="n">PriorityQueue</span>
+<span class="kn">from</span> <span class="nn">..util.dependency</span> <span class="kn">import</span> <span class="n">DependencyTree</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">curry</span>
+
+<div class="viewcode-block" id="DynamicProperty"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.DynamicProperty">[docs]</a><span class="k">class</span> <span class="nc">DynamicProperty</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Stores dynamic property and modifiers associated with it.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">priorities</span><span class="o">=</span><span class="p">(),</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getters</span> <span class="o">=</span> <span class="n">PriorityQueue</span><span class="p">(</span><span class="o">*</span><span class="n">priorities</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setters</span> <span class="o">=</span> <span class="n">PriorityQueue</span><span class="p">(</span><span class="o">*</span><span class="n">priorities</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">empty</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">owner</span>
+    
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;DynamicProperty {}&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># we expect somebody else to add all the nodes since we can&#39;t</span>
+        <span class="c1"># store them from here</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getters</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">setters</span><span class="p">:</span>
+            <span class="n">self_copy</span> <span class="o">=</span> <span class="n">DynamicProperty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">owner</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">,</span> <span class="n">priorities</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">getters</span><span class="o">.</span><span class="n">priorities</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">getters</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">self_copy</span><span class="o">.</span><span class="n">__getstate__</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
+        <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">getters</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">mod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">owner</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span>
+    
+    <span class="nd">@value.setter</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">setters</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">mod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">owner</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
+    
+<div class="viewcode-block" id="DynamicProperty.add_set_node"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.DynamicProperty.add_set_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_set_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setters</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="DynamicProperty.add_get_node"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.DynamicProperty.add_get_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_get_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getters</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="DynamicProperty.del_set_node"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.DynamicProperty.del_set_node">[docs]</a>    <span class="k">def</span> <span class="nf">del_set_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setters</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="DynamicProperty.del_get_node"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.DynamicProperty.del_get_node">[docs]</a>    <span class="k">def</span> <span class="nf">del_get_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getters</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="EntityMeta"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.EntityMeta">[docs]</a><span class="k">class</span> <span class="nc">EntityMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="nb">type</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_global_mods</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mod_deps</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="get_mods_deps"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.get_mods_deps">[docs]</a><span class="k">def</span> <span class="nf">get_mods_deps</span><span class="p">(</span><span class="n">cl</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">cl</span><span class="o">.</span><span class="n">_mod_deps</span></div>
+
+<div class="viewcode-block" id="mod_dep"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.mod_dep">[docs]</a><span class="k">def</span> <span class="nf">mod_dep</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decorator for Entity mod dependency&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">cl</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="n">mods</span><span class="p">:</span>
+            <span class="n">cl</span><span class="o">.</span><span class="n">dep_mod</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cl</span>
+    <span class="k">return</span> <span class="n">wrap</span></div>
+
+<span class="nd">@add_metaclass</span><span class="p">(</span><span class="n">EntityMeta</span><span class="p">)</span>
+<div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base entity, including dynamic property and modding mechanism.</span>
+<span class="sd">    </span>
+<span class="sd">    Do not create class hierarchy. All entity classes should inherit this</span>
+<span class="sd">    directly and use @mod_dep for dependencies.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_props</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_listeners</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_methods</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="c1"># TODO: fix this</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_priorities</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;early&#39;</span><span class="p">,</span> <span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="s1">&#39;late&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_default</span> <span class="o">=</span> <span class="s1">&#39;normal&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mods</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mods_amount</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">({</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span><span class="mi">1</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_depends_on</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">fix_methods</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_depmods</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_patchmods</span><span class="p">()</span>
+    
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This is used to init Entity or to add it as mod.</span>
+<span class="sd">        </span>
+<span class="sd">        Use it instead of __init__</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+    
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This is called before pickling (for every mod)</span>
+<span class="sd">        </span>
+<span class="sd">        Any data that is not essential for saving can be get rid of at</span>
+<span class="sd">        this point.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+    
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This is called after pickling and after _init when creating</span>
+<span class="sd">        </span>
+<span class="sd">        NOTE: mods &amp; dynamic properties will be restored automatically,</span>
+<span class="sd">        but property nodes should be assigned here.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+    
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_uninit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This is called when unloading mod.</span>
+<span class="sd">        </span>
+<span class="sd">        You should implement this in your unloadable mod if you use `_init`.</span>
+<span class="sd">        `_uninit` is implemented for declarative mods</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+    
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Entity.dep_mod"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.dep_mod">[docs]</a>    <span class="k">def</span> <span class="nf">dep_mod</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="n">mod</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add mod dependency for this Entity class&quot;&quot;&quot;</span>
+        <span class="n">cl</span><span class="o">.</span><span class="n">_mod_deps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span></div>
+    
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Entity.global_mod"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.global_mod">[docs]</a>    <span class="k">def</span> <span class="nf">global_mod</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="n">mod</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add global mod to this Entity class.</span>
+<span class="sd">        </span>
+<span class="sd">        This mod will be automatically added to all instances created or</span>
+<span class="sd">        loaded after calling global_mod</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cl</span><span class="o">.</span><span class="n">_global_mods</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span></div>
+    
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_init_depmods</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cl</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">cl</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">mods</span> <span class="o">=</span> <span class="n">DependencyTree</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="n">get_mods_deps</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="n">mods</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">req_mod</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+    
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_load_depmods</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cl</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">cl</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">mods</span> <span class="o">=</span> <span class="n">DependencyTree</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="n">get_mods_deps</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="n">mods</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_mod</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+    
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_load_patchmods</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cl</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">cl</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">mods</span> <span class="o">=</span> <span class="n">cl</span><span class="o">.</span><span class="n">_global_mods</span>
+        <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="n">mods</span><span class="p">:</span>
+            <span class="n">mod_deps</span> <span class="o">=</span> <span class="n">DependencyTree</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">get_mods_deps</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">mod_deps</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">req_mod</span><span class="p">(</span><span class="n">dep</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">req_mod</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;_props&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;_props not present!&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_props</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_props</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">self_repr</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">self_repr</span> <span class="o">=</span> <span class="s1">&#39;this entity&#39;</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;{} has no attribute/property {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">self_repr</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;_&#39;</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_props</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_props</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">notify_listeners</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_methods</span><span class="p">:</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="n">functools</span><span class="o">.</span><span class="n">update_wrapper</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="c1">#raise AttributeError(&#39;{} has no property {}&#39;.format(self, name))</span>
+    
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Entity {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="n">name</span><span class="p">:</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_props</span><span class="p">})</span>
+    
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Entity of type {} with mods {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="p">[</span><span class="n">mod</span><span class="o">.</span><span class="n">__name__</span> <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mods</span><span class="p">])</span>
+    
+    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">self_copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># can&#39;t save methods, but they&#39;ll be restored by mods</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_methods</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">self_copy</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="c1"># will be restored by mods as well</span>
+        <span class="k">del</span> <span class="n">self_copy</span><span class="p">[</span><span class="s1">&#39;_listeners&#39;</span><span class="p">]</span>
+        <span class="n">self_copy</span><span class="p">[</span><span class="s1">&#39;_mods_to_load&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">mod</span>
+                <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="n">self_copy</span><span class="p">[</span><span class="s1">&#39;_mods&#39;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">mod</span> <span class="ow">in</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_global_mods</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">mod</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="p">]</span>
+        <span class="k">del</span> <span class="n">self_copy</span><span class="p">[</span><span class="s1">&#39;_mods&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">self_copy</span>
+    
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mods</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mods_amount</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">({</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span><span class="mi">1</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_listeners</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">({</span><span class="n">prop</span><span class="p">:</span><span class="nb">list</span><span class="p">()</span> <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_props</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_depmods</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mods_to_load</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_mod</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_patchmods</span><span class="p">()</span>
+    
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Entity.enable"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.enable">[docs]</a>    <span class="k">def</span> <span class="nf">enable</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">first_load</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Enable this mod on target entity (internal use)&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">cl</span><span class="o">.</span><span class="n">__dict__</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">attr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;_&#39;</span><span class="p">:</span>
+                <span class="n">target</span><span class="o">.</span><span class="n">dynamic_method</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">cl</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">attr</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">first_load</span><span class="p">:</span>
+            <span class="n">cl</span><span class="o">.</span><span class="n">_init</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">cl</span><span class="o">.</span><span class="n">_load</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="n">cl</span><span class="o">.</span><span class="n">_load_patchmods</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">cl</span><span class="p">)</span></div>
+    
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Entity.disable"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.disable">[docs]</a>    <span class="k">def</span> <span class="nf">disable</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Disable this mod on target entity (internal use)&quot;&quot;&quot;</span>
+        <span class="n">cl</span><span class="o">.</span><span class="n">_uninit</span><span class="p">(</span><span class="n">target</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Entity.dynamic_method"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.dynamic_method">[docs]</a>    <span class="k">def</span> <span class="nf">dynamic_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_methods</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Entity.dynamic_property"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.dynamic_property">[docs]</a>    <span class="k">def</span> <span class="nf">dynamic_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">priorities</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Define new dynamic property called name&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_props</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">priorities</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">priorities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_priorities</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_props</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">DynamicProperty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="n">empty</span><span class="p">,</span> <span class="n">priorities</span><span class="o">=</span><span class="n">priorities</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_default</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_depends_on</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_listeners</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="Entity.remove_property"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.remove_property">[docs]</a>    <span class="k">def</span> <span class="nf">remove_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove dynamic property. To use in mod.disable()&quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_props</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_depends_on</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+    
+<div class="viewcode-block" id="Entity.load_mod"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.load_mod">[docs]</a>    <span class="k">def</span> <span class="nf">load_mod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mod</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load mod to this entity after reloading (for internal use)&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">req_mod</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">first_load</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Entity.req_mod"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.req_mod">[docs]</a>    <span class="k">def</span> <span class="nf">req_mod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mod</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{},</span> <span class="n">first_load</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add mod to this entity (for internal use)&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">mod</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mods</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mods</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mods_amount</span><span class="p">[</span><span class="n">mod</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">mod</span><span class="o">.</span><span class="n">enable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_load</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mods_amount</span><span class="p">[</span><span class="n">mod</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span></div>
+    
+<div class="viewcode-block" id="Entity.add_mod"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.add_mod">[docs]</a>    <span class="k">def</span> <span class="nf">add_mod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mod</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add mod dynamically&quot;&quot;&quot;</span>
+        <span class="n">mod_deps</span> <span class="o">=</span> <span class="n">DependencyTree</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">get_mods_deps</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">mod_deps</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dep</span> <span class="o">!=</span> <span class="n">mod</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">req_mod</span><span class="p">(</span><span class="n">dep</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">req_mod</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Entity.del_mod"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.del_mod">[docs]</a>    <span class="k">def</span> <span class="nf">del_mod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mod</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove mod dynamically&quot;&quot;&quot;</span>
+        <span class="n">mod_deps</span> <span class="o">=</span> <span class="n">DependencyTree</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">get_mods_deps</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">mod_deps</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mods_amount</span><span class="p">[</span><span class="n">dep</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mods_amount</span><span class="p">[</span><span class="n">dep</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">dep</span><span class="o">.</span><span class="n">disable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_mods</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dep</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Entity.has_mod"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.has_mod">[docs]</a>    <span class="k">def</span> <span class="nf">has_mod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mod</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if this Entity has mod.</span>
+<span class="sd">        </span>
+<span class="sd">        Still, duck typing is usually preferred cause same behaviour can</span>
+<span class="sd">        be implemented by different mods.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">mod</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mods</span></div>
+    
+<div class="viewcode-block" id="Entity.no_set"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.no_set">[docs]</a>    <span class="k">def</span> <span class="nf">no_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Forbid setting prop&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_set_node</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">ForbidWritingNode</span><span class="p">(</span><span class="n">prop</span><span class="p">))</span></div>
+    
+<div class="viewcode-block" id="Entity.add_set_node"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.add_set_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_set_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add setter node&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_props</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span><span class="o">.</span><span class="n">add_set_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Entity.add_get_node"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.add_get_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_get_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add getter node&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_props</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span><span class="o">.</span><span class="n">add_get_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">dependency</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">deps</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inc_get_dependency</span><span class="p">(</span><span class="n">dependency</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NodeDependencyError</span><span class="p">(</span><span class="s1">&#39;circular dependency on {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prop</span><span class="p">))</span></div>
+    
+<div class="viewcode-block" id="Entity.del_set_node"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.del_set_node">[docs]</a>    <span class="k">def</span> <span class="nf">del_set_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_props</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span><span class="o">.</span><span class="n">del_set_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Entity.del_get_node"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.del_get_node">[docs]</a>    <span class="k">def</span> <span class="nf">del_get_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_props</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span><span class="o">.</span><span class="n">del_get_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">dependency</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">deps</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dec_get_dependency</span><span class="p">(</span><span class="n">dependency</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Entity.inc_get_dependency"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.inc_get_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">inc_get_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dependency</span><span class="p">,</span> <span class="n">dependant</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dependant</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_depends_on</span><span class="p">[</span><span class="n">dependency</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_depends_on</span><span class="p">[</span><span class="n">dependency</span><span class="p">][</span><span class="n">dependant</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_depends_on</span><span class="p">[</span><span class="n">dependency</span><span class="p">][</span><span class="n">dependant</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span></div>
+    
+<div class="viewcode-block" id="Entity.dec_get_dependency"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.dec_get_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">dec_get_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dependency</span><span class="p">,</span> <span class="n">dependant</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dependant</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_depends_on</span><span class="p">[</span><span class="n">dependency</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_depends_on</span><span class="p">[</span><span class="n">dependency</span><span class="p">][</span><span class="n">dependant</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_depends_on</span><span class="p">[</span><span class="n">dependency</span><span class="p">][</span><span class="n">dependant</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span></div>
+    
+<div class="viewcode-block" id="Entity.add_listener_node"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.add_listener_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_listener_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">listener</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add listner node to the prop.</span>
+<span class="sd">        </span>
+<span class="sd">        It will be notified on changes, including changes of dependencies.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_listeners</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">listener</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Entity.notify_listeners"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.Entity.notify_listeners">[docs]</a>    <span class="k">def</span> <span class="nf">notify_listeners</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Notify listeners of prop, including those who depend on it.</span>
+<span class="sd">        </span>
+<span class="sd">        NOTE: this may lead to some listener getting notified more than once if</span>
+<span class="sd">        it&#39;s dependency of multiple dependencies.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">listener</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_listeners</span><span class="p">[</span><span class="n">prop</span><span class="p">]:</span>
+            <span class="n">listener</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_depends_on</span><span class="p">[</span><span class="n">prop</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">notify_listeners</span><span class="p">(</span><span class="n">dep</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="NodeDependencyError"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.NodeDependencyError">[docs]</a><span class="k">class</span> <span class="nc">NodeDependencyError</span><span class="p">(</span><span class="ne">AttributeError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ProcessingNode"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.ProcessingNode">[docs]</a><span class="k">class</span> <span class="nc">ProcessingNode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ProcessingNode</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_depends</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    
+<div class="viewcode-block" id="ProcessingNode.depends"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.ProcessingNode.depends">[docs]</a>    <span class="k">def</span> <span class="nf">depends</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_depends</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="ProcessingNode.deps"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.ProcessingNode.deps">[docs]</a>    <span class="k">def</span> <span class="nf">deps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_depends</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+    
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="ListenerNode"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.ListenerNode">[docs]</a><span class="k">class</span> <span class="nc">ListenerNode</span><span class="p">(</span><span class="n">ProcessingNode</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ListenerNode</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
+    
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;ListenerNode with {}&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="listener"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.listener">[docs]</a><span class="k">def</span> <span class="nf">listener</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ListenerNode</span><span class="p">(</span><span class="n">curry</span><span class="o">.</span><span class="n">curry</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">wrap</span></div>
+
+<div class="viewcode-block" id="ReadOnlyNode"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.ReadOnlyNode">[docs]</a><span class="k">class</span> <span class="nc">ReadOnlyNode</span><span class="p">(</span><span class="n">ProcessingNode</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Processing node with only limited read access&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ReadOnlyNode</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">deps</span><span class="p">()}</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;value&#39;</span> <span class="p">:</span> <span class="n">value</span><span class="p">})</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="ReadOnlyNode.process"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.ReadOnlyNode.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span></div></div>
+
+<div class="viewcode-block" id="SimpleNode"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.SimpleNode">[docs]</a><span class="k">class</span> <span class="nc">SimpleNode</span><span class="p">(</span><span class="n">ReadOnlyNode</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SimpleNode</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
+    
+<div class="viewcode-block" id="SimpleNode.process"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.SimpleNode.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="simplenode"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.simplenode">[docs]</a><span class="k">def</span> <span class="nf">simplenode</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns function, which returns SimpleNode</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; from dracykeiton.entity import simplenode, SimpleNode</span>
+<span class="sd">    &gt;&gt;&gt; node = simplenode(int)(base=2)</span>
+<span class="sd">    &gt;&gt;&gt; isinstance(node, SimpleNode)</span>
+<span class="sd">    True</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; @simplenode</span>
+<span class="sd">    ... def foo(a, b, value):</span>
+<span class="sd">    ...     return (a+b)*value</span>
+<span class="sd">    &gt;&gt;&gt; foo(1, 2).process(5)</span>
+<span class="sd">    15</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">SimpleNode</span><span class="p">(</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">wrap</span></div>
+
+<div class="viewcode-block" id="writernode"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.writernode">[docs]</a><span class="k">def</span> <span class="nf">writernode</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">SimpleNode</span><span class="p">(</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">wrap</span></div>
+
+<div class="viewcode-block" id="depends"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.depends">[docs]</a><span class="k">def</span> <span class="nf">depends</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">depends</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">node</span>
+        <span class="k">return</span> <span class="n">wrap</span>
+    <span class="k">return</span> <span class="n">decorator</span></div>
+
+<div class="viewcode-block" id="ForbidWritingNode"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.ForbidWritingNode">[docs]</a><span class="k">class</span> <span class="nc">ForbidWritingNode</span><span class="p">(</span><span class="n">ReadOnlyNode</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ForbidWritingNode</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prop</span> <span class="o">=</span> <span class="n">prop</span>
+    
+<div class="viewcode-block" id="ForbidWritingNode.process"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.entity.ForbidWritingNode.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;property {} cannot be accessed&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">))</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2016, caryoscelus.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

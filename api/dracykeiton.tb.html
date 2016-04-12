@@ -1,0 +1,367 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dracykeiton.tb package &mdash; dracykeiton 0.0.0a documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="dracykeiton 0.0.0a documentation" href="../index.html" />
+    <link rel="up" title="dracykeiton package" href="dracykeiton.html" />
+    <link rel="next" title="dracykeiton.ui package" href="dracykeiton.ui.html" />
+    <link rel="prev" title="dracykeiton.entity package" href="dracykeiton.entity.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dracykeiton-tb-package">
+<h1>dracykeiton.tb package<a class="headerlink" href="#dracykeiton-tb-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-dracykeiton.tb.battle">
+<span id="dracykeiton-tb-battle-module"></span><h2>dracykeiton.tb.battle module<a class="headerlink" href="#module-dracykeiton.tb.battle" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dracykeiton.tb.battle.BattleState">
+<em class="property">class </em><code class="descclassname">dracykeiton.tb.battle.</code><code class="descname">BattleState</code><a class="reference internal" href="../_modules/dracykeiton/tb/battle.html#BattleState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.battle.BattleState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.tb.battle.Finished">
+<em class="property">class </em><code class="descclassname">dracykeiton.tb.battle.</code><code class="descname">Finished</code><a class="reference internal" href="../_modules/dracykeiton/tb/battle.html#Finished"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.battle.Finished" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.tb.battle.BattleState" title="dracykeiton.tb.battle.BattleState"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.tb.battle.BattleState</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.tb.battle.NotFinished">
+<em class="property">class </em><code class="descclassname">dracykeiton.tb.battle.</code><code class="descname">NotFinished</code><a class="reference internal" href="../_modules/dracykeiton/tb/battle.html#NotFinished"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.battle.NotFinished" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.tb.battle.BattleState" title="dracykeiton.tb.battle.BattleState"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.tb.battle.BattleState</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.tb.battle.Won">
+<em class="property">class </em><code class="descclassname">dracykeiton.tb.battle.</code><code class="descname">Won</code><span class="sig-paren">(</span><em>winner</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/battle.html#Won"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.battle.Won" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.tb.battle.Finished" title="dracykeiton.tb.battle.Finished"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.tb.battle.Finished</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dracykeiton.tb.battlegen">
+<span id="dracykeiton-tb-battlegen-module"></span><h2>dracykeiton.tb.battlegen module<a class="headerlink" href="#module-dracykeiton.tb.battlegen" title="Permalink to this headline">¶</a></h2>
+<p>BattleGen: generate battle encounters</p>
+<dl class="class">
+<dt id="dracykeiton.tb.battlegen.BattleGen">
+<em class="property">class </em><code class="descclassname">dracykeiton.tb.battlegen.</code><code class="descname">BattleGen</code><span class="sig-paren">(</span><em>turnman_c</em>, <em>field_c</em>, <em>**battlefield_args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/battlegen.html#BattleGen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.battlegen.BattleGen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="dracykeiton.tb.battlegen.BattleGen.add_side">
+<code class="descname">add_side</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/battlegen.html#BattleGen.add_side"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.battlegen.BattleGen.add_side" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.battlegen.BattleGen.generate">
+<code class="descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/battlegen.html#BattleGen.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.battlegen.BattleGen.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate encounter (returns turnman)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.tb.battlegen.SideGen">
+<em class="property">class </em><code class="descclassname">dracykeiton.tb.battlegen.</code><code class="descname">SideGen</code><span class="sig-paren">(</span><em>name</em>, <em>controller</em>, <em>amount</em>, <em>predefined=[]</em>, <em>possible=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/battlegen.html#SideGen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.battlegen.SideGen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="dracykeiton.tb.battlegen.SideGen.generate">
+<code class="descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/battlegen.html#SideGen.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.battlegen.SideGen.generate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dracykeiton.tb.controller">
+<span id="dracykeiton-tb-controller-module"></span><h2>dracykeiton.tb.controller module<a class="headerlink" href="#module-dracykeiton.tb.controller" title="Permalink to this headline">¶</a></h2>
+<p>Controller: thing that controlls Entity. Can be AI or user or remote..</p>
+<dl class="class">
+<dt id="dracykeiton.tb.controller.Controller">
+<em class="property">class </em><code class="descclassname">dracykeiton.tb.controller.</code><code class="descname">Controller</code><span class="sig-paren">(</span><em>world</em>, <em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/controller.html#Controller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.controller.Controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="dracykeiton.tb.controller.Controller.act">
+<code class="descname">act</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/controller.html#Controller.act"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.controller.Controller.act" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return next action.</p>
+<p>Or False if action is not ready or None if turn is over</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.controller.Controller.set_entity">
+<code class="descname">set_entity</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/controller.html#Controller.set_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.controller.Controller.set_entity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.controller.Controller.set_world">
+<code class="descname">set_world</code><span class="sig-paren">(</span><em>world</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/controller.html#Controller.set_world"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.controller.Controller.set_world" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.tb.controller.ProxyController">
+<em class="property">class </em><code class="descclassname">dracykeiton.tb.controller.</code><code class="descname">ProxyController</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/controller.html#ProxyController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.controller.ProxyController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.tb.controller.Controller" title="dracykeiton.tb.controller.Controller"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.tb.controller.Controller</span></code></a></p>
+<p>Controller which is controlled from outside.</p>
+<p>Typical usage for this is player&#8217;s controller which is controlled by UI,
+but other usecases can include remote users and even some kind of AI
+(e.g. running in separate thread)</p>
+<dl class="method">
+<dt id="dracykeiton.tb.controller.ProxyController.act">
+<code class="descname">act</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/controller.html#ProxyController.act"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.controller.ProxyController.act" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.controller.ProxyController.do_action">
+<code class="descname">do_action</code><span class="sig-paren">(</span><em>action</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/controller.html#ProxyController.do_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.controller.ProxyController.do_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Next time we&#8217;re asked for an action (through act) we&#8217;ll return this.</p>
+<p>NOTE: currently only one action is stored!</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.controller.ProxyController.end_turn">
+<code class="descname">end_turn</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/controller.html#ProxyController.end_turn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.controller.ProxyController.end_turn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark current turn as finished</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.tb.controller.UserController">
+<em class="property">class </em><code class="descclassname">dracykeiton.tb.controller.</code><code class="descname">UserController</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/controller.html#UserController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.controller.UserController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.tb.controller.ProxyController" title="dracykeiton.tb.controller.ProxyController"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.tb.controller.ProxyController</span></code></a></p>
+<p>A proxy controller, marked as UserController for UI systems convenience</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.tb.controller.WorldEntity">
+<em class="property">class </em><code class="descclassname">dracykeiton.tb.controller.</code><code class="descname">WorldEntity</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/controller.html#WorldEntity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.controller.WorldEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="dracykeiton.entity.html#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
+<p>Perhaps this can be useful for incomplete information games.</p>
+<dl class="method">
+<dt id="dracykeiton.tb.controller.WorldEntity.observe">
+<code class="descname">observe</code><span class="sig-paren">(</span><em>observer</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/controller.html#WorldEntity.observe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.controller.WorldEntity.observe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dracykeiton.tb.turnman">
+<span id="dracykeiton-tb-turnman-module"></span><h2>dracykeiton.tb.turnman module<a class="headerlink" href="#module-dracykeiton.tb.turnman" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dracykeiton.tb.turnman.LockableTurnman">
+<em class="property">class </em><code class="descclassname">dracykeiton.tb.turnman.</code><code class="descname">LockableTurnman</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#LockableTurnman"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.LockableTurnman" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.tb.turnman.Turnman" title="dracykeiton.tb.turnman.Turnman"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.tb.turnman.Turnman</span></code></a></p>
+<p>Turnman that can be locked and then actions are not performed.</p>
+<p>This is useful for performing various effects when actions happen.</p>
+<dl class="method">
+<dt id="dracykeiton.tb.turnman.LockableTurnman.lock">
+<code class="descname">lock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#LockableTurnman.lock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.LockableTurnman.lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add lock.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.turnman.LockableTurnman.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>a</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#LockableTurnman.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.LockableTurnman.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.turnman.LockableTurnman.unlock">
+<code class="descname">unlock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#LockableTurnman.unlock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.LockableTurnman.unlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Release lock. This will also perform planned actions if fully unlocked</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.tb.turnman.Turnman">
+<em class="property">class </em><code class="descclassname">dracykeiton.tb.turnman.</code><code class="descname">Turnman</code><span class="sig-paren">(</span><em>world</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#Turnman"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.Turnman" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="dracykeiton.html#dracykeiton.action.ActionProcessor" title="dracykeiton.action.ActionProcessor"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.action.ActionProcessor</span></code></a></p>
+<dl class="method">
+<dt id="dracykeiton.tb.turnman.Turnman.add_side">
+<code class="descname">add_side</code><span class="sig-paren">(</span><em>controller</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#Turnman.add_side"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.Turnman.add_side" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add side</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.turnman.Turnman.finish">
+<code class="descname">finish</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#Turnman.finish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.Turnman.finish" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call this to clear the battle</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.turnman.Turnman.new_round">
+<code class="descname">new_round</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#Turnman.new_round"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.Turnman.new_round" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when new round starts</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.turnman.Turnman.new_turn">
+<code class="descname">new_turn</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#Turnman.new_turn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.Turnman.new_turn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when next side&#8217;s turn begins</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.turnman.Turnman.next_side">
+<code class="descname">next_side</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#Turnman.next_side"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.Turnman.next_side" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns next/current active side or None if no sides</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.turnman.Turnman.plan_action">
+<code class="descname">plan_action</code><span class="sig-paren">(</span><em>a</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#Turnman.plan_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.Turnman.plan_action" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.turnman.Turnman.planned">
+<code class="descname">planned</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#Turnman.planned"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.Turnman.planned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.turnman.Turnman.planned_actions">
+<code class="descname">planned_actions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#Turnman.planned_actions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.Turnman.planned_actions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform all planned actions.</p>
+<p>Return True if there are some actions left, False otherwise</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.turnman.Turnman.planned_turns">
+<code class="descname">planned_turns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#Turnman.planned_turns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.Turnman.planned_turns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.turnman.Turnman.play_forever">
+<code class="descname">play_forever</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#Turnman.play_forever"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.Turnman.play_forever" title="Permalink to this definition">¶</a></dt>
+<dd><p>Continous battle mode where next turn is performed when it can.</p>
+<p>This might lead to lock if there are no external pauses (e.g. some
+controller require user input or time to pass).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.turnman.Turnman.step">
+<code class="descname">step</code><span class="sig-paren">(</span><em>side</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#Turnman.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.Turnman.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process one step of given side.</p>
+<p>Returns True if action was performed and there are more, False if
+no action could be performed, None if side&#8217;s turn is finished.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.tb.turnman.Turnman.turn">
+<code class="descname">turn</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/tb/turnman.html#Turnman.turn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.tb.turnman.Turnman.turn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Advance till turn ends.</p>
+<p>NOTE: if actions required to end turn cannot be performed now, they&#8217;ll
+be performed as soon as possible (call planned_actions() to try
+perform such delayed actions)</p>
+<p>NOTE: should be called only once for a turn. To finish uncompleted turn,
+use planned_actions() instead.</p>
+<p>Returns whatever the last step call returned (None if turn is over,
+False if there are still unperformed actions left)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dracykeiton.tb">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dracykeiton.tb" title="Permalink to this headline">¶</a></h2>
+<p>tb: package containing turn-based stuff</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">dracykeiton.tb package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.tb.battle">dracykeiton.tb.battle module</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.tb.battlegen">dracykeiton.tb.battlegen module</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.tb.controller">dracykeiton.tb.controller module</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.tb.turnman">dracykeiton.tb.turnman module</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.tb">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="dracykeiton.html">dracykeiton package</a><ul>
+      <li>Previous: <a href="dracykeiton.entity.html" title="previous chapter">dracykeiton.entity package</a></li>
+      <li>Next: <a href="dracykeiton.ui.html" title="next chapter">dracykeiton.ui package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/dracykeiton.tb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2016, caryoscelus.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/api/dracykeiton.tb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

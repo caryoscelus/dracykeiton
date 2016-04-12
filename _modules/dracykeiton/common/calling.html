@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>dracykeiton.encounter.outcome &mdash; dracykeiton 0.0.0a documentation</title>
+    <title>dracykeiton.common.calling &mdash; dracykeiton 0.0.0a documentation</title>
     
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -37,9 +37,9 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for dracykeiton.encounter.outcome</h1><div class="highlight"><pre>
+  <h1>Source code for dracykeiton.common.calling</h1><div class="highlight"><pre>
 <span></span><span class="c1">##</span>
-<span class="c1">##  Copyright (C) 2016 caryoscelus</span>
+<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
 <span class="c1">##</span>
 <span class="c1">##  This file is part of Dracykeiton</span>
 <span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
@@ -58,32 +58,27 @@
 <span class="c1">##  along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="c1">##</span>
 
-<span class="sd">&quot;&quot;&quot;Advanced menu outcome classes&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">mod_dep</span>
+<span class="kn">from</span> <span class="nn">..action</span> <span class="kn">import</span> <span class="n">action</span><span class="p">,</span> <span class="n">category</span>
+<span class="kn">from</span> <span class="nn">.ap</span> <span class="kn">import</span> <span class="n">ActionPoint</span>
+<span class="kn">from</span> <span class="nn">.battlefield</span> <span class="kn">import</span> <span class="n">BattlefieldEntity</span>
 
-<div class="viewcode-block" id="Outcome"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.option.Outcome">[docs]</a><span class="k">class</span> <span class="nc">Outcome</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Outcome for multi-outcome advanced menu&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">condition</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">ActionPoint</span><span class="p">,</span> <span class="n">BattlefieldEntity</span><span class="p">)</span>
+<div class="viewcode-block" id="Caller"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.calling.Caller">[docs]</a><span class="k">class</span> <span class="nc">Caller</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">calling_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;calling_type&#39;</span><span class="p">,</span> <span class="n">calling_type</span><span class="p">)</span>
     
-<div class="viewcode-block" id="Outcome.set_result"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.option.Outcome.set_result">[docs]</a>    <span class="k">def</span> <span class="nf">set_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Implement this to store outcome result to be used in launch.</span>
-<span class="sd">        </span>
-<span class="sd">        Can accept any number of args or kwargs - they are passed unchanged</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+    <span class="nd">@category</span><span class="p">(</span><span class="s1">&#39;battle&#39;</span><span class="p">)</span>
+    <span class="nd">@action</span>
+<div class="viewcode-block" id="Caller.call_unit"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.calling.Caller.call_unit">[docs]</a>    <span class="k">def</span> <span class="nf">call_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">unit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calling_type</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ally_group</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span></div>
     
-<div class="viewcode-block" id="Outcome.launch"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.option.Outcome.launch">[docs]</a>    <span class="k">def</span> <span class="nf">launch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;This is called when outcome happens. Implement in your subclass.&quot;&quot;&quot;</span>
-        <span class="k">pass</span></div></div>
-
-<div class="viewcode-block" id="LabelOutcome"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.option.LabelOutcome">[docs]</a><span class="k">class</span> <span class="nc">LabelOutcome</span><span class="p">(</span><span class="n">Outcome</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Outcome storing a simple label&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">LabelOutcome</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="bp">None</span>
-    
-<div class="viewcode-block" id="LabelOutcome.set_result"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.option.LabelOutcome.set_result">[docs]</a>    <span class="k">def</span> <span class="nf">set_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span></div></div>
+    <span class="nd">@unbound</span>
+<div class="viewcode-block" id="Caller.can_call_unit"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.calling.Caller.can_call_unit">[docs]</a>    <span class="k">def</span> <span class="nf">can_call_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spend_ap</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>

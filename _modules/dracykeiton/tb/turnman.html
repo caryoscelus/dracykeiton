@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dracykeiton.tb.turnman &mdash; dracykeiton 0.0.0a documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.0a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="dracykeiton 0.0.0a documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for dracykeiton.tb.turnman</h1><div class="highlight"><pre>
+<span></span><span class="c1">##</span>
+<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##</span>
+<span class="c1">##  This file is part of Dracykeiton</span>
+<span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
+<span class="c1">##  </span>
+<span class="c1">##  This program is free software: you can redistribute it and/or modify</span>
+<span class="c1">##  it under the terms of the GNU General Public License as published by</span>
+<span class="c1">##  the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1">##  (at your option) any later version.</span>
+<span class="c1">##  </span>
+<span class="c1">##  This program is distributed in the hope that it will be useful,</span>
+<span class="c1">##  but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1">##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1">##  GNU General Public License for more details.</span>
+<span class="c1">##  </span>
+<span class="c1">##  You should have received a copy of the GNU General Public License</span>
+<span class="c1">##  along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">##</span>
+
+<span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..action</span> <span class="kn">import</span> <span class="n">ActionProcessor</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<div class="viewcode-block" id="Turnman"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.Turnman">[docs]</a><span class="k">class</span> <span class="nc">Turnman</span><span class="p">(</span><span class="n">ActionProcessor</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">world</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Turnman</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">world</span> <span class="o">=</span> <span class="n">world</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sides</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">turn_prepared</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_planned</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_turns_planned</span> <span class="o">=</span> <span class="mi">0</span>
+    
+<div class="viewcode-block" id="Turnman.add_side"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.Turnman.add_side">[docs]</a>    <span class="k">def</span> <span class="nf">add_side</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">controller</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add side&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sides</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">controller</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Turnman.next_side"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.Turnman.next_side">[docs]</a>    <span class="k">def</span> <span class="nf">next_side</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns next/current active side or None if no sides&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sides</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sides</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+    
+<div class="viewcode-block" id="Turnman.new_round"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.Turnman.new_round">[docs]</a>    <span class="k">def</span> <span class="nf">new_round</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Called when new round starts&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sides</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">new_round</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">new_round</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">new_turn</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">new_turn</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="Turnman.new_turn"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.Turnman.new_turn">[docs]</a>    <span class="k">def</span> <span class="nf">new_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Called when next side&#39;s turn begins&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">new_turn</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">new_turn</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="Turnman.finish"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.Turnman.finish">[docs]</a>    <span class="k">def</span> <span class="nf">finish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Call this to clear the battle&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">finish</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="Turnman.play_forever"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.Turnman.play_forever">[docs]</a>    <span class="k">def</span> <span class="nf">play_forever</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Continous battle mode where next turn is performed when it can.</span>
+<span class="sd">        </span>
+<span class="sd">        This might lead to lock if there are no external pauses (e.g. some</span>
+<span class="sd">        controller require user input or time to pass).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_turns_planned</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Turnman.turn"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.Turnman.turn">[docs]</a>    <span class="k">def</span> <span class="nf">turn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Advance till turn ends.</span>
+<span class="sd">        </span>
+<span class="sd">        NOTE: if actions required to end turn cannot be performed now, they&#39;ll</span>
+<span class="sd">        be performed as soon as possible (call planned_actions() to try</span>
+<span class="sd">        perform such delayed actions)</span>
+<span class="sd">        </span>
+<span class="sd">        NOTE: should be called only once for a turn. To finish uncompleted turn,</span>
+<span class="sd">        use planned_actions() instead.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns whatever the last step call returned (None if turn is over,</span>
+<span class="sd">        False if there are still unperformed actions left)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">planned_actions</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_turns_planned</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        
+        <span class="n">side</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_side</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">side</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">new_round</span><span class="p">()</span>
+            
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">while</span> <span class="n">r</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">side</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">new_turn</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_turns_planned</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">planned_turns</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+    
+<div class="viewcode-block" id="Turnman.step"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.Turnman.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">side</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Process one step of given side.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns True if action was performed and there are more, False if</span>
+<span class="sd">        no action could be performed, None if side&#39;s turn is finished.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">side</span><span class="o">.</span><span class="n">act</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">r</span><span class="p">:</span>
+            <span class="c1"># action is present</span>
+            <span class="n">ar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ar</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">plan_action</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="c1"># if not r, r is either False or None</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+    
+<div class="viewcode-block" id="Turnman.plan_action"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.Turnman.plan_action">[docs]</a>    <span class="k">def</span> <span class="nf">plan_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_planned</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Turnman.planned_actions"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.Turnman.planned_actions">[docs]</a>    <span class="k">def</span> <span class="nf">planned_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform all planned actions.</span>
+<span class="sd">        </span>
+<span class="sd">        Return True if there are some actions left, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_planned</span><span class="p">:</span>
+            <span class="n">ar</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">while</span> <span class="n">ar</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_planned</span><span class="p">:</span>
+                <span class="n">next_action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_planned</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">ar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">next_action</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">ar</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_planned</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ar</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">False</span></div>
+    
+<div class="viewcode-block" id="Turnman.planned_turns"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.Turnman.planned_turns">[docs]</a>    <span class="k">def</span> <span class="nf">planned_turns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_turns_planned</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_turns_planned</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">turn</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">False</span></div>
+    
+<div class="viewcode-block" id="Turnman.planned"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.Turnman.planned">[docs]</a>    <span class="k">def</span> <span class="nf">planned</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">planned_actions</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">planned_turns</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="LockableTurnman"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.LockableTurnman">[docs]</a><span class="k">class</span> <span class="nc">LockableTurnman</span><span class="p">(</span><span class="n">Turnman</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Turnman that can be locked and then actions are not performed.</span>
+<span class="sd">    </span>
+<span class="sd">    This is useful for performing various effects when actions happen.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LockableTurnman</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_locked</span> <span class="o">=</span> <span class="mi">0</span>
+    
+<div class="viewcode-block" id="LockableTurnman.lock"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.LockableTurnman.lock">[docs]</a>    <span class="k">def</span> <span class="nf">lock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add lock.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_locked</span> <span class="o">+=</span> <span class="mi">1</span></div>
+    
+<div class="viewcode-block" id="LockableTurnman.unlock"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.LockableTurnman.unlock">[docs]</a>    <span class="k">def</span> <span class="nf">unlock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Release lock. This will also perform planned actions if fully unlocked&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_locked</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_locked</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;too much unlocking&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_locked</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">planned</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="LockableTurnman.process"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.turnman.LockableTurnman.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_locked</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">LockableTurnman</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2016, caryoscelus.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dracykeiton.common.hp &mdash; dracykeiton 0.0.0a documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.0a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="dracykeiton 0.0.0a documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for dracykeiton.common.hp</h1><div class="highlight"><pre>
+<span></span><span class="c1">##</span>
+<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##</span>
+<span class="c1">##  This file is part of Dracykeiton</span>
+<span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
+<span class="c1">##  </span>
+<span class="c1">##  This program is free software: you can redistribute it and/or modify</span>
+<span class="c1">##  it under the terms of the GNU General Public License as published by</span>
+<span class="c1">##  the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1">##  (at your option) any later version.</span>
+<span class="c1">##  </span>
+<span class="c1">##  This program is distributed in the hope that it will be useful,</span>
+<span class="c1">##  but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1">##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1">##  GNU General Public License for more details.</span>
+<span class="c1">##  </span>
+<span class="c1">##  You should have received a copy of the GNU General Public License</span>
+<span class="c1">##  along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">##</span>
+
+<span class="sd">&quot;&quot;&quot;Hit point system&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">listener</span><span class="p">,</span> <span class="n">depends</span><span class="p">,</span> <span class="n">mod_dep</span>
+<span class="kn">from</span> <span class="nn">.level</span> <span class="kn">import</span> <span class="n">Level</span>
+
+<div class="viewcode-block" id="Living"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.Living">[docs]</a><span class="k">class</span> <span class="nc">Living</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;living&#39;</span><span class="p">,</span> <span class="s1">&#39;unborn&#39;</span><span class="p">)</span>
+    
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_set_node</span><span class="p">(</span><span class="s1">&#39;living&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensure_correct</span><span class="p">())</span>
+    
+    <span class="nd">@simplenode</span>
+<div class="viewcode-block" id="Living.ensure_correct"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.Living.ensure_correct">[docs]</a>    <span class="k">def</span> <span class="nf">ensure_correct</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;unborn&#39;</span><span class="p">,</span> <span class="s1">&#39;alive&#39;</span><span class="p">,</span> <span class="s1">&#39;dead&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;living property cannnot equal &quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">value</span></div>
+    
+    <span class="nd">@unbound</span>
+<div class="viewcode-block" id="Living.die"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.Living.die">[docs]</a>    <span class="k">def</span> <span class="nf">die</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="s1">&#39;no reason&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">living</span> <span class="o">=</span> <span class="s1">&#39;dead&#39;</span></div>
+    
+    <span class="nd">@unbound</span>
+<div class="viewcode-block" id="Living.be_born"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.Living.be_born">[docs]</a>    <span class="k">def</span> <span class="nf">be_born</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">living</span> <span class="o">==</span> <span class="s1">&#39;unborn&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">living</span> <span class="o">=</span> <span class="s1">&#39;alive&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">living</span> <span class="o">==</span> <span class="s1">&#39;dead&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;dead cannot be born, try some black magic instead!&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">living</span> <span class="o">==</span> <span class="s1">&#39;alive&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;cannot be born twice!&#39;</span><span class="p">)</span></div>
+    
+    <span class="nd">@unbound</span>
+<div class="viewcode-block" id="Living.be_unborn"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.Living.be_unborn">[docs]</a>    <span class="k">def</span> <span class="nf">be_unborn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">living</span> <span class="o">!=</span> <span class="s1">&#39;dead&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">living</span> <span class="o">=</span> <span class="s1">&#39;unborn&#39;</span></div></div>
+
+<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">Living</span><span class="p">)</span>
+<div class="viewcode-block" id="Hp"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.Hp">[docs]</a><span class="k">class</span> <span class="nc">Hp</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxhp</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;hp&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priorities</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="s1">&#39;round&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;maxhp&#39;</span><span class="p">,</span> <span class="n">maxhp</span><span class="p">,</span> <span class="n">priorities</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="s1">&#39;round&#39;</span><span class="p">))</span>
+    
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_set_node</span><span class="p">(</span><span class="s1">&#39;hp&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hp_cap</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_listener_node</span><span class="p">(</span><span class="s1">&#39;hp&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_hp</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_listener_node</span><span class="p">(</span><span class="s1">&#39;living&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_if_born</span><span class="p">())</span>
+    
+    <span class="nd">@unbound</span>
+<div class="viewcode-block" id="Hp.full_hp"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.Hp.full_hp">[docs]</a>    <span class="k">def</span> <span class="nf">full_hp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxhp</span></div>
+    
+    <span class="nd">@unbound</span>
+<div class="viewcode-block" id="Hp.hurt"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.Hp.hurt">[docs]</a>    <span class="k">def</span> <span class="nf">hurt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">damage</span><span class="p">):</span>
+        <span class="n">was_alive</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">living</span> <span class="o">==</span> <span class="s1">&#39;alive&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hp</span> <span class="o">-=</span> <span class="n">damage</span>
+        <span class="k">if</span> <span class="n">was_alive</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">living</span> <span class="o">==</span> <span class="s1">&#39;dead&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">False</span></div>
+    
+    <span class="nd">@depends</span><span class="p">(</span><span class="s1">&#39;maxhp&#39;</span><span class="p">)</span>
+    <span class="nd">@simplenode</span>
+<div class="viewcode-block" id="Hp.hp_cap"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.Hp.hp_cap">[docs]</a>    <span class="k">def</span> <span class="nf">hp_cap</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">maxhp</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">maxhp</span><span class="p">)</span></div>
+    
+    <span class="nd">@listener</span>
+<div class="viewcode-block" id="Hp.check_hp"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.Hp.check_hp">[docs]</a>    <span class="k">def</span> <span class="nf">check_hp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hp</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">die</span><span class="p">(</span><span class="s1">&#39;hp = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hp</span><span class="p">))</span></div>
+    
+    <span class="nd">@listener</span>
+<div class="viewcode-block" id="Hp.check_if_born"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.Hp.check_if_born">[docs]</a>    <span class="k">def</span> <span class="nf">check_if_born</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s1">&#39;alive&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">full_hp</span><span class="p">()</span></div></div>
+
+<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">Hp</span><span class="p">)</span>
+<div class="viewcode-block" id="RobustHp"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.RobustHp">[docs]</a><span class="k">class</span> <span class="nc">RobustHp</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robust</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;robust&#39;</span><span class="p">,</span> <span class="n">robust</span><span class="p">)</span>
+    
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_get_node</span><span class="p">(</span><span class="s1">&#39;maxhp&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_robust_hp</span><span class="p">())</span>
+    
+    <span class="nd">@depends</span><span class="p">(</span><span class="s1">&#39;robust&#39;</span><span class="p">)</span>
+    <span class="nd">@simplenode</span>
+<div class="viewcode-block" id="RobustHp.get_robust_hp"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.RobustHp.get_robust_hp">[docs]</a>    <span class="k">def</span> <span class="nf">get_robust_hp</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">robust</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="n">robust</span></div></div>
+
+<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">Hp</span><span class="p">,</span> <span class="n">Level</span><span class="p">)</span>
+<div class="viewcode-block" id="LevelHp"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.LevelHp">[docs]</a><span class="k">class</span> <span class="nc">LevelHp</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+    
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_get_node</span><span class="p">(</span><span class="s1">&#39;maxhp&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_level_hp</span><span class="p">())</span>
+    
+    <span class="nd">@depends</span><span class="p">(</span><span class="s1">&#39;level&#39;</span><span class="p">)</span>
+    <span class="nd">@simplenode</span>
+<div class="viewcode-block" id="LevelHp.get_level_hp"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.LevelHp.get_level_hp">[docs]</a>    <span class="k">def</span> <span class="nf">get_level_hp</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">level</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span></div></div>
+
+<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">Hp</span><span class="p">)</span>
+<div class="viewcode-block" id="RoundingHp"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.RoundingHp">[docs]</a><span class="k">class</span> <span class="nc">RoundingHp</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+    
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_set_node</span><span class="p">(</span><span class="s1">&#39;hp&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">round_hp</span><span class="p">(),</span> <span class="n">priority</span><span class="o">=</span><span class="s1">&#39;round&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_get_node</span><span class="p">(</span><span class="s1">&#39;maxhp&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">round_hp</span><span class="p">(),</span> <span class="n">priority</span><span class="o">=</span><span class="s1">&#39;round&#39;</span><span class="p">)</span>
+    
+    <span class="nd">@simplenode</span>
+<div class="viewcode-block" id="RoundingHp.round_hp"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hp.RoundingHp.round_hp">[docs]</a>    <span class="k">def</span> <span class="nf">round_hp</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2016, caryoscelus.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -64,22 +64,22 @@
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 
-<div class="viewcode-block" id="Option"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.Option">[docs]</a><span class="k">class</span> <span class="nc">Option</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Option"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.Option">[docs]</a><span class="k">class</span> <span class="nc">Option</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base encounter menu option class&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Option</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">requires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     
-<div class="viewcode-block" id="Option.can_do"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.Option.can_do">[docs]</a>    <span class="k">def</span> <span class="nf">can_do</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Option.can_do"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.Option.can_do">[docs]</a>    <span class="k">def</span> <span class="nf">can_do</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check if option&#39;s requirements are satisfied&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="n">req</span><span class="o">.</span><span class="n">check</span><span class="p">()</span> <span class="k">for</span> <span class="n">req</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">requires</span><span class="p">])</span></div>
     
-<div class="viewcode-block" id="Option.pay_costs"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.Option.pay_costs">[docs]</a>    <span class="k">def</span> <span class="nf">pay_costs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Option.pay_costs"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.Option.pay_costs">[docs]</a>    <span class="k">def</span> <span class="nf">pay_costs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Pay all the costs for this option.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">req</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">requires</span><span class="p">:</span>
             <span class="n">req</span><span class="o">.</span><span class="n">pay</span><span class="p">()</span></div></div>
 
-<div class="viewcode-block" id="OutcomeOption"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.OutcomeOption">[docs]</a><span class="k">class</span> <span class="nc">OutcomeOption</span><span class="p">(</span><span class="n">Option</span><span class="p">):</span>
+<div class="viewcode-block" id="OutcomeOption"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.OutcomeOption">[docs]</a><span class="k">class</span> <span class="nc">OutcomeOption</span><span class="p">(</span><span class="n">Option</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Option supporting various outcomes</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -91,37 +91,37 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">outcomes</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">forced_conditions</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
     
-    <span class="k">def</span> <span class="nf">force_outcome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">condition</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">forced_conditions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">condition</span>
+<div class="viewcode-block" id="OutcomeOption.force_outcome"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.OutcomeOption.force_outcome">[docs]</a>    <span class="k">def</span> <span class="nf">force_outcome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">condition</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forced_conditions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">condition</span></div>
     
-    <span class="k">def</span> <span class="nf">outcome_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">condition</span><span class="p">):</span>
+<div class="viewcode-block" id="OutcomeOption.outcome_condition"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.OutcomeOption.outcome_condition">[docs]</a>    <span class="k">def</span> <span class="nf">outcome_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">condition</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outcomes</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">outcomes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outcome_class</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">outcomes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">condition</span> <span class="o">=</span> <span class="n">condition</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outcomes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">condition</span> <span class="o">=</span> <span class="n">condition</span></div>
     
-    <span class="k">def</span> <span class="nf">outcome_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OutcomeOption.outcome_result"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.OutcomeOption.outcome_result">[docs]</a>    <span class="k">def</span> <span class="nf">outcome_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outcomes</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">outcomes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outcome_class</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">outcomes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outcomes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 
-<div class="viewcode-block" id="RollOutcomeOption"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.RollOutcomeOption">[docs]</a><span class="k">class</span> <span class="nc">RollOutcomeOption</span><span class="p">(</span><span class="n">OutcomeOption</span><span class="p">):</span>
+<div class="viewcode-block" id="RollOutcomeOption"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.RollOutcomeOption">[docs]</a><span class="k">class</span> <span class="nc">RollOutcomeOption</span><span class="p">(</span><span class="n">OutcomeOption</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Option whose outcome depends on rolls.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RollOutcomeOption</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">roll_n</span> <span class="o">=</span> <span class="bp">None</span>
     
-<div class="viewcode-block" id="RollOutcomeOption.roll"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.RollOutcomeOption.roll">[docs]</a>    <span class="k">def</span> <span class="nf">roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<div class="viewcode-block" id="RollOutcomeOption.roll"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.RollOutcomeOption.roll">[docs]</a>    <span class="k">def</span> <span class="nf">roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set roll result&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">roll_n</span> <span class="o">=</span> <span class="n">n</span></div>
     
-<div class="viewcode-block" id="RollOutcomeOption.call_roll"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.RollOutcomeOption.call_roll">[docs]</a>    <span class="k">def</span> <span class="nf">call_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<div class="viewcode-block" id="RollOutcomeOption.call_roll"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.RollOutcomeOption.call_roll">[docs]</a>    <span class="k">def</span> <span class="nf">call_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Roll n dices and call after_roll</span>
 <span class="sd">        </span>
 <span class="sd">        Implement this in your subclass.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">after_roll</span><span class="p">()</span></div>
     
-    <span class="k">def</span> <span class="nf">launch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RollOutcomeOption.launch"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.RollOutcomeOption.launch">[docs]</a>    <span class="k">def</span> <span class="nf">launch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pay_costs</span><span class="p">()</span>
         
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">forced_conditions</span><span class="p">:</span>
@@ -136,9 +136,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">roll_n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">roll_n</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">call_roll</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">roll_n</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">after_roll</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">after_roll</span><span class="p">()</span></div>
     
-<div class="viewcode-block" id="RollOutcomeOption.after_roll"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.RollOutcomeOption.after_roll">[docs]</a>    <span class="k">def</span> <span class="nf">after_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">forced</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RollOutcomeOption.after_roll"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.RollOutcomeOption.after_roll">[docs]</a>    <span class="k">def</span> <span class="nf">after_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">forced</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Launch outcome according to roll result</span>
 <span class="sd">        </span>
 <span class="sd">        This should be called by .call_roll or .launch if no roll happened</span>
@@ -151,7 +151,7 @@
                 <span class="n">outcome</span><span class="o">.</span><span class="n">launch</span><span class="p">()</span>
                 <span class="k">break</span></div></div>
 
-<div class="viewcode-block" id="APIOption"><a class="viewcode-back" href="../../../api/encounter.html#dracykeiton.encounter.advanced_menu.APIOption">[docs]</a><span class="k">class</span> <span class="nc">APIOption</span><span class="p">(</span><span class="n">Option</span><span class="p">):</span>
+<div class="viewcode-block" id="APIOption"><a class="viewcode-back" href="../../../api/dracykeiton.encounter.html#dracykeiton.encounter.advanced_menu.APIOption">[docs]</a><span class="k">class</span> <span class="nc">APIOption</span><span class="p">(</span><span class="n">Option</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;AdvancedMenuOption that automatically generates api.</span>
 <span class="sd">    </span>
 <span class="sd">    Inherit this and put list of Requirement classes into api_classes and</span>

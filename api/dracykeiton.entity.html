@@ -1,0 +1,524 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dracykeiton.entity package &mdash; dracykeiton 0.0.0a documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="dracykeiton 0.0.0a documentation" href="../index.html" />
+    <link rel="up" title="dracykeiton package" href="dracykeiton.html" />
+    <link rel="next" title="dracykeiton.tb package" href="dracykeiton.tb.html" />
+    <link rel="prev" title="dracykeiton.encounter package" href="dracykeiton.encounter.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dracykeiton-entity-package">
+<h1>dracykeiton.entity package<a class="headerlink" href="#dracykeiton-entity-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-dracykeiton.entity.declarative">
+<span id="dracykeiton-entity-declarative-module"></span><h2>dracykeiton.entity.declarative module<a class="headerlink" href="#module-dracykeiton.entity.declarative" title="Permalink to this headline">¶</a></h2>
+<p>Tools to make Entity definitions more declarative</p>
+<p>This means more separation between data structures and actual code.</p>
+<dl class="function">
+<dt id="dracykeiton.entity.declarative.data_node">
+<code class="descclassname">dracykeiton.entity.declarative.</code><code class="descname">data_node</code><span class="sig-paren">(</span><em>tp</em>, <em>target</em>, <em>deps=()</em>, <em>priority=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/declarative.html#data_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.declarative.data_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator making simple node Entity mod from node function</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="dracykeiton.entity.declarative.properties">
+<code class="descclassname">dracykeiton.entity.declarative.</code><code class="descname">properties</code><span class="sig-paren">(</span><em>**props</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/declarative.html#properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.declarative.properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator on Entity class defining dynamic properties</p>
+<p>Property default values can either be persistent values
+(numberes, strings, boolean) or functions creating complex
+values. DO NOT pass complex (i.e. changable) objects there, that
+will result in every instance having same object!</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dracykeiton.entity.entity">
+<span id="dracykeiton-entity-entity-module"></span><h2>dracykeiton.entity.entity module<a class="headerlink" href="#module-dracykeiton.entity.entity" title="Permalink to this headline">¶</a></h2>
+<p>Contains Entity which is the base class for all entities and it&#8217;s properties</p>
+<dl class="class">
+<dt id="dracykeiton.entity.entity.DynamicProperty">
+<em class="property">class </em><code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">DynamicProperty</code><span class="sig-paren">(</span><em>owner</em>, <em>empty=None</em>, <em>priorities=()</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#DynamicProperty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.DynamicProperty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Stores dynamic property and modifiers associated with it.</p>
+<dl class="method">
+<dt id="dracykeiton.entity.entity.DynamicProperty.add_get_node">
+<code class="descname">add_get_node</code><span class="sig-paren">(</span><em>f</em>, <em>priority=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#DynamicProperty.add_get_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.DynamicProperty.add_get_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.DynamicProperty.add_set_node">
+<code class="descname">add_set_node</code><span class="sig-paren">(</span><em>f</em>, <em>priority=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#DynamicProperty.add_set_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.DynamicProperty.add_set_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.DynamicProperty.del_get_node">
+<code class="descname">del_get_node</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#DynamicProperty.del_get_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.DynamicProperty.del_get_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.DynamicProperty.del_set_node">
+<code class="descname">del_set_node</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#DynamicProperty.del_set_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.DynamicProperty.del_set_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dracykeiton.entity.entity.DynamicProperty.value">
+<code class="descname">value</code><a class="headerlink" href="#dracykeiton.entity.entity.DynamicProperty.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.entity.entity.Entity">
+<em class="property">class </em><code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">Entity</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Base entity, including dynamic property and modding mechanism.</p>
+<p>Do not create class hierarchy. All entity classes should inherit this
+directly and use &#64;mod_dep for dependencies.</p>
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.add_get_node">
+<code class="descname">add_get_node</code><span class="sig-paren">(</span><em>prop</em>, <em>node</em>, <em>priority=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.add_get_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.add_get_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add getter node</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.add_listener_node">
+<code class="descname">add_listener_node</code><span class="sig-paren">(</span><em>prop</em>, <em>listener</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.add_listener_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.add_listener_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add listner node to the prop.</p>
+<p>It will be notified on changes, including changes of dependencies.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.add_mod">
+<code class="descname">add_mod</code><span class="sig-paren">(</span><em>mod</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.add_mod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.add_mod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add mod dynamically</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.add_set_node">
+<code class="descname">add_set_node</code><span class="sig-paren">(</span><em>prop</em>, <em>node</em>, <em>priority=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.add_set_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.add_set_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add setter node</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.dec_get_dependency">
+<code class="descname">dec_get_dependency</code><span class="sig-paren">(</span><em>dependency</em>, <em>dependant</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.dec_get_dependency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.dec_get_dependency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.del_get_node">
+<code class="descname">del_get_node</code><span class="sig-paren">(</span><em>prop</em>, <em>node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.del_get_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.del_get_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.del_mod">
+<code class="descname">del_mod</code><span class="sig-paren">(</span><em>mod</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.del_mod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.del_mod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove mod dynamically</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.del_set_node">
+<code class="descname">del_set_node</code><span class="sig-paren">(</span><em>prop</em>, <em>node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.del_set_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.del_set_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="dracykeiton.entity.entity.Entity.dep_mod">
+<em class="property">classmethod </em><code class="descname">dep_mod</code><span class="sig-paren">(</span><em>cl</em>, <em>mod</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.dep_mod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.dep_mod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add mod dependency for this Entity class</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dracykeiton.entity.entity.Entity.disable">
+<em class="property">classmethod </em><code class="descname">disable</code><span class="sig-paren">(</span><em>cl</em>, <em>target</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.disable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.disable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disable this mod on target entity (internal use)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.dynamic_method">
+<code class="descname">dynamic_method</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.dynamic_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.dynamic_method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.dynamic_property">
+<code class="descname">dynamic_property</code><span class="sig-paren">(</span><em>name</em>, <em>empty=None</em>, <em>priorities=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.dynamic_property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.dynamic_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define new dynamic property called name</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dracykeiton.entity.entity.Entity.enable">
+<em class="property">classmethod </em><code class="descname">enable</code><span class="sig-paren">(</span><em>cl</em>, <em>target</em>, <em>first_load</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.enable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.enable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable this mod on target entity (internal use)</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dracykeiton.entity.entity.Entity.global_mod">
+<em class="property">classmethod </em><code class="descname">global_mod</code><span class="sig-paren">(</span><em>cl</em>, <em>mod</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.global_mod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.global_mod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add global mod to this Entity class.</p>
+<p>This mod will be automatically added to all instances created or
+loaded after calling global_mod</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.has_mod">
+<code class="descname">has_mod</code><span class="sig-paren">(</span><em>mod</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.has_mod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.has_mod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if this Entity has mod.</p>
+<p>Still, duck typing is usually preferred cause same behaviour can
+be implemented by different mods.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.inc_get_dependency">
+<code class="descname">inc_get_dependency</code><span class="sig-paren">(</span><em>dependency</em>, <em>dependant</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.inc_get_dependency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.inc_get_dependency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.load_mod">
+<code class="descname">load_mod</code><span class="sig-paren">(</span><em>mod</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.load_mod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.load_mod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load mod to this entity after reloading (for internal use)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.no_set">
+<code class="descname">no_set</code><span class="sig-paren">(</span><em>prop</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.no_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.no_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forbid setting prop</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.notify_listeners">
+<code class="descname">notify_listeners</code><span class="sig-paren">(</span><em>prop</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.notify_listeners"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.notify_listeners" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify listeners of prop, including those who depend on it.</p>
+<p>NOTE: this may lead to some listener getting notified more than once if
+it&#8217;s dependency of multiple dependencies.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.remove_property">
+<code class="descname">remove_property</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.remove_property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.remove_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove dynamic property. To use in mod.disable()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.Entity.req_mod">
+<code class="descname">req_mod</code><span class="sig-paren">(</span><em>mod</em>, <em>args=()</em>, <em>kwargs={}</em>, <em>first_load=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity.req_mod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity.req_mod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add mod to this entity (for internal use)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.entity.entity.EntityMeta">
+<em class="property">class </em><code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">EntityMeta</code><span class="sig-paren">(</span><em>name</em>, <em>bases</em>, <em>d</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#EntityMeta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.EntityMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">type</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.entity.entity.ForbidWritingNode">
+<em class="property">class </em><code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">ForbidWritingNode</code><span class="sig-paren">(</span><em>prop</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#ForbidWritingNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.ForbidWritingNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.entity.entity.ReadOnlyNode" title="dracykeiton.entity.entity.ReadOnlyNode"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.ReadOnlyNode</span></code></a></p>
+<dl class="method">
+<dt id="dracykeiton.entity.entity.ForbidWritingNode.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#ForbidWritingNode.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.ForbidWritingNode.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.entity.entity.ListenerNode">
+<em class="property">class </em><code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">ListenerNode</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#ListenerNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.ListenerNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.entity.entity.ProcessingNode" title="dracykeiton.entity.entity.ProcessingNode"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.ProcessingNode</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="dracykeiton.entity.entity.NodeDependencyError">
+<em class="property">exception </em><code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">NodeDependencyError</code><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#NodeDependencyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.NodeDependencyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">AttributeError</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.entity.entity.ProcessingNode">
+<em class="property">class </em><code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">ProcessingNode</code><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#ProcessingNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.ProcessingNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="dracykeiton.entity.entity.ProcessingNode.depends">
+<code class="descname">depends</code><span class="sig-paren">(</span><em>prop</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#ProcessingNode.depends"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.ProcessingNode.depends" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.entity.ProcessingNode.deps">
+<code class="descname">deps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#ProcessingNode.deps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.ProcessingNode.deps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.entity.entity.ReadOnlyNode">
+<em class="property">class </em><code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">ReadOnlyNode</code><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#ReadOnlyNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.ReadOnlyNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.entity.entity.ProcessingNode" title="dracykeiton.entity.entity.ProcessingNode"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.ProcessingNode</span></code></a></p>
+<p>Processing node with only limited read access</p>
+<dl class="method">
+<dt id="dracykeiton.entity.entity.ReadOnlyNode.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>value</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#ReadOnlyNode.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.ReadOnlyNode.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.entity.entity.SimpleNode">
+<em class="property">class </em><code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">SimpleNode</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#SimpleNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.SimpleNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.entity.entity.ReadOnlyNode" title="dracykeiton.entity.entity.ReadOnlyNode"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.ReadOnlyNode</span></code></a></p>
+<dl class="method">
+<dt id="dracykeiton.entity.entity.SimpleNode.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>value</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#SimpleNode.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.SimpleNode.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="dracykeiton.entity.entity.depends">
+<code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">depends</code><span class="sig-paren">(</span><em>*names</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#depends"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.depends" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="dracykeiton.entity.entity.get_mods_deps">
+<code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">get_mods_deps</code><span class="sig-paren">(</span><em>cl</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#get_mods_deps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.get_mods_deps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="dracykeiton.entity.entity.listener">
+<code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">listener</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#listener"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.listener" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="dracykeiton.entity.entity.mod_dep">
+<code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">mod_dep</code><span class="sig-paren">(</span><em>*mods</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#mod_dep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.mod_dep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator for Entity mod dependency</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="dracykeiton.entity.entity.simplenode">
+<code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">simplenode</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#simplenode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.simplenode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns function, which returns SimpleNode</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dracykeiton.entity</span> <span class="k">import</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">SimpleNode</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span> <span class="o">=</span> <span class="n">simplenode</span><span class="p">(</span><span class="nb">int</span><span class="p">)(</span><span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">SimpleNode</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@simplenode</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">value</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">15</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dracykeiton.entity.entity.writernode">
+<code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">writernode</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#writernode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.writernode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-dracykeiton.entity.interpolate">
+<span id="dracykeiton-entity-interpolate-module"></span><h2>dracykeiton.entity.interpolate module<a class="headerlink" href="#module-dracykeiton.entity.interpolate" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dracykeiton.entity.interpolate.InterpolatingCache">
+<em class="property">class </em><code class="descclassname">dracykeiton.entity.interpolate.</code><code class="descname">InterpolatingCache</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/interpolate.html#InterpolatingCache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.interpolate.InterpolatingCache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
+<dl class="method">
+<dt id="dracykeiton.entity.interpolate.InterpolatingCache.cache_interpolate_float">
+<code class="descname">cache_interpolate_float</code><span class="sig-paren">(</span><em>name</em>, <em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/interpolate.html#InterpolatingCache.cache_interpolate_float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.interpolate.InterpolatingCache.cache_interpolate_float" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.interpolate.InterpolatingCache.tick">
+<code class="descname">tick</code><span class="sig-paren">(</span><em>st</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/interpolate.html#InterpolatingCache.tick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.interpolate.InterpolatingCache.tick" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.interpolate.InterpolatingCache.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>name</em>, <em>old_value</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/interpolate.html#InterpolatingCache.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.interpolate.InterpolatingCache.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.interpolate.InterpolatingCache.update_property">
+<code class="descname">update_property</code><span class="sig-paren">(</span><em>name</em>, <em>time</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/interpolate.html#InterpolatingCache.update_property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.interpolate.InterpolatingCache.update_property" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dracykeiton.entity.proxyentity">
+<span id="dracykeiton-entity-proxyentity-module"></span><h2>dracykeiton.entity.proxyentity module<a class="headerlink" href="#module-dracykeiton.entity.proxyentity" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dracykeiton.entity.proxyentity.CachedEntity">
+<em class="property">class </em><code class="descclassname">dracykeiton.entity.proxyentity.</code><code class="descname">CachedEntity</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#CachedEntity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.CachedEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
+<dl class="method">
+<dt id="dracykeiton.entity.proxyentity.CachedEntity.cache_listener">
+<code class="descname">cache_listener</code><span class="sig-paren">(</span><em>name</em>, <em>update_f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#CachedEntity.cache_listener"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.CachedEntity.cache_listener" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.proxyentity.CachedEntity.cache_property">
+<code class="descname">cache_property</code><span class="sig-paren">(</span><em>name</em>, <em>update_f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#CachedEntity.cache_property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.CachedEntity.cache_property" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.proxyentity.CachedEntity.cached">
+<code class="descname">cached</code><span class="sig-paren">(</span><em>name</em>, <em>version</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#CachedEntity.cached"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.CachedEntity.cached" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.proxyentity.CachedEntity.get_cache">
+<code class="descname">get_cache</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#CachedEntity.get_cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.CachedEntity.get_cache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.proxyentity.CachedEntity.update_cache">
+<code class="descname">update_cache</code><span class="sig-paren">(</span><em>name</em>, <em>n</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#CachedEntity.update_cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.CachedEntity.update_cache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="dracykeiton.entity.proxyentity.ProxyAttributeError">
+<em class="property">exception </em><code class="descclassname">dracykeiton.entity.proxyentity.</code><code class="descname">ProxyAttributeError</code><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#ProxyAttributeError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.ProxyAttributeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">AttributeError</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.entity.proxyentity.ProxyEntity">
+<em class="property">class </em><code class="descclassname">dracykeiton.entity.proxyentity.</code><code class="descname">ProxyEntity</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#ProxyEntity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.ProxyEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
+<p>Entity which gives values from other entity.</p>
+<p>It cannot be used as mod because it overrides __getstate__ and
+__getattr__. Perhaps, this can be fixed, if there would be usecase
+for ProxyEntity as mod.</p>
+<dl class="method">
+<dt id="dracykeiton.entity.proxyentity.ProxyEntity.proxy_listen">
+<code class="descname">proxy_listen</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#ProxyEntity.proxy_listen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.ProxyEntity.proxy_listen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.proxyentity.ProxyEntity.proxy_property">
+<code class="descname">proxy_property</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#ProxyEntity.proxy_property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.ProxyEntity.proxy_property" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.proxyentity.ProxyEntity.read_source">
+<code class="descname">read_source</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#ProxyEntity.read_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.ProxyEntity.read_source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.entity.proxyentity.ProxyEntity.source_changed">
+<code class="descname">source_changed</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#ProxyEntity.source_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.ProxyEntity.source_changed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dracykeiton.entity">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dracykeiton.entity" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">dracykeiton.entity package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.entity.declarative">dracykeiton.entity.declarative module</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.entity.entity">dracykeiton.entity.entity module</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.entity.interpolate">dracykeiton.entity.interpolate module</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.entity.proxyentity">dracykeiton.entity.proxyentity module</a></li>
+<li><a class="reference internal" href="#module-dracykeiton.entity">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="dracykeiton.html">dracykeiton package</a><ul>
+      <li>Previous: <a href="dracykeiton.encounter.html" title="previous chapter">dracykeiton.encounter package</a></li>
+      <li>Next: <a href="dracykeiton.tb.html" title="next chapter">dracykeiton.tb package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/dracykeiton.entity.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015-2016, caryoscelus.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/api/dracykeiton.entity.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
