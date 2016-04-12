@@ -2,5 +2,6 @@
 
 # happens when we're on gh-pages or other 'empty' branch
 [ -d scripts ] || exit 0
-bash scripts/run-all-tests.sh
+
+bash scripts/update-gh-pages.sh
 exit $?
