@@ -12,6 +12,8 @@ if [ ${BRANCH} =  "master" ]; then
         fi
     done
     
+    source env/bin/activate
+    
     pushd ../dracykeiton-docs
     git checkout --detach master
     git diff-tree --quiet ${FIRST_COMMIT} ${LAST_COMMIT} -- dracykeiton/ docs/ && exit 0
@@ -34,6 +36,8 @@ if [ ${BRANCH} =  "master" ]; then
     else
         echo "Now go review doc commit & push it!"
     fi
+    
+    deactivate
     
     popd
 else
