@@ -20,27 +20,45 @@
 
 """common: package containing common enitty build blocks"""
 
-from .accuracy import *
-from .actor import *
-from .ap import *
-from .attribute import *
-from .battlefield import *
-from .calling import *
-from .container import *
-from .dice import *
-from .dexterity import *
-from .evasion import *
-from .grid import *
-from .heal import *
-from .hit import *
-from .hp import *
-from .inspire import *
-from .inventory import *
-from .kill import *
-from .kind import *
-from .level import *
-from .meta import *
-from .money import *
-from .variables import *
-from .xp import *
-from .xy import *
+import importlib
+
+__all__ = [
+    'accuracy',
+    'actor',
+    'ap',
+    'attribute',
+    'battlefield',
+    'calling',
+    'container',
+    'dice',
+    'dexterity',
+    'evasion',
+    'grid',
+    'heal',
+    'hit',
+    'hp',
+    'inspire',
+    'inventory',
+    'kill',
+    'kind',
+    'level',
+    'meta',
+    'money',
+    'variables',
+    'xp',
+    'xy',
+]
+
+# BLACK MAGIC
+# import * from __all__
+from . import *
+
+for module in __all__:
+    m = globals()[module]
+    
+    try:
+        all_attrs = m.__all__
+    except AttributeError:
+        all_attrs = [name for name in dir(m) if name[0] != '_']
+    for name in all_attrs:
+        globals()[name] = getattr(m, name)
