@@ -112,6 +112,7 @@ def test_battle_ui_manager():
     manager.start()
     assert manager.selected == None
     assert goblin0.ap == 4
+    assert goblin0.ally_group
     manager.clicked(user_side, goblin0)
     assert manager.selected == goblin0
     manager.select_action(SingleEnemyAction(goblin0, goblin0.hit))
