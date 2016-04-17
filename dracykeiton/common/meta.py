@@ -24,15 +24,15 @@ from ..entity import Entity, properties
 @properties(name='')
 class Name(Entity):
     """Entity with a name"""
-    @unbound
-    def _init(self, name=''):
-        self.name = name
+    pass
+
+@properties(kind=None)
+class Kind(Entity):
+    pass
 
 @properties(id='')
 class Id(Entity):
-    @unbound
-    def _init(self, id=''):
-        self.id = id
+    pass
 
 @properties(description='')
 class Description(Entity):

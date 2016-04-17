@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -21,13 +21,10 @@
 """Inventory"""
 
 from ..compat import *
-from ..entity import Entity
+from ..entity import Entity, properties
 
+@properties(inv=list)
 class SimpleInventory(Entity):
-    @unbound
-    def _init(self):
-        self.dynamic_property('inv', list())
-    
     @unbound
     def put_to_inv(self, thing):
         self.inv.append(thing)
@@ -39,11 +36,8 @@ class SimpleInventory(Entity):
             return thing
         return None
 
+@properties(wielded=None)
 class Wield(Entity):
-    @unbound
-    def _init(self):
-        self.dynamic_property('wielded', None)
-    
     @unbound
     def wield(self, obj):
         self.wielded = obj

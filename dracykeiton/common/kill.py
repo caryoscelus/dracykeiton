@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -21,13 +21,12 @@
 """Kill"""
 
 from ..compat import *
-from ..entity import Entity
+from ..entity import Entity, properties
 
+@properties(kill_hooks=set)
 class Kill(Entity):
-    @unbound
-    def _init(self):
-        self.dynamic_property('kill_hooks', set())
-    
+    """Entity which calls hooks when it kills something.
+    """
     @unbound
     def on_kill(self, f):
         self.kill_hooks.add(f)

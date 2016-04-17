@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -21,7 +21,7 @@
 """Hit action"""
 
 from ..compat import *
-from ..entity import Entity, simplenode, depends, mod_dep
+from ..entity import Entity, simplenode, depends, mod_dep, properties
 from ..action import action, category
 from .ap import ActionPoint
 from .inspire import Inspirable
@@ -30,11 +30,8 @@ from .accuracy import Accuracy
 from .. import random
 
 @mod_dep(ActionPoint, Kill, Accuracy)
+@properties(hit_damage=0)
 class Hit(Entity):
-    @unbound
-    def _init(self, hit_damage=0):
-        self.dynamic_property('hit_damage', hit_damage)
-    
     @category('battle')
     @action
     def hit(self, enemy):
@@ -63,10 +60,6 @@ class Hit(Entity):
 @mod_dep(Inspirable, Hit)
 class InspirableHit(Entity):
     @unbound
-    def _init(self):
-        pass
-    
-    @unbound
     def _load(self):
         self.add_get_node('hit_damage', self.inspired_damage())
     
@@ -79,10 +72,6 @@ class InspirableHit(Entity):
 
 @mod_dep(Hit)
 class RandomHit(Entity):
-    @unbound
-    def _init(self):
-        pass
-    
     @unbound
     def _load(self):
         self.add_get_node('hit_damage', self.randomize_hit())

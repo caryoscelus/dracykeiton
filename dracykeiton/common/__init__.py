@@ -40,7 +40,6 @@ __all__ = [
     'inspire',
     'inventory',
     'kill',
-    'kind',
     'level',
     'meta',
     'money',
