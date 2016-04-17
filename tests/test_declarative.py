@@ -36,6 +36,13 @@ def test_declarative_properties():
     assert Foo().m == 4
     assert Foo(7).m == 7
 
+def test_declarative_init():
+    @properties(t=4)
+    class Foo(Entity):
+        pass
+    assert Foo().t == 4
+    assert Foo(t=6).t == 6
+
 def test_no_init():
     @properties(n=None)
     class Foo(Entity):
