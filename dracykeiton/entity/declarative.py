@@ -44,9 +44,12 @@ def properties(**props):
         @unbound
         def new_init(self, *args, **kwargs):
             for name in props:
-                value = props[name]
-                if callable(value):
-                    value = value()
+                if name in kwargs:
+                    value = kwargs[name]
+                else:
+                    value = props[name]
+                    if callable(value):
+                        value = value()
                 self.dynamic_property(name, value)
             if old_init:
                 old_init(self, *args, **kwargs)
