@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -22,15 +22,12 @@
 """
 
 from ..compat import *
-from ..entity import Entity, listener, mod_dep
+from ..entity import Entity, listener, mod_dep, properties
 from ..tb import battle
 from .xy import XY
 
+@properties(ally_group=None)
 class Sided(Entity):
-    @unbound
-    def _init(self, group=None):
-        self.dynamic_property('ally_group', group)
-    
     @unbound
     def is_enemy(self, other):
         if self.ally_group is None or other.ally_group is None:
@@ -43,27 +40,22 @@ class Sided(Entity):
             return False
         return self.ally_group == other.ally_group
 
+@properties(field=None)
 class BattlefieldEntity(Entity):
-    @unbound
-    def _init(self, field=None):
-        self.dynamic_property('field', field)
+    pass
 
 @mod_dep(Sided)
+@properties(members=list)
 class Side(Entity):
-    @unbound
-    def _init(self):
-        self.dynamic_property('members', [])
-    
     @unbound
     def empty_side(self):
         return all([member.living != 'alive' for member in self.members])
 
+@properties(
+    sides=dict,
+    to_reg=list,
+)
 class SidedCombat(Entity):
-    @unbound
-    def _init(self):
-        self.dynamic_property('sides', dict())
-        self.dynamic_property('to_reg', list())
-    
     @unbound
     def _load(self):
         # for saving/loading purpose
@@ -84,8 +76,7 @@ class SidedCombat(Entity):
     @unbound
     def add_side(self, name, side):
         self.ensure_registration()
-        side.add_mod(Sided, name)
-        side.ally_group = name
+        side.add_mod(Sided, ally_group=name)
         self.sides[name] = side
         self.win_conditions[name] = set()
         self.lose_conditions[name] = set()
@@ -151,7 +142,7 @@ class SimpleField(Entity):
         if entity.living == 'unborn':
             entity.be_born()
         self.reg_entity(entity)
-        entity.add_mod(Sided, side)
+        entity.add_mod(Sided, ally_group=side)
         entity.add_mod(BattlefieldEntity)
         entity.field = self
     
