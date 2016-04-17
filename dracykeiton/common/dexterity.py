@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -21,9 +21,8 @@
 """Dexterity attribute"""
 
 from ..compat import *
-from ..entity import Entity
+from ..entity import Entity, properties
 
+@properties(dexterity=0)
 class Dexterity(Entity):
-    @unbound
-    def _init(self):
-        self.dynamic_property('dexterity', 0)
+    pass

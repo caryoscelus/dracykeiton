@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -20,28 +20,23 @@
 
 """Action point system and stuff related to acting entities in general."""
 
-from ..entity import Entity, simplenode, depends, mod_dep
+from ..entity import Entity, simplenode, depends, mod_dep, properties
 from .hp import Living
 from .turn import TurnEntity
 from ..compat import *
 from ..util import curry
 
+@properties(can_act=True)
 class Acting(Entity):
     """Basic acting entity, only defines can_act property.
     
     This can be used as basis to various possible acting systems.
     """
-    @unbound
-    def _init(self):
-        self.dynamic_property('can_act', True)
+    pass
 
 @mod_dep(Acting, Living)
 class LivingActing(Entity):
     """Ensure only alive entities can act."""
-    @unbound
-    def _init(self):
-        pass
-    
     @unbound
     def _load(self):
         self.add_get_node('can_act', self.check_if_alive())
@@ -52,13 +47,13 @@ class LivingActing(Entity):
         return living == 'alive' and value
 
 @mod_dep(Acting, TurnEntity)
+@properties(ap=0, maxap=0)
 class ActionPoint(Entity):
     """AP entity, defining AP and maxAP properties and helper functions."""
     @unbound
     def _init(self, maxap=0):
         self.on_turn_end('restore_ap')
-        self.dynamic_property('ap', 0)
-        self.dynamic_property('maxap', maxap)
+        self.maxap = maxap
     
     @unbound
     def spend_ap(self, ap):

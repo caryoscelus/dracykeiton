@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -21,13 +21,12 @@
 """Evasion"""
 
 from ..compat import *
-from ..entity import Entity, mod_dep, simplenode, depends
+from ..entity import Entity, mod_dep, simplenode, depends, properties
 from .dexterity import Dexterity
 
+@properties(evasion=0)
 class Evasion(Entity):
-    @unbound
-    def _init(self):
-        self.dynamic_property('evasion')
+    pass
 
 @mod_dep(Evasion, Dexterity)
 class DexterityBasedEvasion(Entity):

@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -18,17 +18,16 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""Accuracy"""
+"""Accuracy stat"""
 
 from ..compat import *
-from ..entity import Entity, simplenode, depends, mod_dep
+from ..entity import Entity, simplenode, depends, mod_dep, properties
 from .dexterity import Dexterity
 from .. import random
 
+@properties(accuracy=0)
 class Accuracy(Entity):
-    @unbound
-    def _init(self):
-        self.dynamic_property('accuracy', 0)
+    pass
 
 @mod_dep(Accuracy)
 class RandomAccuracy(Entity):
@@ -42,6 +41,11 @@ class RandomAccuracy(Entity):
 
 @mod_dep(Accuracy, Dexterity)
 class DexterityBasedAccuracy(Entity):
+    """Accuracy based on dexterity.
+    
+    Right now it simply returns dexterity as accuracy, unchanged.
+    TODO: use some proper formula?
+    """
     @unbound
     def _load(self):
         self.add_get_node('accuracy', self.get_accuracy())

@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -21,29 +21,35 @@
 """Leveling up attributes"""
 
 from ..compat import *
-from ..entity import Entity, mod_dep, simplenode, depends
+from ..entity import Entity, mod_dep, simplenode, depends, properties
 from ..action import action
 from .dexterity import Dexterity
 from .level import LevelAbility
 
 @mod_dep(LevelAbility)
+@properties(
+    level_points=0,
+    spent_level_points=0,
+    attribute_levelup=set
+)
 class AttributeLevelup(Entity):
-    @unbound
-    def _init(self):
-        self.dynamic_property('level_points', 0)
-        self.dynamic_property('spent_level_points', 0)
-        self.dynamic_property('attribute_levelup', set())
+    """Mod allowing to increase attributes on level up.
     
+    Add attributes you want to be able to increase using add_levelup_attribute,
+    then you can use increase_attribute action.
+    """
     @unbound
     def _load(self):
         self.add_get_node('level_points', self.get_level_points())
     
     @action
     def increase_attribute(self, attribute):
+        """Increase given attribute"""
         setattr(self, attribute, getattr(self, attribute)+1)
     
     @unbound
     def can_increase_attribute(self, attribute):
+        """Check function for increase_attribute action"""
         if attribute in self.attribute_levelup:
             return self.spend_level_points(1)
         return False
@@ -57,6 +63,7 @@ class AttributeLevelup(Entity):
     
     @unbound
     def add_levelup_attribute(self, attribute):
+        """Add attribute which can be increased on levelup"""
         self.attribute_levelup.add(attribute)
     
     @depends('spent_level_points', 'level')
