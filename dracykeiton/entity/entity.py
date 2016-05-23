@@ -267,6 +267,9 @@ class Entity(object):
     @classmethod
     def disable(cl, target):
         """Disable this mod on target entity (internal use)"""
+        for attr in cl.__dict__:
+            if attr[0] != '_':
+                delattr(target, attr)
         cl._uninit(target)
     
     def dynamic_method(self, name):
