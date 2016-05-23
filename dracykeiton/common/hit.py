@@ -21,7 +21,7 @@
 """Hit action"""
 
 from ..compat import *
-from ..entity import Entity, simplenode, depends, mod_dep, properties
+from ..entity import Entity, simplenode, depends, mod_dep, properties, data_node
 from ..action import action, category
 from .actor import ActionChance
 from .ap import ActionPoint
@@ -91,12 +91,6 @@ class Hurt(Entity):
     pass
 
 @mod_dep(Hit, ActionChance, Hurt)
-class HitAction(Entity):
-    @unbound
-    def _load(self):
-        self.add_get_node('action_chance', self.get_hit_action_chance())
-    
-    @depends('hit_chance')
-    @simplenode
-    def get_hit_action_chance(value, hit_chance):
-        return hit_chance
+@data_node('get', 'action_chance', deps=['hit_chance'])
+def HitAction(value, hit_chance):
+    return hit_chance
