@@ -39,7 +39,7 @@
             
   <h1>Source code for dracykeiton.common.inventory</h1><div class="highlight"><pre>
 <span></span><span class="c1">##</span>
-<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##  Copyright (C) 2015-2016 caryoscelus</span>
 <span class="c1">##</span>
 <span class="c1">##  This file is part of Dracykeiton</span>
 <span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
@@ -61,13 +61,10 @@
 <span class="sd">&quot;&quot;&quot;Inventory&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span>
+<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">properties</span>
 
+<span class="nd">@properties</span><span class="p">(</span><span class="n">inv</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
 <div class="viewcode-block" id="SimpleInventory"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.inventory.SimpleInventory">[docs]</a><span class="k">class</span> <span class="nc">SimpleInventory</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;inv&#39;</span><span class="p">,</span> <span class="nb">list</span><span class="p">())</span>
-    
     <span class="nd">@unbound</span>
 <div class="viewcode-block" id="SimpleInventory.put_to_inv"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.inventory.SimpleInventory.put_to_inv">[docs]</a>    <span class="k">def</span> <span class="nf">put_to_inv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thing</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">thing</span><span class="p">)</span></div>
@@ -79,11 +76,8 @@
             <span class="k">return</span> <span class="n">thing</span>
         <span class="k">return</span> <span class="bp">None</span></div></div>
 
+<span class="nd">@properties</span><span class="p">(</span><span class="n">wielded</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 <div class="viewcode-block" id="Wield"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.inventory.Wield">[docs]</a><span class="k">class</span> <span class="nc">Wield</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;wielded&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
-    
     <span class="nd">@unbound</span>
 <div class="viewcode-block" id="Wield.wield"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.inventory.Wield.wield">[docs]</a>    <span class="k">def</span> <span class="nf">wield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wielded</span> <span class="o">=</span> <span class="n">obj</span></div></div>

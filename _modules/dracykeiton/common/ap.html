@@ -39,7 +39,7 @@
             
   <h1>Source code for dracykeiton.common.ap</h1><div class="highlight"><pre>
 <span></span><span class="c1">##</span>
-<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##  Copyright (C) 2015-2016 caryoscelus</span>
 <span class="c1">##</span>
 <span class="c1">##  This file is part of Dracykeiton</span>
 <span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
@@ -60,28 +60,23 @@
 
 <span class="sd">&quot;&quot;&quot;Action point system and stuff related to acting entities in general.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">depends</span><span class="p">,</span> <span class="n">mod_dep</span>
+<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">depends</span><span class="p">,</span> <span class="n">mod_dep</span><span class="p">,</span> <span class="n">properties</span>
 <span class="kn">from</span> <span class="nn">.hp</span> <span class="kn">import</span> <span class="n">Living</span>
 <span class="kn">from</span> <span class="nn">.turn</span> <span class="kn">import</span> <span class="n">TurnEntity</span>
 <span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">curry</span>
 
+<span class="nd">@properties</span><span class="p">(</span><span class="n">can_act</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <div class="viewcode-block" id="Acting"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.ap.Acting">[docs]</a><span class="k">class</span> <span class="nc">Acting</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Basic acting entity, only defines can_act property.</span>
 <span class="sd">    </span>
 <span class="sd">    This can be used as basis to various possible acting systems.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;can_act&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span></div>
+    <span class="k">pass</span></div>
 
 <span class="nd">@mod_dep</span><span class="p">(</span><span class="n">Acting</span><span class="p">,</span> <span class="n">Living</span><span class="p">)</span>
 <div class="viewcode-block" id="LivingActing"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.ap.LivingActing">[docs]</a><span class="k">class</span> <span class="nc">LivingActing</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Ensure only alive entities can act.&quot;&quot;&quot;</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-    
     <span class="nd">@unbound</span>
     <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_get_node</span><span class="p">(</span><span class="s1">&#39;can_act&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_if_alive</span><span class="p">())</span>
@@ -92,13 +87,12 @@
         <span class="k">return</span> <span class="n">living</span> <span class="o">==</span> <span class="s1">&#39;alive&#39;</span> <span class="ow">and</span> <span class="n">value</span></div></div>
 
 <span class="nd">@mod_dep</span><span class="p">(</span><span class="n">Acting</span><span class="p">,</span> <span class="n">TurnEntity</span><span class="p">)</span>
+<span class="nd">@properties</span><span class="p">(</span><span class="n">ap</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxap</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <div class="viewcode-block" id="ActionPoint"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.ap.ActionPoint">[docs]</a><span class="k">class</span> <span class="nc">ActionPoint</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;AP entity, defining AP and maxAP properties and helper functions.&quot;&quot;&quot;</span>
     <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxap</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">on_turn_end</span><span class="p">(</span><span class="s1">&#39;restore_ap&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;ap&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;maxap&#39;</span><span class="p">,</span> <span class="n">maxap</span><span class="p">)</span>
     
     <span class="nd">@unbound</span>
 <div class="viewcode-block" id="ActionPoint.spend_ap"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.ap.ActionPoint.spend_ap">[docs]</a>    <span class="k">def</span> <span class="nf">spend_ap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ap</span><span class="p">):</span>

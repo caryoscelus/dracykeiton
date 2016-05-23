@@ -39,7 +39,7 @@
             
   <h1>Source code for dracykeiton.common.evasion</h1><div class="highlight"><pre>
 <span></span><span class="c1">##</span>
-<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##  Copyright (C) 2015-2016 caryoscelus</span>
 <span class="c1">##</span>
 <span class="c1">##  This file is part of Dracykeiton</span>
 <span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
@@ -61,13 +61,12 @@
 <span class="sd">&quot;&quot;&quot;Evasion&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">mod_dep</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">depends</span>
+<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">mod_dep</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">depends</span><span class="p">,</span> <span class="n">properties</span>
 <span class="kn">from</span> <span class="nn">.dexterity</span> <span class="kn">import</span> <span class="n">Dexterity</span>
 
+<span class="nd">@properties</span><span class="p">(</span><span class="n">evasion</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <div class="viewcode-block" id="Evasion"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.evasion.Evasion">[docs]</a><span class="k">class</span> <span class="nc">Evasion</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;evasion&#39;</span><span class="p">)</span></div>
+    <span class="k">pass</span></div>
 
 <span class="nd">@mod_dep</span><span class="p">(</span><span class="n">Evasion</span><span class="p">,</span> <span class="n">Dexterity</span><span class="p">)</span>
 <div class="viewcode-block" id="DexterityBasedEvasion"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.evasion.DexterityBasedEvasion">[docs]</a><span class="k">class</span> <span class="nc">DexterityBasedEvasion</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>

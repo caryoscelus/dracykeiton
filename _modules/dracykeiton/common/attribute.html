@@ -39,7 +39,7 @@
             
   <h1>Source code for dracykeiton.common.attribute</h1><div class="highlight"><pre>
 <span></span><span class="c1">##</span>
-<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##  Copyright (C) 2015-2016 caryoscelus</span>
 <span class="c1">##</span>
 <span class="c1">##  This file is part of Dracykeiton</span>
 <span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
@@ -61,29 +61,35 @@
 <span class="sd">&quot;&quot;&quot;Leveling up attributes&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">mod_dep</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">depends</span>
+<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">mod_dep</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">depends</span><span class="p">,</span> <span class="n">properties</span>
 <span class="kn">from</span> <span class="nn">..action</span> <span class="kn">import</span> <span class="n">action</span>
 <span class="kn">from</span> <span class="nn">.dexterity</span> <span class="kn">import</span> <span class="n">Dexterity</span>
 <span class="kn">from</span> <span class="nn">.level</span> <span class="kn">import</span> <span class="n">LevelAbility</span>
 
 <span class="nd">@mod_dep</span><span class="p">(</span><span class="n">LevelAbility</span><span class="p">)</span>
+<span class="nd">@properties</span><span class="p">(</span>
+    <span class="n">level_points</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">spent_level_points</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">attribute_levelup</span><span class="o">=</span><span class="nb">set</span>
+<span class="p">)</span>
 <div class="viewcode-block" id="AttributeLevelup"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.attribute.AttributeLevelup">[docs]</a><span class="k">class</span> <span class="nc">AttributeLevelup</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;level_points&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;spent_level_points&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;attribute_levelup&#39;</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
-    
+    <span class="sd">&quot;&quot;&quot;Mod allowing to increase attributes on level up.</span>
+<span class="sd">    </span>
+<span class="sd">    Add attributes you want to be able to increase using add_levelup_attribute,</span>
+<span class="sd">    then you can use increase_attribute action.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@unbound</span>
     <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_get_node</span><span class="p">(</span><span class="s1">&#39;level_points&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_level_points</span><span class="p">())</span>
     
     <span class="nd">@action</span>
 <div class="viewcode-block" id="AttributeLevelup.increase_attribute"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.attribute.AttributeLevelup.increase_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">increase_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Increase given attribute&quot;&quot;&quot;</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span></div>
     
     <span class="nd">@unbound</span>
 <div class="viewcode-block" id="AttributeLevelup.can_increase_attribute"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.attribute.AttributeLevelup.can_increase_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">can_increase_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check function for increase_attribute action&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attribute_levelup</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spend_level_points</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">False</span></div>
@@ -97,6 +103,7 @@
     
     <span class="nd">@unbound</span>
 <div class="viewcode-block" id="AttributeLevelup.add_levelup_attribute"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.attribute.AttributeLevelup.add_levelup_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">add_levelup_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add attribute which can be increased on levelup&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attribute_levelup</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span></div>
     
     <span class="nd">@depends</span><span class="p">(</span><span class="s1">&#39;spent_level_points&#39;</span><span class="p">,</span> <span class="s1">&#39;level&#39;</span><span class="p">)</span>

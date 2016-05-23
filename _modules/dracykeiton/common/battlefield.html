@@ -39,7 +39,7 @@
             
   <h1>Source code for dracykeiton.common.battlefield</h1><div class="highlight"><pre>
 <span></span><span class="c1">##</span>
-<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##  Copyright (C) 2015-2016 caryoscelus</span>
 <span class="c1">##</span>
 <span class="c1">##  This file is part of Dracykeiton</span>
 <span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
@@ -62,15 +62,12 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">listener</span><span class="p">,</span> <span class="n">mod_dep</span>
+<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">listener</span><span class="p">,</span> <span class="n">mod_dep</span><span class="p">,</span> <span class="n">properties</span>
 <span class="kn">from</span> <span class="nn">..tb</span> <span class="kn">import</span> <span class="n">battle</span>
 <span class="kn">from</span> <span class="nn">.xy</span> <span class="kn">import</span> <span class="n">XY</span>
 
+<span class="nd">@properties</span><span class="p">(</span><span class="n">ally_group</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 <div class="viewcode-block" id="Sided"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.Sided">[docs]</a><span class="k">class</span> <span class="nc">Sided</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;ally_group&#39;</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span>
-    
     <span class="nd">@unbound</span>
 <div class="viewcode-block" id="Sided.is_enemy"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.Sided.is_enemy">[docs]</a>    <span class="k">def</span> <span class="nf">is_enemy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ally_group</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">other</span><span class="o">.</span><span class="n">ally_group</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
@@ -83,27 +80,22 @@
             <span class="k">return</span> <span class="bp">False</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ally_group</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">ally_group</span></div></div>
 
+<span class="nd">@properties</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 <div class="viewcode-block" id="BattlefieldEntity"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.BattlefieldEntity">[docs]</a><span class="k">class</span> <span class="nc">BattlefieldEntity</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span></div>
+    <span class="k">pass</span></div>
 
 <span class="nd">@mod_dep</span><span class="p">(</span><span class="n">Sided</span><span class="p">)</span>
+<span class="nd">@properties</span><span class="p">(</span><span class="n">members</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
 <div class="viewcode-block" id="Side"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.Side">[docs]</a><span class="k">class</span> <span class="nc">Side</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;members&#39;</span><span class="p">,</span> <span class="p">[])</span>
-    
     <span class="nd">@unbound</span>
 <div class="viewcode-block" id="Side.empty_side"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.Side.empty_side">[docs]</a>    <span class="k">def</span> <span class="nf">empty_side</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="n">member</span><span class="o">.</span><span class="n">living</span> <span class="o">!=</span> <span class="s1">&#39;alive&#39;</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">members</span><span class="p">])</span></div></div>
 
+<span class="nd">@properties</span><span class="p">(</span>
+    <span class="n">sides</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span>
+    <span class="n">to_reg</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span>
+<span class="p">)</span>
 <div class="viewcode-block" id="SidedCombat"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.SidedCombat">[docs]</a><span class="k">class</span> <span class="nc">SidedCombat</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;sides&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;to_reg&#39;</span><span class="p">,</span> <span class="nb">list</span><span class="p">())</span>
-    
     <span class="nd">@unbound</span>
     <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># for saving/loading purpose</span>
@@ -124,8 +116,7 @@
     <span class="nd">@unbound</span>
 <div class="viewcode-block" id="SidedCombat.add_side"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.SidedCombat.add_side">[docs]</a>    <span class="k">def</span> <span class="nf">add_side</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">side</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ensure_registration</span><span class="p">()</span>
-        <span class="n">side</span><span class="o">.</span><span class="n">add_mod</span><span class="p">(</span><span class="n">Sided</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="n">side</span><span class="o">.</span><span class="n">ally_group</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">side</span><span class="o">.</span><span class="n">add_mod</span><span class="p">(</span><span class="n">Sided</span><span class="p">,</span> <span class="n">ally_group</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sides</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">side</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">win_conditions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lose_conditions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -191,7 +182,7 @@
         <span class="k">if</span> <span class="n">entity</span><span class="o">.</span><span class="n">living</span> <span class="o">==</span> <span class="s1">&#39;unborn&#39;</span><span class="p">:</span>
             <span class="n">entity</span><span class="o">.</span><span class="n">be_born</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reg_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
-        <span class="n">entity</span><span class="o">.</span><span class="n">add_mod</span><span class="p">(</span><span class="n">Sided</span><span class="p">,</span> <span class="n">side</span><span class="p">)</span>
+        <span class="n">entity</span><span class="o">.</span><span class="n">add_mod</span><span class="p">(</span><span class="n">Sided</span><span class="p">,</span> <span class="n">ally_group</span><span class="o">=</span><span class="n">side</span><span class="p">)</span>
         <span class="n">entity</span><span class="o">.</span><span class="n">add_mod</span><span class="p">(</span><span class="n">BattlefieldEntity</span><span class="p">)</span>
         <span class="n">entity</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="bp">self</span></div>
     

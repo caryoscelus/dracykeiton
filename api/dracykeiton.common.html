@@ -60,7 +60,7 @@
 </div>
 <div class="section" id="module-dracykeiton.common.accuracy">
 <span id="dracykeiton-common-accuracy-module"></span><h2>dracykeiton.common.accuracy module<a class="headerlink" href="#module-dracykeiton.common.accuracy" title="Permalink to this headline">¶</a></h2>
-<p>Accuracy</p>
+<p>Accuracy stat</p>
 <dl class="class">
 <dt id="dracykeiton.common.accuracy.Accuracy">
 <em class="property">class </em><code class="descclassname">dracykeiton.common.accuracy.</code><code class="descname">Accuracy</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/accuracy.html#Accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.accuracy.Accuracy" title="Permalink to this definition">¶</a></dt>
@@ -71,6 +71,9 @@
 <dt id="dracykeiton.common.accuracy.DexterityBasedAccuracy">
 <em class="property">class </em><code class="descclassname">dracykeiton.common.accuracy.</code><code class="descname">DexterityBasedAccuracy</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/accuracy.html#DexterityBasedAccuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.accuracy.DexterityBasedAccuracy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="dracykeiton.entity.html#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
+<p>Accuracy based on dexterity.</p>
+<p>Right now it simply returns dexterity as accuracy, unchanged.
+TODO: use some proper formula?</p>
 <dl class="method">
 <dt id="dracykeiton.common.accuracy.DexterityBasedAccuracy.get_accuracy">
 <code class="descname">get_accuracy</code><span class="sig-paren">(</span><em>value</em>, <em>dexterity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/accuracy.html#DexterityBasedAccuracy.get_accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.accuracy.DexterityBasedAccuracy.get_accuracy" title="Permalink to this definition">¶</a></dt>
@@ -93,6 +96,13 @@
 <div class="section" id="module-dracykeiton.common.actor">
 <span id="dracykeiton-common-actor-module"></span><h2>dracykeiton.common.actor module<a class="headerlink" href="#module-dracykeiton.common.actor" title="Permalink to this headline">¶</a></h2>
 <p>Actor: Entity having a planned action</p>
+<dl class="class">
+<dt id="dracykeiton.common.actor.ActionChance">
+<em class="property">class </em><code class="descclassname">dracykeiton.common.actor.</code><code class="descname">ActionChance</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/actor.html#ActionChance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.actor.ActionChance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="dracykeiton.entity.html#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
+<p>Actor with actions having chance of succeeding</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="dracykeiton.common.actor.Actor">
 <em class="property">class </em><code class="descclassname">dracykeiton.common.actor.</code><code class="descname">Actor</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/actor.html#Actor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.actor.Actor" title="Permalink to this definition">¶</a></dt>
@@ -158,15 +168,20 @@
 <dt id="dracykeiton.common.attribute.AttributeLevelup">
 <em class="property">class </em><code class="descclassname">dracykeiton.common.attribute.</code><code class="descname">AttributeLevelup</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/attribute.html#AttributeLevelup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.attribute.AttributeLevelup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="dracykeiton.entity.html#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
+<p>Mod allowing to increase attributes on level up.</p>
+<p>Add attributes you want to be able to increase using add_levelup_attribute,
+then you can use increase_attribute action.</p>
 <dl class="method">
 <dt id="dracykeiton.common.attribute.AttributeLevelup.add_levelup_attribute">
 <code class="descname">add_levelup_attribute</code><span class="sig-paren">(</span><em>attribute</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/attribute.html#AttributeLevelup.add_levelup_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.attribute.AttributeLevelup.add_levelup_attribute" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Add attribute which can be increased on levelup</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="dracykeiton.common.attribute.AttributeLevelup.can_increase_attribute">
 <code class="descname">can_increase_attribute</code><span class="sig-paren">(</span><em>attribute</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/attribute.html#AttributeLevelup.can_increase_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.attribute.AttributeLevelup.can_increase_attribute" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Check function for increase_attribute action</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="dracykeiton.common.attribute.AttributeLevelup.get_level_points">
@@ -176,7 +191,8 @@
 <dl class="method">
 <dt id="dracykeiton.common.attribute.AttributeLevelup.increase_attribute">
 <code class="descname">increase_attribute</code><span class="sig-paren">(</span><em>attribute</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/attribute.html#AttributeLevelup.increase_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.attribute.AttributeLevelup.increase_attribute" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Increase given attribute</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="dracykeiton.common.attribute.AttributeLevelup.spend_level_points">
@@ -544,6 +560,23 @@
 </dd></dl>
 
 <dl class="class">
+<dt id="dracykeiton.common.hit.HitAction">
+<em class="property">class </em><code class="descclassname">dracykeiton.common.hit.</code><code class="descname">HitAction</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/hit.html#HitAction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.hit.HitAction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="dracykeiton.entity.html#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
+<dl class="method">
+<dt id="dracykeiton.common.hit.HitAction.get_hit_action_chance">
+<code class="descname">get_hit_action_chance</code><span class="sig-paren">(</span><em>value</em>, <em>hit_chance</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/hit.html#HitAction.get_hit_action_chance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.hit.HitAction.get_hit_action_chance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.common.hit.Hurt">
+<em class="property">class </em><code class="descclassname">dracykeiton.common.hit.</code><code class="descname">Hurt</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/hit.html#Hurt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.hit.Hurt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="dracykeiton.entity.html#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
 <dt id="dracykeiton.common.hit.InspirableHit">
 <em class="property">class </em><code class="descclassname">dracykeiton.common.hit.</code><code class="descname">InspirableHit</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/hit.html#InspirableHit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.hit.InspirableHit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="dracykeiton.entity.html#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
@@ -729,6 +762,7 @@
 <dt id="dracykeiton.common.kill.Kill">
 <em class="property">class </em><code class="descclassname">dracykeiton.common.kill.</code><code class="descname">Kill</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/kill.html#Kill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.kill.Kill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="dracykeiton.entity.html#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
+<p>Entity which calls hooks when it kills something.</p>
 <dl class="method">
 <dt id="dracykeiton.common.kill.Kill.killed">
 <code class="descname">killed</code><span class="sig-paren">(</span><em>victim</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/kill.html#Kill.killed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.kill.Kill.killed" title="Permalink to this definition">¶</a></dt>
@@ -742,15 +776,8 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-dracykeiton.common.kind">
-<span id="dracykeiton-common-kind-module"></span><h2>dracykeiton.common.kind module<a class="headerlink" href="#module-dracykeiton.common.kind" title="Permalink to this headline">¶</a></h2>
-<p>Kind</p>
-<dl class="class">
-<dt id="dracykeiton.common.kind.Kind">
-<em class="property">class </em><code class="descclassname">dracykeiton.common.kind.</code><code class="descname">Kind</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/kind.html#Kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.kind.Kind" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="dracykeiton.entity.html#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
-</dd></dl>
-
+<div class="section" id="dracykeiton-common-kind-module">
+<h2>dracykeiton.common.kind module<a class="headerlink" href="#dracykeiton-common-kind-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-dracykeiton.common.level">
 <span id="dracykeiton-common-level-module"></span><h2>dracykeiton.common.level module<a class="headerlink" href="#module-dracykeiton.common.level" title="Permalink to this headline">¶</a></h2>
@@ -794,6 +821,12 @@
 <dl class="class">
 <dt id="dracykeiton.common.meta.Id">
 <em class="property">class </em><code class="descclassname">dracykeiton.common.meta.</code><code class="descname">Id</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/meta.html#Id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.meta.Id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="dracykeiton.entity.html#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dracykeiton.common.meta.Kind">
+<em class="property">class </em><code class="descclassname">dracykeiton.common.meta.</code><code class="descname">Kind</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/meta.html#Kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.meta.Kind" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="dracykeiton.entity.html#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
 </dd></dl>
 
@@ -974,7 +1007,7 @@
 <li><a class="reference internal" href="#module-dracykeiton.common.inspire">dracykeiton.common.inspire module</a></li>
 <li><a class="reference internal" href="#module-dracykeiton.common.inventory">dracykeiton.common.inventory module</a></li>
 <li><a class="reference internal" href="#module-dracykeiton.common.kill">dracykeiton.common.kill module</a></li>
-<li><a class="reference internal" href="#module-dracykeiton.common.kind">dracykeiton.common.kind module</a></li>
+<li><a class="reference internal" href="#dracykeiton-common-kind-module">dracykeiton.common.kind module</a></li>
 <li><a class="reference internal" href="#module-dracykeiton.common.level">dracykeiton.common.level module</a></li>
 <li><a class="reference internal" href="#module-dracykeiton.common.meta">dracykeiton.common.meta module</a></li>
 <li><a class="reference internal" href="#module-dracykeiton.common.money">dracykeiton.common.money module</a></li>

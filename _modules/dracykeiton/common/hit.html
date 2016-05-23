@@ -39,7 +39,7 @@
             
   <h1>Source code for dracykeiton.common.hit</h1><div class="highlight"><pre>
 <span></span><span class="c1">##</span>
-<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##  Copyright (C) 2015-2016 caryoscelus</span>
 <span class="c1">##</span>
 <span class="c1">##  This file is part of Dracykeiton</span>
 <span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
@@ -61,8 +61,9 @@
 <span class="sd">&quot;&quot;&quot;Hit action&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">depends</span><span class="p">,</span> <span class="n">mod_dep</span>
+<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">depends</span><span class="p">,</span> <span class="n">mod_dep</span><span class="p">,</span> <span class="n">properties</span>
 <span class="kn">from</span> <span class="nn">..action</span> <span class="kn">import</span> <span class="n">action</span><span class="p">,</span> <span class="n">category</span>
+<span class="kn">from</span> <span class="nn">.actor</span> <span class="kn">import</span> <span class="n">ActionChance</span>
 <span class="kn">from</span> <span class="nn">.ap</span> <span class="kn">import</span> <span class="n">ActionPoint</span>
 <span class="kn">from</span> <span class="nn">.inspire</span> <span class="kn">import</span> <span class="n">Inspirable</span>
 <span class="kn">from</span> <span class="nn">.kill</span> <span class="kn">import</span> <span class="n">Kill</span>
@@ -70,11 +71,8 @@
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">random</span>
 
 <span class="nd">@mod_dep</span><span class="p">(</span><span class="n">ActionPoint</span><span class="p">,</span> <span class="n">Kill</span><span class="p">,</span> <span class="n">Accuracy</span><span class="p">)</span>
+<span class="nd">@properties</span><span class="p">(</span><span class="n">hit_damage</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <div class="viewcode-block" id="Hit"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hit.Hit">[docs]</a><span class="k">class</span> <span class="nc">Hit</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hit_damage</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;hit_damage&#39;</span><span class="p">,</span> <span class="n">hit_damage</span><span class="p">)</span>
-    
     <span class="nd">@category</span><span class="p">(</span><span class="s1">&#39;battle&#39;</span><span class="p">)</span>
     <span class="nd">@action</span>
 <div class="viewcode-block" id="Hit.hit"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hit.Hit.hit">[docs]</a>    <span class="k">def</span> <span class="nf">hit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enemy</span><span class="p">):</span>
@@ -103,10 +101,6 @@
 <span class="nd">@mod_dep</span><span class="p">(</span><span class="n">Inspirable</span><span class="p">,</span> <span class="n">Hit</span><span class="p">)</span>
 <div class="viewcode-block" id="InspirableHit"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hit.InspirableHit">[docs]</a><span class="k">class</span> <span class="nc">InspirableHit</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
     <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-    
-    <span class="nd">@unbound</span>
     <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_get_node</span><span class="p">(</span><span class="s1">&#39;hit_damage&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inspired_damage</span><span class="p">())</span>
     
@@ -120,10 +114,6 @@
 <span class="nd">@mod_dep</span><span class="p">(</span><span class="n">Hit</span><span class="p">)</span>
 <div class="viewcode-block" id="RandomHit"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hit.RandomHit">[docs]</a><span class="k">class</span> <span class="nc">RandomHit</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
     <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-    
-    <span class="nd">@unbound</span>
     <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_get_node</span><span class="p">(</span><span class="s1">&#39;hit_damage&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">randomize_hit</span><span class="p">())</span>
     
@@ -131,6 +121,25 @@
 <div class="viewcode-block" id="RandomHit.randomize_hit"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hit.RandomHit.randomize_hit">[docs]</a>    <span class="k">def</span> <span class="nf">randomize_hit</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
         <span class="c1"># 1+-1/3</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="mf">3.0</span><span class="o">*</span><span class="n">value</span></div></div>
+
+<span class="nd">@properties</span><span class="p">(</span>
+    <span class="n">hit_chance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">hit_damage</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">crit_chance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="p">)</span>
+<div class="viewcode-block" id="Hurt"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hit.Hurt">[docs]</a><span class="k">class</span> <span class="nc">Hurt</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">Hit</span><span class="p">,</span> <span class="n">ActionChance</span><span class="p">,</span> <span class="n">Hurt</span><span class="p">)</span>
+<div class="viewcode-block" id="HitAction"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hit.HitAction">[docs]</a><span class="k">class</span> <span class="nc">HitAction</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_get_node</span><span class="p">(</span><span class="s1">&#39;action_chance&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hit_action_chance</span><span class="p">())</span>
+    
+    <span class="nd">@depends</span><span class="p">(</span><span class="s1">&#39;hit_chance&#39;</span><span class="p">)</span>
+    <span class="nd">@simplenode</span>
+<div class="viewcode-block" id="HitAction.get_hit_action_chance"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hit.HitAction.get_hit_action_chance">[docs]</a>    <span class="k">def</span> <span class="nf">get_hit_action_chance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">hit_chance</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">hit_chance</span></div></div>
 </pre></div>
 
           </div>
