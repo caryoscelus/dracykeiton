@@ -219,7 +219,7 @@ class Entity(object):
             #raise AttributeError('{} has no property {}'.format(self, name))
     
     def __str__(self):
-        return 'Entity {}'.format({name:getattr(self, name) for name in self._props})
+        return 'Entity {} of base type {} with mods {}'.format({name:getattr(self, name) for name in self._props}, type(self).__name__, [mod.__name__ for mod in self._mods])
     
     def __repr__(self):
         return 'Entity of type {} with mods {}'.format(type(self).__name__, [mod.__name__ for mod in self._mods])
@@ -270,6 +270,10 @@ class Entity(object):
         for attr in cl.__dict__:
             if attr[0] != '_':
                 delattr(target, attr)
+                if attr in target._props:
+                    del target._props[attr]
+                if attr in target._methods:
+                    target._methods.remove(attr)
         cl._uninit(target)
     
     def dynamic_method(self, name):
