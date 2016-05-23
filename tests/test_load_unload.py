@@ -19,7 +19,7 @@
 ##
 
 from dracykeiton.compat import *
-from dracykeiton.entity import Entity, mod_dep
+from dracykeiton.entity import Entity, mod_dep, properties, data_node
 
 class Foo(Entity):
     @unbound
@@ -54,3 +54,20 @@ def test_load_unload_leveled():
     foo.add_mod(Foo3)
     foo.del_mod(Foo3)
     assert foo.foo() == 'foo'
+
+@properties(foo=1)
+class Base(Entity):
+    pass
+
+@mod_dep(Base)
+@data_node('get', 'foo')
+def GetNode(value):
+    return 0
+
+def test_unload_node():
+    base = Base()
+    assert base.foo == 1
+    base.add_mod(GetNode)
+    assert base.foo == 0
+    base.del_mod(GetNode)
+    assert base.foo == 1
