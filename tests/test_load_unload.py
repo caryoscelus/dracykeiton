@@ -19,7 +19,7 @@
 ##
 
 from dracykeiton.compat import *
-from dracykeiton.entity import Entity
+from dracykeiton.entity import Entity, mod_dep
 
 class Foo(Entity):
     @unbound
@@ -31,6 +31,14 @@ class Bar(Entity):
     def foo(self):
         return 'bar'
 
+@mod_dep(Foo)
+class Foo2(Entity):
+    pass
+
+@mod_dep(Foo2)
+class Foo3(Entity):
+    pass
+
 def test_load_unload():
     foo = Entity()
     foo.add_mod(Foo)
@@ -39,3 +47,10 @@ def test_load_unload():
     assert not hasattr(foo, 'foo')
     foo.add_mod(Bar)
     assert foo.foo() == 'bar'
+
+def test_load_unload_leveled():
+    foo = Entity()
+    foo.add_mod(Foo)
+    foo.add_mod(Foo3)
+    foo.del_mod(Foo3)
+    assert foo.foo() == 'foo'
