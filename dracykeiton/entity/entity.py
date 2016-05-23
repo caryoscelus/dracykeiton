@@ -255,6 +255,8 @@ class Entity(object):
         """Enable this mod on target entity (internal use)"""
         for attr in cl.__dict__:
             if attr[0] != '_':
+                if first_load and (attr in target._props or attr in target._methods):
+                    raise AttributeError('Attribute with name {} already exist on {}'.format(attr, target))
                 target.dynamic_method(attr)
                 setattr(target, attr, cl.__dict__[attr])
         if first_load:
