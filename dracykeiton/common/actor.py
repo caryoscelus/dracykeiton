@@ -21,7 +21,7 @@
 """Actor: Entity having a planned action"""
 
 from ..compat import *
-from ..entity import Entity, properties
+from ..entity import Entity, properties, mod_dep, simplenode
 
 @properties(action=None)
 class Actor(Entity):
@@ -29,5 +29,12 @@ class Actor(Entity):
     
     Currently only argumentless actions are supported.
     """
+    @unbound
     def plan_action(self, action):
         self.action = action
+
+@properties(action_chance=1.0)
+@mod_dep(Actor)
+class ActionChance(Entity):
+    """Actor with actions having chance of succeeding"""
+    pass

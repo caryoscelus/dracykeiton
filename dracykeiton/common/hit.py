@@ -23,6 +23,7 @@
 from ..compat import *
 from ..entity import Entity, simplenode, depends, mod_dep, properties
 from ..action import action, category
+from .actor import ActionChance
 from .ap import ActionPoint
 from .inspire import Inspirable
 from .kill import Kill
@@ -80,3 +81,22 @@ class RandomHit(Entity):
     def randomize_hit(value):
         # 1+-1/3
         return (random.random()+1)*2/3.0*value
+
+@properties(
+    hit_chance=1.0,
+    hit_damage=0,
+    crit_chance=1.0,
+)
+class Hurt(Entity):
+    pass
+
+@mod_dep(Hit, ActionChance, Hurt)
+class HitAction(Entity):
+    @unbound
+    def _load(self):
+        self.add_get_node('action_chance', self.get_hit_action_chance())
+    
+    @depends('hit_chance')
+    @simplenode
+    def get_hit_action_chance(value, hit_chance):
+        return hit_chance
