@@ -23,4 +23,6 @@ from ..entity import Entity, properties
 
 @properties(x=None, y=None)
 class XY(Entity):
-    pass
+    @unbound
+    def xy(self):
+        return (self.x, self.y)
