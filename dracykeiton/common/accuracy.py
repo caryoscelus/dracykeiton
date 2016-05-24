@@ -25,7 +25,7 @@ from ..entity import Entity, simplenode, depends, mod_dep, properties
 from .dexterity import Dexterity
 from .. import random
 
-@properties(accuracy=0)
+@properties(accuracy=1)
 class Accuracy(Entity):
     pass
 

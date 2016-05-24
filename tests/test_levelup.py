@@ -22,20 +22,20 @@
 
 from dracykeiton.compat import *
 from dracykeiton.entity import Entity, mod_dep
-from dracykeiton.common import AttributeLevelup, Accuracy, Evasion
+from dracykeiton.common import AttributeLevelup, Dexterity
 
-@mod_dep(AttributeLevelup, Accuracy)
+@mod_dep(AttributeLevelup, Dexterity)
 class Foo(Entity):
     pass
 
 def test_levelup():
     foo = Foo()
     assert foo.level == 0
-    assert foo.accuracy == 0
-    assert foo.increase_attribute('accuracy') is None
+    assert foo.dexterity == 0
+    assert foo.increase_attribute('dexterity') is None
     foo.level = 1
-    assert foo.increase_attribute('accuracy') is None
-    foo.add_levelup_attribute('accuracy')
-    foo.increase_attribute('accuracy')()
-    assert foo.accuracy == 1
-    assert foo.increase_attribute('accuracy') is None
+    assert foo.increase_attribute('dexterity') is None
+    foo.add_levelup_attribute('dexterity')
+    foo.increase_attribute('dexterity')()
+    assert foo.dexterity == 1
+    assert foo.increase_attribute('dexterity') is None
