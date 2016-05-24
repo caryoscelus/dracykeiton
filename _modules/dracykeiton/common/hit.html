@@ -61,7 +61,7 @@
 <span class="sd">&quot;&quot;&quot;Hit action&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">depends</span><span class="p">,</span> <span class="n">mod_dep</span><span class="p">,</span> <span class="n">properties</span>
+<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">depends</span><span class="p">,</span> <span class="n">mod_dep</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">data_node</span>
 <span class="kn">from</span> <span class="nn">..action</span> <span class="kn">import</span> <span class="n">action</span><span class="p">,</span> <span class="n">category</span>
 <span class="kn">from</span> <span class="nn">.actor</span> <span class="kn">import</span> <span class="n">ActionChance</span>
 <span class="kn">from</span> <span class="nn">.ap</span> <span class="kn">import</span> <span class="n">ActionPoint</span>
@@ -131,15 +131,9 @@
     <span class="k">pass</span></div>
 
 <span class="nd">@mod_dep</span><span class="p">(</span><span class="n">Hit</span><span class="p">,</span> <span class="n">ActionChance</span><span class="p">,</span> <span class="n">Hurt</span><span class="p">)</span>
-<div class="viewcode-block" id="HitAction"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hit.HitAction">[docs]</a><span class="k">class</span> <span class="nc">HitAction</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_get_node</span><span class="p">(</span><span class="s1">&#39;action_chance&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hit_action_chance</span><span class="p">())</span>
-    
-    <span class="nd">@depends</span><span class="p">(</span><span class="s1">&#39;hit_chance&#39;</span><span class="p">)</span>
-    <span class="nd">@simplenode</span>
-<div class="viewcode-block" id="HitAction.get_hit_action_chance"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hit.HitAction.get_hit_action_chance">[docs]</a>    <span class="k">def</span> <span class="nf">get_hit_action_chance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">hit_chance</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">hit_chance</span></div></div>
+<span class="nd">@data_node</span><span class="p">(</span><span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;action_chance&#39;</span><span class="p">,</span> <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;hit_chance&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="HitAction"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.hit.HitAction">[docs]</a><span class="k">def</span> <span class="nf">HitAction</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">hit_chance</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">hit_chance</span></div>
 </pre></div>
 
           </div>
