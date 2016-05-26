@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -23,7 +23,7 @@
 
 from dracykeiton.compat import *
 
-from dracykeiton.common.battlefield import GridField
+from dracykeiton.common import GridField
 from dracykeiton.common.sandbox.chess import Knight, Bishop, Rook, ChessBoard
 
 def test_chess_moves():

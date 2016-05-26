@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -21,7 +21,8 @@
 from ...compat import *
 
 from ...entity import Entity, mod_dep
-from ..battlefield import GridEntity, BattlefieldEntity, GridField, Side
+from ..grid import GridEntity, GridField
+from ..battlefield import BattlefieldEntity, Side
 from ..hp import Living
 
 @mod_dep(BattlefieldEntity, GridEntity, Living)
