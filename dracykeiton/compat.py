@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -27,8 +27,13 @@ If python2, define unbinding helper methods, else they are empty.
 
 from __future__ import print_function
 
+# currently disabled because harms loading..
+_enable_rollback = False
+
 try:
-    from renpy.store import object, list, dict, set, range, sorted
+    import renpy as _renpy
+    if _enable_rollback:
+        from renpy.store import object, list, dict, set, range, sorted
     HAS_RENPY = True
 except ImportError:
     HAS_RENPY = False
