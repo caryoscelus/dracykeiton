@@ -59,9 +59,20 @@ class MultiArray(object):
                 if self.empty is self.fail:
                     raise ValueError('Empty at {} and empty policy is `fail`'.format(coords))
                 if callable(self.empty):
-                    return self.empty()
+                    new_value = self.empty()
+                    self._setitem(coords, new_value)
+                    return new_value
                 return self.empty
         return data
+    
+    def _setitem(self, coords, value):
+        """Set item without any checks"""
+        data = self._data
+        for d in range(self.dimensions-1):
+            if not coords[d] in data:
+                data[coords[d]] = {}
+            data = data[coords[d]]
+        data[coords[-1]] = value
     
     def __setitem__(self, coords, value):
         try:
@@ -72,12 +83,7 @@ class MultiArray(object):
             self[coords]
         except ValueError:
             pass
-        data = self._data
-        for d in range(self.dimensions-1):
-            if not coords[d] in data:
-                data[coords[d]] = {}
-            data = data[coords[d]]
-        data[coords[-1]] = value
+        self._setitem(coords, value)
     
     def _for_dimensions(self, f, ds):
         self._check_dimensions(len(ds))

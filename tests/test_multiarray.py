@@ -69,3 +69,11 @@ def test_2d():
         for y in range(10):
             arr[(x, y)] = (x, y)
     assert arr[(5, 6)] == (5, 6)
+
+def test_create_empty():
+    arr = MultiArray(1)
+    arr.empty = dict
+    arr.set_maxs(1)
+    arr[0]['a'] = 1
+    assert arr[0]['a'] == 1
+    assert arr[1] == {}
