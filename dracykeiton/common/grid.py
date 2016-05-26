@@ -19,31 +19,29 @@
 ##
 
 from ..compat import *
-from ..entity import Entity, simplenode, depends, mod_dep
+from ..entity import Entity, simplenode, depends, mod_dep, properties
 from ..action import action
 from .xy import XY
 from .ap import ActionPoint
 from .battlefield import SimpleField, BattlefieldEntity
 
 @mod_dep(XY)
+@properties(content=dict)
 class GridCell(Entity):
     @unbound
-    def _init(self, x=None, y=None, content=None):
-        if not content:
-            content = dict()
-        self.dynamic_property('content', content)
-        self.x = x
-        self.y = y
+    def _init(self, x=None, y=None):
+        self.x, self.y = x, y
     
     @unbound
     def get(self, layer=None):
         return self.content.get(layer)
 
 @mod_dep(XY)
+@properties(layer=None)
 class GridEntity(Entity):
     @unbound
-    def _init(self, x=None, y=None, layer=None):
-        self.dynamic_property('layer', layer)
+    def _init(self, x=None, y=None):
+        self.x, self.y = x, y
 
 @mod_dep(SimpleField)
 class GridField(Entity):
