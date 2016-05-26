@@ -29,14 +29,14 @@ from dracykeiton.common.sandbox.chess import Knight, Bishop, Rook, ChessBoard
 def test_chess_moves():
     """Test chess piece movement"""
     board = ChessBoard()
-    assert len(board.grid) == 8
+    assert tuple(board.grid.lens()) == (8, 8)
     darknight = Knight()
     board.spawn('black', darknight)
     board.put_on(0, 0, darknight)
-    assert board.grid[0][0].get() == darknight
+    assert board.grid[(0, 0)].get() == darknight
     assert darknight.x == 0 and darknight.y == 0
     assert darknight.check_move(1, 2)
     assert not darknight.check_move(2, 2)
     board.put_on(1, 2, darknight)
-    assert board.grid[2][1].get() == darknight
-    assert board.grid[0][0].get() is None
+    assert board.grid[(1, 2)].get() == darknight
+    assert board.grid[(0, 0)].get() is None

@@ -21,6 +21,7 @@
 from ..compat import *
 from ..entity import Entity, simplenode, depends, mod_dep, properties
 from ..action import action
+from ..containers import dMultiArray
 from .xy import XY
 from .ap import ActionPoint
 from .battlefield import SimpleField, BattlefieldEntity
@@ -44,17 +45,17 @@ class GridEntity(Entity):
         self.x, self.y = x, y
 
 @mod_dep(SimpleField)
+@properties(grid=dMultiArray(2), size=(0, 0))
 class GridField(Entity):
     @unbound
-    def _load(self, w=1, h=1):
-        self.dynamic_property('grid', None)
-        self.dynamic_property('size', None)
-        self.init_grid(w, h)
+    def _init(self, size=None):
+        self.grid.empty = GridCell
+        if size:
+            self.set_size(*size)
     
     @unbound
-    def init_grid(self, w, h):
-        print('init_grid')
-        self.grid = [[GridCell(x, y) for x in range(w)] for y in range(h)]
+    def set_size(self, w, h):
+        self.grid.set_maxs(w-1, h-1)
         self.size = (w, h)
     
     @unbound
@@ -68,14 +69,14 @@ class GridField(Entity):
                 return
             else:
                 self.remove_from(x0, y0, layer0)
-        self.grid[y][x].content[layer] = entity
+        self.grid[(x, y)].content[layer] = entity
         entity.x = x
         entity.y = y
     
     @unbound
     def remove_from(self, x, y, layer=None):
         if not (x is None) and not (y is None):
-            self.grid[y][x].content[layer] = None
+            self.grid[(x, y)].content[layer] = None
 
 @mod_dep(GridField)
 class FieldRange(Entity):
