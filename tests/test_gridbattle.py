@@ -40,3 +40,4 @@ def test_chess_moves():
     board.put_on(1, 2, darknight)
     assert board.grid[(1, 2)].get() == darknight
     assert board.grid[(0, 0)].get() is None
+    assert (darknight.x, darknight.y) == (1, 2)

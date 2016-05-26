@@ -72,8 +72,15 @@ def test_2d():
 
 def test_create_empty():
     arr = MultiArray(1)
-    arr.empty = dict
+    arr.empty = lambda coords: dict()
     arr.set_maxs(1)
     arr[0]['a'] = 1
     assert arr[0]['a'] == 1
     assert arr[1] == {}
+
+def test_create_empty_xy():
+    arr = MultiArray(1)
+    arr.empty = lambda coords: int(coords[0])
+    arr.set_maxs(4)
+    for i in range(arr.len(0)):
+        assert arr[i] == i

@@ -59,7 +59,7 @@ class MultiArray(object):
                 if self.empty is self.fail:
                     raise ValueError('Empty at {} and empty policy is `fail`'.format(coords))
                 if callable(self.empty):
-                    new_value = self.empty()
+                    new_value = self.empty(coords=coords)
                     self._setitem(coords, new_value)
                     return new_value
                 return self.empty

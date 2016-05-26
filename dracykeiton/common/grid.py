@@ -49,7 +49,7 @@ class GridEntity(Entity):
 class GridField(Entity):
     @unbound
     def _init(self, size=None):
-        self.grid.empty = GridCell
+        self.grid.empty = lambda coords: GridCell(x=coords[0], y=coords[1])
         if size:
             self.set_size(*size)
     
