@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -131,6 +131,9 @@ class Entity(object):
         
         Any data that is not essential for saving can be get rid of at
         this point.
+        
+        NOTE: not implemented
+        TODO: check if this is actually needed and how to implement it
         """
         pass
     
