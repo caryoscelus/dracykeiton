@@ -229,6 +229,7 @@ class Entity(object):
         # can't save methods, but they'll be restored by mods
         for name in self._methods:
             del self_copy[name]
+        self_copy['_methods'] = set()
         # will be restored by mods as well
         del self_copy['_listeners']
         self_copy['_mods_to_load'] = [

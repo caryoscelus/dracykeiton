@@ -138,6 +138,11 @@ def test_entity_patch():
         entity.b
     reloaded = pickle.loads(pickle.dumps(entity))
     assert reloaded.sum() == 3
+    
+    patched = FooPatchedEntity()
+    patched.a = 3
+    reloaded = pickle.loads(pickle.dumps(patched))
+    assert reloaded.sum() == 5
 
 class PatchedBase(Entity):
     pass
