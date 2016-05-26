@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -18,10 +18,10 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-"""Test whether pickling is working correct for our classes"""
+"""Test whether pickling works correctly for our classes"""
 
 from dracykeiton.compat import *
-from dracykeiton.entity import DynamicProperty, simplenode, Entity
+from dracykeiton.entity import DynamicProperty, simplenode, Entity, properties, mod_dep, data_node
 from dracykeiton.common.sandbox.goblin import GoblinLeader
 from dracykeiton import pickle
 
@@ -76,3 +76,46 @@ def test_goblin():
     leader1 = pickle.loads(pickle.dumps(leader0))
     assert leader1.has_mod(GoblinLeader)
     assert leader1.robust == leader0.robust
+
+@properties(bar=5)
+class Bar(Entity):
+    @unbound
+    def get_bar(self):
+        return self.bar
+
+@properties(dependency=None)
+class Foo(Entity):
+    pass
+
+@mod_dep(Foo)
+@properties(foo=1)
+@data_node('get', 'foo', deps=['dependency'])
+def TheNode(value, dependency):
+    return value+dependency.get_bar()
+
+def test_dependent_nodes():
+    bar = Bar()
+    foo = Foo(dependency=bar)
+    foo.add_mod(TheNode)
+    foo1 = pickle.loads(pickle.dumps(foo))
+    assert foo1.foo == 6
+    foo1, bar1 = pickle.loads(pickle.dumps([foo, bar]))
+    assert foo1.foo == 6
+    bar1, foo1 = pickle.loads(pickle.dumps([bar, foo]))
+    assert foo1.foo == 6
+
+@properties(funcs=list)
+class StoreFuncs(Entity):
+    @unbound
+    def _load(self):
+        self.funcs.append(self.func)
+    
+    @unbound
+    def func(self):
+        return 1
+
+def test_store_funcs():
+    entity = StoreFuncs()
+    assert entity.funcs[0]() == 1
+    entity1 = pickle.loads(pickle.dumps(entity))
+    assert entity1.funcs[0]() == 1
