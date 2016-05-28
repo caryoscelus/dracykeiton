@@ -18,13 +18,18 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
+"""Grid, usually for battlefield
+
+TODO: split & clean this mess
+"""
+
 from ..compat import *
 from ..entity import Entity, simplenode, depends, mod_dep, properties
 from ..action import action
 from ..containers import dMultiArray
 from .xy import XY
 from .ap import ActionPoint
-from .battlefield import SimpleField, BattlefieldEntity
+from .battlefield import SimpleField, BattlefieldEntity, Sided
 
 @mod_dep(XY)
 @properties(content=dict)
@@ -83,6 +88,28 @@ class FieldRange(Entity):
     @unbound
     def get_range(self, axy, bxy):
         return abs(axy[0]-bxy[0])+abs(axy[1]-bxy[1])
+
+@mod_dep(BattlefieldEntity, GridEntity, Sided)
+class ExamineFieldEntity(Entity):
+    @unbound
+    def get_closest_enemy(self):
+        enemy_sides = [
+            side
+                for (name, side) in self.field.sides.items()
+                    if name != self.ally_group
+        ]
+        enemies = [
+            enemy
+                for side in enemy_sides
+                    for enemy in side.members
+        ]
+        if not enemies:
+            return None
+        enemies.sort(
+            key=lambda enemy:
+                self.field.get_range(self.xy(), enemy.xy())
+        )
+        return enemies[0]
 
 @mod_dep(ActionPoint, GridEntity, BattlefieldEntity)
 class Movable(Entity):

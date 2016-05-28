@@ -31,7 +31,7 @@ from dracykeiton.tb.turnman import Turnman
 from dracykeiton.ui.battleuimanager import BattleUIManager, SingleEnemyAction, SingleAllyAction
 from dracykeiton.action import SimpleEffectProcessor
 from dracykeiton.tb.battlegen import BattleGen
-from dracykeiton.common import TwoSideField, SimpleField, Sided, Side
+from dracykeiton.common import TwoSideField, SimpleField, Sided, Side, ExamineFieldEntity, FieldRange
 from dracykeiton.common.sandbox.goblin import Goblin, GoblinLeader
 from dracykeiton.ai.sandbox.battleai import AIBattleController
 
@@ -176,3 +176,21 @@ def test_spawn_sided():
     field.add_side('side', Side())
     field.spawn('side', sided_entity)
     assert sided_entity.ally_group == 'side'
+
+def test_closest_enemy():
+    entity = ExamineFieldEntity()
+    field = FieldRange()
+    field.set_size(5, 5)
+    field.add_side('a', Side())
+    field.add_side('b', Side())
+    field.spawn('a', entity)
+    field.put_on(0, 0, entity)
+    assert entity.get_closest_enemy() is None
+    enemy_a = ExamineFieldEntity()
+    field.spawn('b', enemy_a)
+    field.put_on(4, 4, enemy_a)
+    assert entity.get_closest_enemy() is enemy_a
+    enemy_b = ExamineFieldEntity()
+    field.spawn('b', enemy_b)
+    field.put_on(1, 1, enemy_b)
+    assert entity.get_closest_enemy() is enemy_b
