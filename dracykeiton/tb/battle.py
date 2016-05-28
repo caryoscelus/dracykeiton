@@ -21,15 +21,19 @@
 from ..compat import *
 
 class BattleState(object):
-    pass
+    as_str = 'unknown BattleState'
+    def __str__(self):
+        return self.as_str
 
 class NotFinished(BattleState):
-    def __str__(self):
-        return 'Not finished'
+    as_str = 'Not finished'
+
+notFinished = NotFinished()
 
 class Finished(BattleState):
-    def __str__(self):
-        return 'Finished'
+    as_str = 'Finished'
+
+finished = Finished()
 
 class Won(Finished):
     def __init__(self, winner):

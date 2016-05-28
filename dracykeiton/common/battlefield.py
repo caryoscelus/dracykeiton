@@ -117,7 +117,7 @@ class WinLoseConditions(Entity):
             if winners:
                 self.state = battle.Won(winners)
             else:
-                self.state = battle.Finished()
+                self.state = battle.finished
         elif len(result)+1 == len(self.sides):
             if winners:
                 self.state = battle.Won(winners)
@@ -125,12 +125,14 @@ class WinLoseConditions(Entity):
                 self.state = battle.Won([side for side in self.sides if not side in result])
 
 @mod_dep(SidedCombat, WinLoseConditions)
+@properties(
+    keep_dead=True,
+    state=battle.notFinished,
+)
 class SimpleField(Entity):
     @unbound
     def _init(self, *args, **kwargs):
-        keep_dead = kwargs.get('keep_dead', True)
-        self.dynamic_property('keep_dead', keep_dead)
-        self.dynamic_property('state', battle.NotFinished())
+        self.keep_dead = kwargs.get('keep_dead', True)
         for side in args:
             if not side in self.sides:
                 self.add_side(side, Side())
