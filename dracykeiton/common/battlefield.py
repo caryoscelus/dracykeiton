@@ -24,6 +24,7 @@
 from ..compat import *
 from ..entity import Entity, listener, mod_dep, properties
 from ..tb import battle
+from .hp import Living
 
 @properties(ally_group=None)
 class Sided(Entity):
@@ -138,10 +139,12 @@ class SimpleField(Entity):
     def spawn(self, side, entity):
         self.ensure_registration()
         self.sides[side].members.append(entity)
+        entity.add_mod(Living)
         if entity.living == 'unborn':
             entity.be_born()
         self.reg_entity(entity)
-        entity.add_mod(Sided, ally_group=side)
+        entity.add_mod(Sided)
+        entity.ally_group = side
         entity.add_mod(BattlefieldEntity)
         entity.field = self
     

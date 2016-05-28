@@ -31,7 +31,7 @@ from dracykeiton.tb.turnman import Turnman
 from dracykeiton.ui.battleuimanager import BattleUIManager, SingleEnemyAction, SingleAllyAction
 from dracykeiton.action import SimpleEffectProcessor
 from dracykeiton.tb.battlegen import BattleGen
-from dracykeiton.common.battlefield import TwoSideField
+from dracykeiton.common import TwoSideField, SimpleField, Sided, Side
 from dracykeiton.common.sandbox.goblin import Goblin, GoblinLeader
 from dracykeiton.ai.sandbox.battleai import AIBattleController
 
@@ -168,3 +168,11 @@ def test_callback_pickle():
     enemy2 = reloaded[1]
     assert enemy2.living == 'dead'
     assert goblin2.xp == 10
+
+def test_spawn_sided():
+    sided_entity = Sided()
+    assert sided_entity.ally_group is None
+    field = SimpleField()
+    field.add_side('side', Side())
+    field.spawn('side', sided_entity)
+    assert sided_entity.ally_group == 'side'
