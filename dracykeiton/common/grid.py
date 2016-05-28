@@ -24,7 +24,7 @@ TODO: split & clean this mess
 """
 
 from ..compat import *
-from ..entity import Entity, simplenode, depends, mod_dep, properties
+from ..entity import Entity, simplenode, depends, mod_dep, properties, listener
 from ..action import action
 from ..containers import dMultiArray
 from .xy import XY
@@ -58,6 +58,7 @@ class GridField(Entity):
         self.grid.empty = lambda coords: GridCell(x=coords[0], y=coords[1])
         if size:
             self.set_size(*size)
+        self.member_living_listeners.append(self.remove_dead_from_grid)
     
     @unbound
     def set_size(self, w, h):
@@ -86,6 +87,13 @@ class GridField(Entity):
     def remove_from(self, x, y, layer=None):
         if not (x is None) and not (y is None):
             self.grid[(x, y)].content[layer] = None
+    
+    @listener
+    def remove_dead_from_grid(self, target, value):
+        print('remove_dead_from_grid')
+        if value == 'dead':
+            if not self.keep_dead:
+                self.remove_from(target.x, target.y, target.layer)
 
 @mod_dep(GridField)
 class FieldRange(Entity):

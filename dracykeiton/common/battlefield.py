@@ -128,11 +128,13 @@ class WinLoseConditions(Entity):
 @properties(
     keep_dead=True,
     state=battle.notFinished,
+    member_living_listeners=list, # TODO: OrderedSet
 )
 class SimpleField(Entity):
     @unbound
     def _init(self, *args, **kwargs):
         self.keep_dead = kwargs.get('keep_dead', True)
+        self.member_living_listeners.append(self.remove_dead)
         for side in args:
             if not side in self.sides:
                 self.add_side(side, Side())
@@ -152,7 +154,9 @@ class SimpleField(Entity):
     
     @unbound
     def reg_entity(self, entity):
-        entity.add_listener_node('living', self.remove_dead())
+        for listener in self.member_living_listeners:
+            print('add', listener)
+            entity.add_listener_node('living', listener())
     
     @unbound
     def unreg_entity(self, entity):
