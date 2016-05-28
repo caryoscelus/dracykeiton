@@ -46,8 +46,9 @@ class GridCell(Entity):
 @properties(layer=None)
 class GridEntity(Entity):
     @unbound
-    def _init(self, x=None, y=None):
+    def _init(self, x=None, y=None, layer=None):
         self.x, self.y = x, y
+        self.layer = layer
 
 @mod_dep(SimpleField)
 @properties(grid=dMultiArray(2), size=(0, 0))
@@ -65,6 +66,9 @@ class GridField(Entity):
     
     @unbound
     def put_on(self, x, y, entity, layer=None):
+        target_cell = self.grid[x, y]
+        if target_cell.content.get(layer, None):
+            return
         if not entity.has_mod(GridEntity):
             entity.add_mod(GridEntity, x, y, layer)
         else:
@@ -74,7 +78,7 @@ class GridField(Entity):
                 return
             else:
                 self.remove_from(x0, y0, layer0)
-        self.grid[(x, y)].content[layer] = entity
+        target_cell.content[layer] = entity
         entity.x = x
         entity.y = y
     

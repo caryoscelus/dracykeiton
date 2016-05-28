@@ -23,7 +23,7 @@
 
 from dracykeiton.compat import *
 
-from dracykeiton.common import GridField
+from dracykeiton.common import GridField, ExamineFieldEntity, FieldRange, Side, Sided
 from dracykeiton.common.sandbox.chess import Knight, Bishop, Rook, ChessBoard
 
 def test_chess_moves():
@@ -41,3 +41,31 @@ def test_chess_moves():
     assert board.grid[(1, 2)].get() == darknight
     assert board.grid[(0, 0)].get() is None
     assert (darknight.x, darknight.y) == (1, 2)
+
+def test_closest_enemy():
+    entity = ExamineFieldEntity()
+    field = FieldRange()
+    field.set_size(5, 5)
+    field.add_side('a', Side())
+    field.add_side('b', Side())
+    field.spawn('a', entity)
+    field.put_on(0, 0, entity)
+    assert entity.get_closest_enemy() is None
+    enemy_a = ExamineFieldEntity()
+    field.spawn('b', enemy_a)
+    field.put_on(4, 4, enemy_a)
+    assert entity.get_closest_enemy() is enemy_a
+    enemy_b = ExamineFieldEntity()
+    field.spawn('b', enemy_b)
+    field.put_on(1, 1, enemy_b)
+    assert entity.get_closest_enemy() is enemy_b
+
+def test_dont_overlap():
+    a = Sided()
+    b = Sided()
+    field = GridField()
+    field.set_size(1, 1)
+    field.put_on(0, 0, a)
+    assert field.grid[0, 0].get() is a
+    field.put_on(0, 0, b)
+    assert field.grid[0, 0].get() is a
