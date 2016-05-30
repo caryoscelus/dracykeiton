@@ -39,7 +39,7 @@
             
   <h1>Source code for dracykeiton.common.grid</h1><div class="highlight"><pre>
 <span></span><span class="c1">##</span>
-<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##  Copyright (C) 2015-2016 caryoscelus</span>
 <span class="c1">##</span>
 <span class="c1">##  This file is part of Dracykeiton</span>
 <span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
@@ -58,11 +58,110 @@
 <span class="c1">##  along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="c1">##</span>
 
+<span class="sd">&quot;&quot;&quot;Grid, usually for battlefield</span>
+
+<span class="sd">TODO: split &amp; clean this mess</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">depends</span><span class="p">,</span> <span class="n">mod_dep</span>
+<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">depends</span><span class="p">,</span> <span class="n">mod_dep</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">listener</span>
 <span class="kn">from</span> <span class="nn">..action</span> <span class="kn">import</span> <span class="n">action</span>
+<span class="kn">from</span> <span class="nn">..containers</span> <span class="kn">import</span> <span class="n">dMultiArray</span>
+<span class="kn">from</span> <span class="nn">.xy</span> <span class="kn">import</span> <span class="n">XY</span>
 <span class="kn">from</span> <span class="nn">.ap</span> <span class="kn">import</span> <span class="n">ActionPoint</span>
-<span class="kn">from</span> <span class="nn">.battlefield</span> <span class="kn">import</span> <span class="n">GridEntity</span><span class="p">,</span> <span class="n">BattlefieldEntity</span>
+<span class="kn">from</span> <span class="nn">.battlefield</span> <span class="kn">import</span> <span class="n">SimpleField</span><span class="p">,</span> <span class="n">BattlefieldEntity</span><span class="p">,</span> <span class="n">Sided</span>
+
+<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">XY</span><span class="p">)</span>
+<span class="nd">@properties</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+<div class="viewcode-block" id="GridCell"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.grid.GridCell">[docs]</a><span class="k">class</span> <span class="nc">GridCell</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+    
+    <span class="nd">@unbound</span>
+<div class="viewcode-block" id="GridCell.get"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.grid.GridCell.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span></div></div>
+
+<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">XY</span><span class="p">)</span>
+<span class="nd">@properties</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="viewcode-block" id="GridEntity"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.grid.GridEntity">[docs]</a><span class="k">class</span> <span class="nc">GridEntity</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span></div>
+
+<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">SimpleField</span><span class="p">)</span>
+<span class="nd">@properties</span><span class="p">(</span><span class="n">grid</span><span class="o">=</span><span class="n">dMultiArray</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<div class="viewcode-block" id="GridField"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.grid.GridField">[docs]</a><span class="k">class</span> <span class="nc">GridField</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="nd">@unbound</span>
+    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">empty</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">coords</span><span class="p">:</span> <span class="n">GridCell</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">size</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="o">*</span><span class="n">size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">member_living_listeners</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">remove_dead_from_grid</span><span class="p">)</span>
+    
+    <span class="nd">@unbound</span>
+<div class="viewcode-block" id="GridField.set_size"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.grid.GridField.set_size">[docs]</a>    <span class="k">def</span> <span class="nf">set_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">set_maxs</span><span class="p">(</span><span class="n">w</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">h</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span></div>
+    
+    <span class="nd">@unbound</span>
+<div class="viewcode-block" id="GridField.put_on"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.grid.GridField.put_on">[docs]</a>    <span class="k">def</span> <span class="nf">put_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">entity</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">target_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">target_cell</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">entity</span><span class="o">.</span><span class="n">has_mod</span><span class="p">(</span><span class="n">GridEntity</span><span class="p">):</span>
+            <span class="n">entity</span><span class="o">.</span><span class="n">add_mod</span><span class="p">(</span><span class="n">GridEntity</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">layer</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">entity</span><span class="o">.</span><span class="n">y</span>
+            <span class="n">layer0</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">layer</span>
+            <span class="k">if</span> <span class="n">x0</span> <span class="o">==</span> <span class="n">x</span> <span class="ow">and</span> <span class="n">y0</span> <span class="o">==</span> <span class="n">y</span> <span class="ow">and</span> <span class="n">layer0</span> <span class="o">==</span> <span class="n">layer</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">remove_from</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">layer0</span><span class="p">)</span>
+        <span class="n">target_cell</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="n">entity</span>
+        <span class="n">entity</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">entity</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span></div>
+    
+    <span class="nd">@unbound</span>
+<div class="viewcode-block" id="GridField.remove_from"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.grid.GridField.remove_from">[docs]</a>    <span class="k">def</span> <span class="nf">remove_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">y</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span></div>
+    
+    <span class="nd">@listener</span>
+<div class="viewcode-block" id="GridField.remove_dead_from_grid"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.grid.GridField.remove_dead_from_grid">[docs]</a>    <span class="k">def</span> <span class="nf">remove_dead_from_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;remove_dead_from_grid&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s1">&#39;dead&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_dead</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">remove_from</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span></div></div>
+
+<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">GridField</span><span class="p">)</span>
+<div class="viewcode-block" id="FieldRange"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.grid.FieldRange">[docs]</a><span class="k">class</span> <span class="nc">FieldRange</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="nd">@unbound</span>
+<div class="viewcode-block" id="FieldRange.get_range"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.grid.FieldRange.get_range">[docs]</a>    <span class="k">def</span> <span class="nf">get_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axy</span><span class="p">,</span> <span class="n">bxy</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">axy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">bxy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="nb">abs</span><span class="p">(</span><span class="n">axy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">bxy</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div></div>
+
+<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">BattlefieldEntity</span><span class="p">,</span> <span class="n">GridEntity</span><span class="p">,</span> <span class="n">Sided</span><span class="p">)</span>
+<div class="viewcode-block" id="ExamineFieldEntity"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.grid.ExamineFieldEntity">[docs]</a><span class="k">class</span> <span class="nc">ExamineFieldEntity</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="nd">@unbound</span>
+<div class="viewcode-block" id="ExamineFieldEntity.get_closest_enemy"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.grid.ExamineFieldEntity.get_closest_enemy">[docs]</a>    <span class="k">def</span> <span class="nf">get_closest_enemy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">enemy_sides</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">side</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">side</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">sides</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ally_group</span>
+        <span class="p">]</span>
+        <span class="n">enemies</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">enemy</span>
+                <span class="k">for</span> <span class="n">side</span> <span class="ow">in</span> <span class="n">enemy_sides</span>
+                    <span class="k">for</span> <span class="n">enemy</span> <span class="ow">in</span> <span class="n">side</span><span class="o">.</span><span class="n">members</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">enemies</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="n">enemies</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">enemy</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">get_range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xy</span><span class="p">(),</span> <span class="n">enemy</span><span class="o">.</span><span class="n">xy</span><span class="p">())</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">enemies</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div></div>
 
 <span class="nd">@mod_dep</span><span class="p">(</span><span class="n">ActionPoint</span><span class="p">,</span> <span class="n">GridEntity</span><span class="p">,</span> <span class="n">BattlefieldEntity</span><span class="p">)</span>
 <div class="viewcode-block" id="Movable"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.grid.Movable">[docs]</a><span class="k">class</span> <span class="nc">Movable</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>

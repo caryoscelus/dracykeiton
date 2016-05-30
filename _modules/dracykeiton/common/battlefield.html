@@ -64,7 +64,7 @@
 <span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">listener</span><span class="p">,</span> <span class="n">mod_dep</span><span class="p">,</span> <span class="n">properties</span>
 <span class="kn">from</span> <span class="nn">..tb</span> <span class="kn">import</span> <span class="n">battle</span>
-<span class="kn">from</span> <span class="nn">.xy</span> <span class="kn">import</span> <span class="n">XY</span>
+<span class="kn">from</span> <span class="nn">.hp</span> <span class="kn">import</span> <span class="n">Living</span>
 
 <span class="nd">@properties</span><span class="p">(</span><span class="n">ally_group</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 <div class="viewcode-block" id="Sided"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.Sided">[docs]</a><span class="k">class</span> <span class="nc">Sided</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
@@ -157,7 +157,7 @@
             <span class="k">if</span> <span class="n">winners</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">battle</span><span class="o">.</span><span class="n">Won</span><span class="p">(</span><span class="n">winners</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">battle</span><span class="o">.</span><span class="n">Finished</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">battle</span><span class="o">.</span><span class="n">finished</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sides</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">winners</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">battle</span><span class="o">.</span><span class="n">Won</span><span class="p">(</span><span class="n">winners</span><span class="p">)</span>
@@ -165,12 +165,16 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">battle</span><span class="o">.</span><span class="n">Won</span><span class="p">([</span><span class="n">side</span> <span class="k">for</span> <span class="n">side</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sides</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">side</span> <span class="ow">in</span> <span class="n">result</span><span class="p">])</span></div></div>
 
 <span class="nd">@mod_dep</span><span class="p">(</span><span class="n">SidedCombat</span><span class="p">,</span> <span class="n">WinLoseConditions</span><span class="p">)</span>
+<span class="nd">@properties</span><span class="p">(</span>
+    <span class="n">keep_dead</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">state</span><span class="o">=</span><span class="n">battle</span><span class="o">.</span><span class="n">notFinished</span><span class="p">,</span>
+    <span class="n">member_living_listeners</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span> <span class="c1"># TODO: OrderedSet</span>
+<span class="p">)</span>
 <div class="viewcode-block" id="SimpleField"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.SimpleField">[docs]</a><span class="k">class</span> <span class="nc">SimpleField</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
     <span class="nd">@unbound</span>
     <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">keep_dead</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;keep_dead&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;keep_dead&#39;</span><span class="p">,</span> <span class="n">keep_dead</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="n">battle</span><span class="o">.</span><span class="n">NotFinished</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_dead</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;keep_dead&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">member_living_listeners</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">remove_dead</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">side</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">side</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sides</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_side</span><span class="p">(</span><span class="n">side</span><span class="p">,</span> <span class="n">Side</span><span class="p">())</span>
@@ -179,16 +183,20 @@
 <div class="viewcode-block" id="SimpleField.spawn"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.SimpleField.spawn">[docs]</a>    <span class="k">def</span> <span class="nf">spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">side</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ensure_registration</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sides</span><span class="p">[</span><span class="n">side</span><span class="p">]</span><span class="o">.</span><span class="n">members</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+        <span class="n">entity</span><span class="o">.</span><span class="n">add_mod</span><span class="p">(</span><span class="n">Living</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">entity</span><span class="o">.</span><span class="n">living</span> <span class="o">==</span> <span class="s1">&#39;unborn&#39;</span><span class="p">:</span>
             <span class="n">entity</span><span class="o">.</span><span class="n">be_born</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reg_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
-        <span class="n">entity</span><span class="o">.</span><span class="n">add_mod</span><span class="p">(</span><span class="n">Sided</span><span class="p">,</span> <span class="n">ally_group</span><span class="o">=</span><span class="n">side</span><span class="p">)</span>
+        <span class="n">entity</span><span class="o">.</span><span class="n">add_mod</span><span class="p">(</span><span class="n">Sided</span><span class="p">)</span>
+        <span class="n">entity</span><span class="o">.</span><span class="n">ally_group</span> <span class="o">=</span> <span class="n">side</span>
         <span class="n">entity</span><span class="o">.</span><span class="n">add_mod</span><span class="p">(</span><span class="n">BattlefieldEntity</span><span class="p">)</span>
         <span class="n">entity</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="bp">self</span></div>
     
     <span class="nd">@unbound</span>
 <div class="viewcode-block" id="SimpleField.reg_entity"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.SimpleField.reg_entity">[docs]</a>    <span class="k">def</span> <span class="nf">reg_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
-        <span class="n">entity</span><span class="o">.</span><span class="n">add_listener_node</span><span class="p">(</span><span class="s1">&#39;living&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_dead</span><span class="p">())</span></div>
+        <span class="k">for</span> <span class="n">listener</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">member_living_listeners</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;add&#39;</span><span class="p">,</span> <span class="n">listener</span><span class="p">)</span>
+            <span class="n">entity</span><span class="o">.</span><span class="n">add_listener_node</span><span class="p">(</span><span class="s1">&#39;living&#39;</span><span class="p">,</span> <span class="n">listener</span><span class="p">())</span></div>
     
     <span class="nd">@unbound</span>
 <div class="viewcode-block" id="SimpleField.unreg_entity"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.SimpleField.unreg_entity">[docs]</a>    <span class="k">def</span> <span class="nf">unreg_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
@@ -233,65 +241,6 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_dead</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">unspawn</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">check_conditions</span><span class="p">()</span></div></div>
-
-<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">XY</span><span class="p">)</span>
-<div class="viewcode-block" id="GridCell"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.GridCell">[docs]</a><span class="k">class</span> <span class="nc">GridCell</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
-            <span class="n">content</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
-    
-    <span class="nd">@unbound</span>
-<div class="viewcode-block" id="GridCell.get"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.GridCell.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span></div></div>
-
-<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">XY</span><span class="p">)</span>
-<div class="viewcode-block" id="GridEntity"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.GridEntity">[docs]</a><span class="k">class</span> <span class="nc">GridEntity</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;layer&#39;</span><span class="p">,</span> <span class="n">layer</span><span class="p">)</span></div>
-
-<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">SimpleField</span><span class="p">)</span>
-<div class="viewcode-block" id="GridField"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.GridField">[docs]</a><span class="k">class</span> <span class="nc">GridField</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;grid&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">init_grid</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
-    
-    <span class="nd">@unbound</span>
-<div class="viewcode-block" id="GridField.init_grid"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.GridField.init_grid">[docs]</a>    <span class="k">def</span> <span class="nf">init_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="p">[[</span><span class="n">GridCell</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">w</span><span class="p">)]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">h</span><span class="p">)]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span></div>
-    
-    <span class="nd">@unbound</span>
-<div class="viewcode-block" id="GridField.put_on"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.GridField.put_on">[docs]</a>    <span class="k">def</span> <span class="nf">put_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">entity</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">entity</span><span class="o">.</span><span class="n">has_mod</span><span class="p">(</span><span class="n">GridEntity</span><span class="p">):</span>
-            <span class="n">entity</span><span class="o">.</span><span class="n">add_mod</span><span class="p">(</span><span class="n">GridEntity</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">layer</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">entity</span><span class="o">.</span><span class="n">y</span>
-            <span class="n">layer0</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">layer</span>
-            <span class="k">if</span> <span class="n">x0</span> <span class="o">==</span> <span class="n">x</span> <span class="ow">and</span> <span class="n">y0</span> <span class="o">==</span> <span class="n">y</span> <span class="ow">and</span> <span class="n">layer0</span> <span class="o">==</span> <span class="n">layer</span><span class="p">:</span>
-                <span class="k">return</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">remove_from</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">layer0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="n">entity</span>
-        <span class="n">entity</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
-        <span class="n">entity</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span></div>
-    
-    <span class="nd">@unbound</span>
-<div class="viewcode-block" id="GridField.remove_from"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.GridField.remove_from">[docs]</a>    <span class="k">def</span> <span class="nf">remove_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">y</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span></div></div>
-
-<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">GridField</span><span class="p">)</span>
-<div class="viewcode-block" id="FieldRange"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.FieldRange">[docs]</a><span class="k">class</span> <span class="nc">FieldRange</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-<div class="viewcode-block" id="FieldRange.get_range"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.FieldRange.get_range">[docs]</a>    <span class="k">def</span> <span class="nf">get_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axy</span><span class="p">,</span> <span class="n">bxy</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">axy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">bxy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="nb">abs</span><span class="p">(</span><span class="n">axy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">bxy</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div></div>
 
 <span class="nd">@mod_dep</span><span class="p">(</span><span class="n">SimpleField</span><span class="p">)</span>
 <div class="viewcode-block" id="TwoSideField"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.TwoSideField">[docs]</a><span class="k">class</span> <span class="nc">TwoSideField</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>

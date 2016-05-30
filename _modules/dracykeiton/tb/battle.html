@@ -61,15 +61,19 @@
 <span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="BattleState"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.battle.BattleState">[docs]</a><span class="k">class</span> <span class="nc">BattleState</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">pass</span></div>
+    <span class="n">as_str</span> <span class="o">=</span> <span class="s1">&#39;unknown BattleState&#39;</span>
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_str</span></div>
 
 <div class="viewcode-block" id="NotFinished"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.battle.NotFinished">[docs]</a><span class="k">class</span> <span class="nc">NotFinished</span><span class="p">(</span><span class="n">BattleState</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;Not finished&#39;</span></div>
+    <span class="n">as_str</span> <span class="o">=</span> <span class="s1">&#39;Not finished&#39;</span></div>
+
+<span class="n">notFinished</span> <span class="o">=</span> <span class="n">NotFinished</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Finished"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.battle.Finished">[docs]</a><span class="k">class</span> <span class="nc">Finished</span><span class="p">(</span><span class="n">BattleState</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;Finished&#39;</span></div>
+    <span class="n">as_str</span> <span class="o">=</span> <span class="s1">&#39;Finished&#39;</span></div>
+
+<span class="n">finished</span> <span class="o">=</span> <span class="n">Finished</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Won"><a class="viewcode-back" href="../../../api/dracykeiton.tb.html#dracykeiton.tb.battle.Won">[docs]</a><span class="k">class</span> <span class="nc">Won</span><span class="p">(</span><span class="n">Finished</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">winner</span><span class="p">):</span>

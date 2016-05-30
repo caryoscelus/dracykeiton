@@ -39,7 +39,7 @@
             
   <h1>Source code for dracykeiton.compat</h1><div class="highlight"><pre>
 <span></span><span class="c1">##</span>
-<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##  Copyright (C) 2015-2016 caryoscelus</span>
 <span class="c1">##</span>
 <span class="c1">##  This file is part of Dracykeiton</span>
 <span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
@@ -67,8 +67,13 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
+<span class="c1"># currently disabled because harms loading..</span>
+<span class="n">_enable_rollback</span> <span class="o">=</span> <span class="bp">False</span>
+
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">renpy.store</span> <span class="kn">import</span> <span class="nb">object</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">set</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="nb">sorted</span>
+    <span class="kn">import</span> <span class="nn">renpy</span> <span class="kn">as</span> <span class="nn">_renpy</span>
+    <span class="k">if</span> <span class="n">_enable_rollback</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">renpy.store</span> <span class="kn">import</span> <span class="nb">object</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">set</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="nb">sorted</span>
     <span class="n">HAS_RENPY</span> <span class="o">=</span> <span class="bp">True</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">HAS_RENPY</span> <span class="o">=</span> <span class="bp">False</span>

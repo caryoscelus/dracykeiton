@@ -39,7 +39,7 @@
             
   <h1>Source code for dracykeiton.entity.entity</h1><div class="highlight"><pre>
 <span></span><span class="c1">##</span>
-<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##  Copyright (C) 2015-2016 caryoscelus</span>
 <span class="c1">##</span>
 <span class="c1">##  This file is part of Dracykeiton</span>
 <span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
@@ -171,6 +171,9 @@
 <span class="sd">        </span>
 <span class="sd">        Any data that is not essential for saving can be get rid of at</span>
 <span class="sd">        this point.</span>
+<span class="sd">        </span>
+<span class="sd">        NOTE: not implemented</span>
+<span class="sd">        TODO: check if this is actually needed and how to implement it</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span>
     
@@ -269,6 +272,7 @@
         <span class="c1"># can&#39;t save methods, but they&#39;ll be restored by mods</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_methods</span><span class="p">:</span>
             <span class="k">del</span> <span class="n">self_copy</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="n">self_copy</span><span class="p">[</span><span class="s1">&#39;_methods&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="c1"># will be restored by mods as well</span>
         <span class="k">del</span> <span class="n">self_copy</span><span class="p">[</span><span class="s1">&#39;_listeners&#39;</span><span class="p">]</span>
         <span class="n">self_copy</span><span class="p">[</span><span class="s1">&#39;_mods_to_load&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
