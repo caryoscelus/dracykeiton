@@ -155,7 +155,6 @@ class SimpleField(Entity):
     @unbound
     def reg_entity(self, entity):
         for listener in self.member_living_listeners:
-            print('add', listener)
             entity.add_listener_node('living', listener())
     
     @unbound

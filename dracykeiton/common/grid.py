@@ -90,7 +90,6 @@ class GridField(Entity):
     
     @listener
     def remove_dead_from_grid(self, target, value):
-        print('remove_dead_from_grid')
         if value == 'dead':
             if not self.keep_dead:
                 self.remove_from(target.x, target.y, target.layer)
