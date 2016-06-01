@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -236,3 +236,18 @@ def test_new_mod_patch_deps():
     
     a = A()
     assert a.b == -1
+
+def test_override_method_error():
+    class A(Entity):
+        @unbound
+        def foo(self):
+            return 'A'
+    
+    @mod_dep(A)
+    class B(Entity):
+        @unbound
+        def foo(self):
+            return 'B'
+    
+    with pytest.raises(AttributeError):
+        b = B()
