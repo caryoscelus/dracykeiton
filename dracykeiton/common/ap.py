@@ -52,7 +52,7 @@ class ActionPoint(Entity):
     """AP entity, defining AP and maxAP properties and helper functions."""
     @unbound
     def _init(self):
-        self.on_turn_end('restore_ap')
+        self.on_new_round(self.restore_ap)
     
     @unbound
     def spend_ap(self, ap):

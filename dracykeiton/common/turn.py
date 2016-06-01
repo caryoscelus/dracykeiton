@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -22,18 +22,28 @@
 """
 
 from ..compat import *
-from ..entity import Entity
+from ..entity import Entity, properties
 
+@properties(
+    turn_hooks=list,
+    round_hooks=list,
+)
 class TurnEntity(Entity):
+    """Entity mod allowing multiple handlers to run on turn/round ends"""
     @unbound
-    def _init(self):
-        self.dynamic_property('turn_hooks', list())
-    
-    @unbound
-    def on_turn_end(self, f):
+    def on_new_turn(self, f):
         self.turn_hooks.append(f)
     
     @unbound
-    def new_round(self):
+    def on_new_round(self, f):
+        self.round_hooks.append(f)
+    
+    @unbound
+    def new_turn(self):
         for f in self.turn_hooks:
-            getattr(self, f)()
+            f()
+    
+    @unbound
+    def new_round(self):
+        for f in self.round_hooks:
+            f()
