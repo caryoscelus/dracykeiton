@@ -25,6 +25,7 @@ from ..compat import *
 from ..entity import Entity, listener, mod_dep, properties
 from ..tb import battle
 from .hp import Living
+from .turn import TurnEntity
 
 @properties(ally_group=None)
 class Sided(Entity):
@@ -124,7 +125,11 @@ class WinLoseConditions(Entity):
             else:
                 self.state = battle.Won([side for side in self.sides if not side in result])
 
-@mod_dep(SidedCombat, WinLoseConditions)
+@mod_dep(
+    SidedCombat,
+    WinLoseConditions,
+    TurnEntity,
+)
 @properties(
     keep_dead=True,
     state=battle.notFinished,
@@ -138,6 +143,8 @@ class SimpleField(Entity):
         for side in args:
             if not side in self.sides:
                 self.add_side(side, Side())
+        self.on_new_round(self.simple_field_new_round)
+        self.on_new_turn(self.simple_field_new_turn)
     
     @unbound
     def spawn(self, side, entity):
@@ -174,7 +181,7 @@ class SimpleField(Entity):
         return set(s for s in self.sides.keys() if self.sides[s] != side)
     
     @unbound
-    def new_round(self):
+    def simple_field_new_round(self):
         self.ensure_registration()
         for side in self.sides:
             for entity in self.sides[side].members:
@@ -184,7 +191,7 @@ class SimpleField(Entity):
                     pass
     
     @unbound
-    def new_turn(self):
+    def simple_field_new_turn(self):
         self.ensure_registration()
         self.check_conditions()
     
