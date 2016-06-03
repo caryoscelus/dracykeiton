@@ -65,6 +65,7 @@
 <span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">listener</span><span class="p">,</span> <span class="n">mod_dep</span><span class="p">,</span> <span class="n">properties</span>
 <span class="kn">from</span> <span class="nn">..tb</span> <span class="kn">import</span> <span class="n">battle</span>
 <span class="kn">from</span> <span class="nn">.hp</span> <span class="kn">import</span> <span class="n">Living</span>
+<span class="kn">from</span> <span class="nn">.turn</span> <span class="kn">import</span> <span class="n">TurnEntity</span>
 
 <span class="nd">@properties</span><span class="p">(</span><span class="n">ally_group</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 <div class="viewcode-block" id="Sided"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.Sided">[docs]</a><span class="k">class</span> <span class="nc">Sided</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
@@ -164,7 +165,11 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">battle</span><span class="o">.</span><span class="n">Won</span><span class="p">([</span><span class="n">side</span> <span class="k">for</span> <span class="n">side</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sides</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">side</span> <span class="ow">in</span> <span class="n">result</span><span class="p">])</span></div></div>
 
-<span class="nd">@mod_dep</span><span class="p">(</span><span class="n">SidedCombat</span><span class="p">,</span> <span class="n">WinLoseConditions</span><span class="p">)</span>
+<span class="nd">@mod_dep</span><span class="p">(</span>
+    <span class="n">SidedCombat</span><span class="p">,</span>
+    <span class="n">WinLoseConditions</span><span class="p">,</span>
+    <span class="n">TurnEntity</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="nd">@properties</span><span class="p">(</span>
     <span class="n">keep_dead</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
     <span class="n">state</span><span class="o">=</span><span class="n">battle</span><span class="o">.</span><span class="n">notFinished</span><span class="p">,</span>
@@ -178,6 +183,8 @@
         <span class="k">for</span> <span class="n">side</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">side</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sides</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_side</span><span class="p">(</span><span class="n">side</span><span class="p">,</span> <span class="n">Side</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_new_round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simple_field_new_round</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_new_turn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simple_field_new_turn</span><span class="p">)</span>
     
     <span class="nd">@unbound</span>
 <div class="viewcode-block" id="SimpleField.spawn"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.SimpleField.spawn">[docs]</a>    <span class="k">def</span> <span class="nf">spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">side</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
@@ -195,7 +202,6 @@
     <span class="nd">@unbound</span>
 <div class="viewcode-block" id="SimpleField.reg_entity"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.SimpleField.reg_entity">[docs]</a>    <span class="k">def</span> <span class="nf">reg_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">listener</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">member_living_listeners</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;add&#39;</span><span class="p">,</span> <span class="n">listener</span><span class="p">)</span>
             <span class="n">entity</span><span class="o">.</span><span class="n">add_listener_node</span><span class="p">(</span><span class="s1">&#39;living&#39;</span><span class="p">,</span> <span class="n">listener</span><span class="p">())</span></div>
     
     <span class="nd">@unbound</span>
@@ -215,7 +221,7 @@
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sides</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sides</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">!=</span> <span class="n">side</span><span class="p">)</span></div>
     
     <span class="nd">@unbound</span>
-<div class="viewcode-block" id="SimpleField.new_round"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.SimpleField.new_round">[docs]</a>    <span class="k">def</span> <span class="nf">new_round</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SimpleField.simple_field_new_round"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.SimpleField.simple_field_new_round">[docs]</a>    <span class="k">def</span> <span class="nf">simple_field_new_round</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ensure_registration</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">side</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sides</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sides</span><span class="p">[</span><span class="n">side</span><span class="p">]</span><span class="o">.</span><span class="n">members</span><span class="p">:</span>
@@ -225,7 +231,7 @@
                     <span class="k">pass</span></div>
     
     <span class="nd">@unbound</span>
-<div class="viewcode-block" id="SimpleField.new_turn"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.SimpleField.new_turn">[docs]</a>    <span class="k">def</span> <span class="nf">new_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SimpleField.simple_field_new_turn"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.battlefield.SimpleField.simple_field_new_turn">[docs]</a>    <span class="k">def</span> <span class="nf">simple_field_new_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ensure_registration</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_conditions</span><span class="p">()</span></div>
     

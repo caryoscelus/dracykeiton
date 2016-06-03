@@ -92,7 +92,7 @@
     <span class="sd">&quot;&quot;&quot;AP entity, defining AP and maxAP properties and helper functions.&quot;&quot;&quot;</span>
     <span class="nd">@unbound</span>
     <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">on_turn_end</span><span class="p">(</span><span class="s1">&#39;restore_ap&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_new_round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">restore_ap</span><span class="p">)</span>
     
     <span class="nd">@unbound</span>
 <div class="viewcode-block" id="ActionPoint.spend_ap"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.ap.ActionPoint.spend_ap">[docs]</a>    <span class="k">def</span> <span class="nf">spend_ap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ap</span><span class="p">):</span>

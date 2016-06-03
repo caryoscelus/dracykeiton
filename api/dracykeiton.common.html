@@ -268,16 +268,6 @@ then you can use increase_attribute action.</p>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="dracykeiton.common.battlefield.SimpleField.new_round">
-<code class="descname">new_round</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/battlefield.html#SimpleField.new_round"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.battlefield.SimpleField.new_round" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="dracykeiton.common.battlefield.SimpleField.new_turn">
-<code class="descname">new_turn</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/battlefield.html#SimpleField.new_turn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.battlefield.SimpleField.new_turn" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="dracykeiton.common.battlefield.SimpleField.reg_entity">
 <code class="descname">reg_entity</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/battlefield.html#SimpleField.reg_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.battlefield.SimpleField.reg_entity" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -285,6 +275,16 @@ then you can use increase_attribute action.</p>
 <dl class="method">
 <dt id="dracykeiton.common.battlefield.SimpleField.remove_dead">
 <code class="descname">remove_dead</code><span class="sig-paren">(</span><em>target</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/battlefield.html#SimpleField.remove_dead"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.battlefield.SimpleField.remove_dead" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.common.battlefield.SimpleField.simple_field_new_round">
+<code class="descname">simple_field_new_round</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/battlefield.html#SimpleField.simple_field_new_round"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.battlefield.SimpleField.simple_field_new_round" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.common.battlefield.SimpleField.simple_field_new_turn">
+<code class="descname">simple_field_new_turn</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/battlefield.html#SimpleField.simple_field_new_turn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.battlefield.SimpleField.simple_field_new_turn" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -895,14 +895,25 @@ then you can use increase_attribute action.</p>
 <dt id="dracykeiton.common.turn.TurnEntity">
 <em class="property">class </em><code class="descclassname">dracykeiton.common.turn.</code><code class="descname">TurnEntity</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/turn.html#TurnEntity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.turn.TurnEntity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="dracykeiton.entity.html#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
+<p>Entity mod allowing multiple handlers to run on turn/round ends</p>
 <dl class="method">
 <dt id="dracykeiton.common.turn.TurnEntity.new_round">
 <code class="descname">new_round</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/turn.html#TurnEntity.new_round"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.turn.TurnEntity.new_round" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="dracykeiton.common.turn.TurnEntity.on_turn_end">
-<code class="descname">on_turn_end</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/turn.html#TurnEntity.on_turn_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.turn.TurnEntity.on_turn_end" title="Permalink to this definition">¶</a></dt>
+<dt id="dracykeiton.common.turn.TurnEntity.new_turn">
+<code class="descname">new_turn</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/turn.html#TurnEntity.new_turn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.turn.TurnEntity.new_turn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.common.turn.TurnEntity.on_new_round">
+<code class="descname">on_new_round</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/turn.html#TurnEntity.on_new_round"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.turn.TurnEntity.on_new_round" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dracykeiton.common.turn.TurnEntity.on_new_turn">
+<code class="descname">on_new_turn</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/common/turn.html#TurnEntity.on_new_turn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.common.turn.TurnEntity.on_new_turn" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
