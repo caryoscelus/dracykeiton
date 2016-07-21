@@ -21,7 +21,7 @@
 """Test declarative Entity definitions"""
 
 from dracykeiton.compat import *
-from dracykeiton.entity import Entity, properties, mod_dep, data_node
+from dracykeiton.entity import Entity, properties, mod_dep, data_node, compound_entity
 
 def test_declarative_properties():
     @properties(
@@ -119,6 +119,18 @@ def test_declarative_lists():
     foo0 = Foo()
     foo1 = Foo()
     assert not foo0.lst is foo1.lst
+
+def test_compound_entity():
+    @properties(a=1)
+    class Foo(Entity):
+        pass
+    @properties(b=4)
+    class Bar(Entity):
+        pass
+    Compound = compound_entity(Foo, Bar)
+    compound = Compound()
+    assert compound.a == 1
+    assert compound.b == 4
 
 @properties(n=13)
 class Foo(Entity):

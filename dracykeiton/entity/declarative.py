@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -24,7 +24,15 @@ This means more separation between data structures and actual code.
 """
 
 from ..compat import *
-from .entity import Entity, depends, simplenode
+from .entity import Entity, depends, simplenode, mod_dep
+
+def compound_entity(*mods):
+    """Make empty entity class which only depends on other mods
+    """
+    @mod_dep(*mods)
+    class cl(Entity):
+        pass
+    return cl
 
 def properties(**props):
     """Decorator on Entity class defining dynamic properties
