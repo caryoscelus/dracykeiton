@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -59,6 +59,36 @@ def test_mod():
         pass
     
     assert Bar().n == 3
+
+def test_mod_dep_order():
+    @properties(order=list)
+    class Base(Entity):
+        pass
+    
+    @mod_dep(Base)
+    class Foo(Entity):
+        @unbound
+        def _init(self):
+            self.order.append('Foo')
+    
+    @mod_dep(Base)
+    class Bar(Entity):
+        @unbound
+        def _init(self):
+            self.order.append('Bar')
+    
+    @mod_dep(Foo, Bar)
+    class FooBar(Entity):
+        pass
+    
+    @mod_dep(Bar, Foo)
+    class BarFoo(Entity):
+        pass
+    
+    foobar = FooBar()
+    assert foobar.order == ['Foo', 'Bar']
+    barfoo = BarFoo()
+    assert barfoo.order == ['Bar', 'Foo']
 
 def test_declarative_nodes():
     @properties(n=5, m=1)
