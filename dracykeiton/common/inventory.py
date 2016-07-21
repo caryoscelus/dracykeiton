@@ -21,7 +21,7 @@
 """Inventory"""
 
 from ..compat import *
-from ..entity import Entity, properties
+from ..entity import Entity, properties, mod_dep
 
 @properties(inv=list)
 class SimpleInventory(Entity):
@@ -41,3 +41,23 @@ class Wield(Entity):
     @unbound
     def wield(self, obj):
         self.wielded = obj
+
+@properties(equip_slots=list)
+class Equip(Entity):
+    """Base class for equip using simple slot model.
+    
+    Create equip slot subclasses with equip_slot function.
+    """
+    pass
+
+def equip_slot(name):
+    """Creates entity mod which adds named equip slot.
+    """
+    @mod_dep(Equip)
+    @properties(**{name:None})
+    class cl(Entity):
+        @unbound
+        def _init(self):
+            if name not in self.equip_slots:
+                self.equip_slots.append(name)
+    return cl
