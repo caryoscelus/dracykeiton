@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -119,3 +119,15 @@ def test_collect_3():
     tree = DependencyTree.collect(a, Foo.get_dep)
     r = list(tree)
     assert e in r
+
+def test_collect_order():
+    a = Foo('a')
+    b = Foo('b')
+    c = Foo('c')
+    d = Foo('d')
+    a.add_dep(b)
+    a.add_dep(c)
+    b.add_dep(d)
+    c.add_dep(d)
+    tree = DependencyTree.collect(a, Foo.get_dep)
+    assert list(tree) == [d, b, c, a]

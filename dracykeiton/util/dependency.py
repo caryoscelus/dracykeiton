@@ -1,5 +1,5 @@
 ##
-##  Copyright (C) 2015 caryoscelus
+##  Copyright (C) 2015-2016 caryoscelus
 ##
 ##  This file is part of Dracykeiton
 ##  https://github.com/caryoscelus/dracykeiton
@@ -20,16 +20,20 @@
 
 from ..compat import *
 import copy
+from collections import OrderedDict
+from ordered_set import OrderedSet
 
 def copy2(d):
     """Copy two levels.
     
-    Currently takes dict of lists
+    Currently takes dict / OrderedDict of lists
     """
-    return { k:copy.copy(d[k]) for k in d }
+    return OrderedDict([
+        (k, copy.copy(d[k])) for k in d
+    ])
 
 class DependencyTree(object):
-    def __init__(self, deps=dict()):
+    def __init__(self, deps=OrderedDict()):
         super(DependencyTree, self).__init__()
         self._deps = copy2(deps)
     
@@ -42,34 +46,36 @@ class DependencyTree(object):
         
         root should be first node of tree
         """
-        deps = dict()
+        deps = OrderedDict()
         stack = list([None])
         nodes = list([root])
-        done = set()
+        done = OrderedSet()
         while stack:
             target = stack[-1]
             if not target in deps:
-                deps[target] = set()
+                deps[target] = OrderedSet()
             for node in nodes:
                 deps[target].add(node)
             if not nodes:
                 node = stack.pop()
                 done.add(node)
                 if stack:
-                    nodes = deps[stack[-1]]-done
+                    nodes = list(deps[stack[-1]]-done)
                 continue
-            target = nodes.pop()
+            target = nodes.pop(0)
             if target in done:
                 continue
             else:
                 stack.append(target)
                 nodes = list(f(target))
-        return DependencyTree({k:list(deps[k]) for k in deps})
+        return DependencyTree(OrderedDict([
+            (k, list(deps[k])) for k in deps
+        ]))
     
     def __iter__(self):
         deps = copy2(self._deps)
         stack = list([None])
-        done = set([None])
+        done = OrderedSet([None])
         while stack:
             target = stack[-1]
             if not target in deps or not deps[target]:
@@ -80,9 +86,9 @@ class DependencyTree(object):
                     done.add(target)
                     yield target
             else:
-                if deps[target][-1] in stack:
+                if deps[target][0] in stack:
                     raise DependencyLoopError('DependencyTree has dependency loop')
-                stack.append(deps[target][-1])
+                stack.append(deps[target][0])
     
     def add_dep(self, target, dep):
         """Add dependency dep to target
