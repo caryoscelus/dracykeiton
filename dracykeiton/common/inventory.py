@@ -36,12 +36,6 @@ class SimpleInventory(Entity):
             return thing
         return None
 
-@properties(wielded=None)
-class Wield(Entity):
-    @unbound
-    def wield(self, obj):
-        self.wielded = obj
-
 @properties(equip_slots=list)
 class Equip(Entity):
     """Base class for equip using simple slot model.
@@ -61,3 +55,5 @@ def equip_slot(name):
             if name not in self.equip_slots:
                 self.equip_slots.append(name)
     return cl
+
+Wield = equip_slot('wielded')
