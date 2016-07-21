@@ -61,7 +61,7 @@
 <span class="sd">&quot;&quot;&quot;Inventory&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">properties</span>
+<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">mod_dep</span>
 
 <span class="nd">@properties</span><span class="p">(</span><span class="n">inv</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
 <div class="viewcode-block" id="SimpleInventory"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.inventory.SimpleInventory">[docs]</a><span class="k">class</span> <span class="nc">SimpleInventory</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
@@ -81,6 +81,26 @@
     <span class="nd">@unbound</span>
 <div class="viewcode-block" id="Wield.wield"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.inventory.Wield.wield">[docs]</a>    <span class="k">def</span> <span class="nf">wield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wielded</span> <span class="o">=</span> <span class="n">obj</span></div></div>
+
+<span class="nd">@properties</span><span class="p">(</span><span class="n">equip_slots</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+<div class="viewcode-block" id="Equip"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.inventory.Equip">[docs]</a><span class="k">class</span> <span class="nc">Equip</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for equip using simple slot model.</span>
+<span class="sd">    </span>
+<span class="sd">    Create equip slot subclasses with equip_slot function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="equip_slot"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.inventory.equip_slot">[docs]</a><span class="k">def</span> <span class="nf">equip_slot</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates entity mod which adds named equip slot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@mod_dep</span><span class="p">(</span><span class="n">Equip</span><span class="p">)</span>
+    <span class="nd">@properties</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="bp">None</span><span class="p">})</span>
+    <span class="k">class</span> <span class="nc">cl</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+        <span class="nd">@unbound</span>
+        <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">equip_slots</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">equip_slots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cl</span></div>
 </pre></div>
 
           </div>
