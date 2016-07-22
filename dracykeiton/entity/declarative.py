@@ -43,12 +43,8 @@ def properties(**props):
     will result in every instance having same object!
     """
     def decorator(cl):
-        old_init = None
-        if '_init' in cl.__dict__:
-            old_init = cl._init
-        old_uninit = None
-        if '_uninit' in cl.__dict__:
-            old_uninit = cl._uninit
+        old_init = cl.__dict__.get('_init')
+        old_uninit = cl.__dict__.get('_uninit')
         @unbound
         def new_init(self, *args, **kwargs):
             for name in props:
