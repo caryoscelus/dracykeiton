@@ -29,12 +29,10 @@ def test_declarative_properties():
         m = 4,
     )
     class Foo(Entity):
-        def _init(self, m=None):
-            if not m is None:
-                self.m = m
+        pass
     assert Foo().n == 5
     assert Foo().m == 4
-    assert Foo(7).m == 7
+    assert Foo(m=7).m == 7
 
 def test_declarative_init():
     @properties(t=4)

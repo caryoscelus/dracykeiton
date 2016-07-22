@@ -30,12 +30,15 @@ class ProxyEntity(Entity):
     __getattr__. Perhaps, this can be fixed, if there would be usecase
     for ProxyEntity as mod.
     """
-    @unbound
-    def _init(self, source=None):
-        if not isinstance(self, ProxyEntity):
-            raise TypeError('ProxyEntity cannot be used as mod')
+    def __init__(self, source=None):
+        super(ProxyEntity, self).__init__()
         if source or not '_proxy_source' in self.__dict__:
             self._proxy_source = source
+    
+    @unbound
+    def _init(self):
+        if not isinstance(self, ProxyEntity):
+            raise TypeError('ProxyEntity cannot be used as mod')
     
     def __eq__(self, other):
         if not isinstance(other, ProxyEntity):

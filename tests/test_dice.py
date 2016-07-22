@@ -24,7 +24,7 @@
 from dracykeiton.common.dice import Dice
 
 def test_dice():
-    dice = Dice(6)
+    dice = Dice(side_count=6)
     dice.roll_dice()()
     roll = dice.read()
     assert 1 <= roll <= 6

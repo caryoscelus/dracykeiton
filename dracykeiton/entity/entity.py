@@ -100,7 +100,7 @@ class Entity(object):
     Do not create class hierarchy. All entity classes should inherit this
     directly and use @mod_dep for dependencies.
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
         super(Entity, self).__init__()
         self._props = dict()
         self._listeners = dict()
@@ -113,8 +113,11 @@ class Entity(object):
         self._get_depends_on = {}
         fix_methods(self)
         self._init_depmods()
-        self._init(*args, **kwargs)
+        self._init()
         self._load()
+        for name, value in kwargs.items():
+            if name in self._props:
+                setattr(self, name, value)
         self._load_patchmods()
     
     @unbound

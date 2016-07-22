@@ -22,18 +22,17 @@
 """
 
 from ..compat import *
-from ..entity import Entity
+from ..entity import Entity, properties
 from ..action import action
 from ..util import curry
 from .. import random
 
+@properties(
+    result = None,
+    side_count = 1,
+    unsaved = False,
+)
 class Dice(Entity):
-    @unbound
-    def _init(self, side_count=None):
-        self.dynamic_property('result')
-        self.dynamic_property('side_count', side_count)
-        self.dynamic_property('unsaved', False)
-    
     @action
     def roll_dice(self):
         self.result = random.randint(1, self.side_count)

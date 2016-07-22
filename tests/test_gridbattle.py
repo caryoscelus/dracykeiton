@@ -45,7 +45,7 @@ def test_chess_moves():
 def test_closest_enemy():
     entity = ExamineFieldEntity()
     field = FieldRange()
-    field.set_size(5, 5)
+    field.size = (5, 5)
     field.add_side('a', Side())
     field.add_side('b', Side())
     field.spawn('a', entity)
@@ -63,7 +63,7 @@ def test_closest_enemy():
 def test_dont_overlap():
     a = Sided()
     b = Sided()
-    field = GridField((1, 1))
+    field = GridField(size=(1, 1))
     field.put_on(0, 0, a)
     assert field.grid[0, 0].get() is a
     field.put_on(0, 0, b)
@@ -71,7 +71,7 @@ def test_dont_overlap():
 
 def test_remove_dead():
     entity = Living()
-    field = GridField((1, 1))
+    field = GridField(size=(1, 1))
     field.keep_dead = False
     field.add_side('side', Side())
     field.spawn('side', entity)

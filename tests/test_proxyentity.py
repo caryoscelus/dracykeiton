@@ -34,7 +34,7 @@ class FooEntity(Entity):
 
 def test_simple_proxy():
     foo = FooEntity()
-    proxy = ProxyEntity(foo)
+    proxy = ProxyEntity(source=foo)
     assert proxy.n == 0
     foo.n = 1
     assert proxy.n == 1
@@ -42,7 +42,7 @@ def test_simple_proxy():
 class ProxyContainer(object):
     def __init__(self):
         self.foo = FooEntity()
-        self.proxy = ProxyEntity(self.foo)
+        self.proxy = ProxyEntity(source=self.foo)
 
 def test_proxy_pickle():
     from dracykeiton import pickle
@@ -75,7 +75,7 @@ class SlideNProxy(Entity):
 
 def test_modded_proxy():
     foo = FooEntity()
-    proxy = ProxyEntity(foo)
+    proxy = ProxyEntity(source=foo)
     assert proxy.n == 0
     proxy.add_mod(SlideNProxy)
     foo.n = 5
@@ -88,7 +88,7 @@ def linear(t):
 
 def test_cached_interpolating_proxy():
     foo = FooEntity()
-    proxy = ProxyEntity(foo)
+    proxy = ProxyEntity(source=foo)
     proxy.add_mod(InterpolatingCache)
     proxy.cache_interpolate_float('n', linear)
     foo.n = 0
@@ -113,18 +113,18 @@ def test_proxy_instance():
 
 def test_equality():
     entity = Entity()
-    proxy0 = ProxyEntity(entity)
-    proxy1 = ProxyEntity(entity)
-    proxy_other = ProxyEntity(Entity())
+    proxy0 = ProxyEntity(source=entity)
+    proxy1 = ProxyEntity(source=entity)
+    proxy_other = ProxyEntity(source=Entity())
     assert proxy0 == proxy1
     assert proxy0 != proxy_other
 
 def test_proxy_graceful_fail():
     with pytest.raises(AttributeError):
-        ProxyEntity(Entity()).a
+        ProxyEntity(source=Entity()).a
 
 def test_proxy_set():
     a = FooEntity()
-    proxy = ProxyEntity(a)
+    proxy = ProxyEntity(source=a)
     proxy.n = 5
     assert a.n == 5

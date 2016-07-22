@@ -54,16 +54,19 @@ class GridEntity(Entity):
 @properties(grid=dMultiArray(2), size=(0, 0))
 class GridField(Entity):
     @unbound
-    def _init(self, size=None):
+    def _init(self):
         self.grid.empty = lambda coords: GridCell(x=coords[0], y=coords[1])
-        if size:
-            self.set_size(*size)
         self.member_living_listeners.append(self.remove_dead_from_grid)
+        self.set_size(self, self.size)
     
     @unbound
-    def set_size(self, w, h):
+    def _load(self):
+        self.add_listener_node('size', self.set_size())
+    
+    @listener
+    def set_size(self, target, value):
+        w, h = value
         self.grid.set_maxs(w-1, h-1)
-        self.size = (w, h)
     
     @unbound
     def put_on(self, x, y, entity, layer=None):

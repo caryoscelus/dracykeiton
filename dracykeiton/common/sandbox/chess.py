@@ -66,6 +66,6 @@ class Rook(Entity):
 class ChessBoard(Entity):
     @unbound
     def _init(self):
-        self.set_size(8, 8)
+        self.size = (8, 8)
         self.add_side('white', Side())
         self.add_side('black', Side())
