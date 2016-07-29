@@ -41,3 +41,11 @@ def test_complex_expr():
     r = ((a*3.2+b)*c+1)/10
     print(r._expr)
     assert float(r) == 66.1
+
+def test_apply():
+    from math import pi, sin
+    a = RV(norm(loc=pi))
+    b = RV(norm(loc=2))
+    r = RV.apply(sin, a/b)
+    assert float(r) == 1.0
+    r.rvs()

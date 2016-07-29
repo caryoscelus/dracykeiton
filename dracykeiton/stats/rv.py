@@ -93,7 +93,7 @@ class RV(object):
         return self
     
     def __float__(self):
-        return self.mean()
+        return float(self.mean())
     
     def __int__(self):
         return int(float(self))
@@ -108,16 +108,38 @@ class RV(object):
         """Calculate expression after applying function f to each variable"""
         if f is None:
             f = lambda x: x
-        self._values = {name:f(value) for name, value in self._values.items()}
-        return eval(self._expr.format(**self._values))
+        values = dict(self._values)
+        values.update({
+            name:f(value)
+                for name, value in self._values.items()
+                    if name.startswith('a_')
+        })
+        return eval(self._expr, values)
     
     @staticmethod
-    def value_expr(value):
-        return '({'+RV.value_name(value)+'})'
+    def value_expr(value, const=False):
+        if isinstance(value, RV):
+            return value._expr
+        return '('+RV.value_name(value, const=const)+')'
     
     @staticmethod
-    def value_name(value):
-        return 'a_'+str(id(value))
+    def value_name(value, const=False):
+        prefix = 'a_' if not const else 'b_'
+        return prefix+str(id(value))
     
-    def add_value(self, value):
-        self._values[self.value_name(value)] = value
+    def add_value(self, value, const=False):
+        self._values[self.value_name(value, const=const)] = value
+    
+    @staticmethod
+    def apply(f, *args, **kwargs):
+        self = RV()
+        self.add_value(f, const=True)
+        for arg in list(args)+list(kwargs.values()):
+            if isinstance(arg, RV):
+                self._values.update(arg._values)
+        self._expr = '({}(*[{}], **{}))'.format(
+            self.value_expr(f, const=True),
+            ', '.join([self.value_expr(arg) for arg in args]),
+            {name:self.value_expr(value) for name, value in kwargs.items()}
+        )
+        return self
