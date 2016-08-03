@@ -104,6 +104,16 @@ class RV(object):
     def rvs(self):
         return self.calculate(lambda x: x.rvs())
     
+    def cdf(self, x):
+        if not self._values:
+            return float(self.calculate() <= x)
+        if len(self._values) > 1:
+            raise RVCdfError('cdf can only be calculated for RV with one distribution')
+        rv = list(self._values.values())[0]
+        if self._expr != self.value_expr(rv):
+            raise RVCdfError('cdf can only be calculated for pure RV (expr={})')
+        return rv.cdf(x)
+    
     def calculate(self, f=None):
         """Calculate expression after applying function f to each variable"""
         if f is None:
@@ -143,3 +153,6 @@ class RV(object):
             {name:self.value_expr(value) for name, value in kwargs.items()}
         )
         return self
+
+class RVCdfError(NotImplementedError):
+    pass

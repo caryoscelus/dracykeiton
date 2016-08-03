@@ -20,8 +20,9 @@
 
 """Test random variables"""
 
-from dracykeiton.stats.rv import RV
+from dracykeiton.stats.rv import RV, RVCdfError
 from scipy.stats import norm
+import pytest
 
 def test_cast():
     assert int(RV(norm(loc=4))) == 4
@@ -49,3 +50,17 @@ def test_apply():
     r = RV.apply(sin, a/b)
     assert float(r) == 1.0
     r.rvs()
+
+def test_cdf_raise():
+    with pytest.raises(RVCdfError):
+        (RV(norm())+RV(norm())).cdf(0)
+    with pytest.raises(RVCdfError):
+        (RV(norm())+5).cdf(0)
+
+def test_cdf():
+    a = norm(loc=1)
+    assert RV(a).cdf(0) == a.cdf(0)
+
+def test_cdf_const():
+    assert RV(1).cdf(0) == 0
+    assert RV(1).cdf(1) == 1
