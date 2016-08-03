@@ -62,18 +62,17 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span>
+<span class="kn">from</span> <span class="nn">..entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">properties</span>
 <span class="kn">from</span> <span class="nn">..action</span> <span class="kn">import</span> <span class="n">action</span>
 <span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">curry</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">random</span>
 
+<span class="nd">@properties</span><span class="p">(</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+    <span class="n">side_count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">unsaved</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span>
+<span class="p">)</span>
 <div class="viewcode-block" id="Dice"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.dice.Dice">[docs]</a><span class="k">class</span> <span class="nc">Dice</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">side_count</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;result&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;side_count&#39;</span><span class="p">,</span> <span class="n">side_count</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_property</span><span class="p">(</span><span class="s1">&#39;unsaved&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
-    
     <span class="nd">@action</span>
 <div class="viewcode-block" id="Dice.roll_dice"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.dice.Dice.roll_dice">[docs]</a>    <span class="k">def</span> <span class="nf">roll_dice</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">side_count</span><span class="p">)</span>

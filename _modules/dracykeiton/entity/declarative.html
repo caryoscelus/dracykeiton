@@ -39,7 +39,7 @@
             
   <h1>Source code for dracykeiton.entity.declarative</h1><div class="highlight"><pre>
 <span></span><span class="c1">##</span>
-<span class="c1">##  Copyright (C) 2015 caryoscelus</span>
+<span class="c1">##  Copyright (C) 2015-2016 caryoscelus</span>
 <span class="c1">##</span>
 <span class="c1">##  This file is part of Dracykeiton</span>
 <span class="c1">##  https://github.com/caryoscelus/dracykeiton</span>
@@ -64,7 +64,15 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">..compat</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">.entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">depends</span><span class="p">,</span> <span class="n">simplenode</span>
+<span class="kn">from</span> <span class="nn">.entity</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">depends</span><span class="p">,</span> <span class="n">simplenode</span><span class="p">,</span> <span class="n">mod_dep</span>
+
+<div class="viewcode-block" id="compound_entity"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.declarative.compound_entity">[docs]</a><span class="k">def</span> <span class="nf">compound_entity</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Make empty entity class which only depends on other mods</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@mod_dep</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
+    <span class="k">class</span> <span class="nc">cl</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">cl</span></div>
 
 <div class="viewcode-block" id="properties"><a class="viewcode-back" href="../../../api/dracykeiton.entity.html#dracykeiton.entity.declarative.properties">[docs]</a><span class="k">def</span> <span class="nf">properties</span><span class="p">(</span><span class="o">**</span><span class="n">props</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Decorator on Entity class defining dynamic properties</span>
@@ -75,12 +83,8 @@
 <span class="sd">    will result in every instance having same object!</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">cl</span><span class="p">):</span>
-        <span class="n">old_init</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">if</span> <span class="s1">&#39;_init&#39;</span> <span class="ow">in</span> <span class="n">cl</span><span class="o">.</span><span class="n">__dict__</span><span class="p">:</span>
-            <span class="n">old_init</span> <span class="o">=</span> <span class="n">cl</span><span class="o">.</span><span class="n">_init</span>
-        <span class="n">old_uninit</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">if</span> <span class="s1">&#39;_uninit&#39;</span> <span class="ow">in</span> <span class="n">cl</span><span class="o">.</span><span class="n">__dict__</span><span class="p">:</span>
-            <span class="n">old_uninit</span> <span class="o">=</span> <span class="n">cl</span><span class="o">.</span><span class="n">_uninit</span>
+        <span class="n">old_init</span> <span class="o">=</span> <span class="n">cl</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_init&#39;</span><span class="p">)</span>
+        <span class="n">old_uninit</span> <span class="o">=</span> <span class="n">cl</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_uninit&#39;</span><span class="p">)</span>
         <span class="nd">@unbound</span>
         <span class="k">def</span> <span class="nf">new_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">props</span><span class="p">:</span>

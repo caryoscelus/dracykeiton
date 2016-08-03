@@ -76,12 +76,6 @@
             <span class="k">return</span> <span class="n">thing</span>
         <span class="k">return</span> <span class="bp">None</span></div></div>
 
-<span class="nd">@properties</span><span class="p">(</span><span class="n">wielded</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-<div class="viewcode-block" id="Wield"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.inventory.Wield">[docs]</a><span class="k">class</span> <span class="nc">Wield</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="nd">@unbound</span>
-<div class="viewcode-block" id="Wield.wield"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.inventory.Wield.wield">[docs]</a>    <span class="k">def</span> <span class="nf">wield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">wielded</span> <span class="o">=</span> <span class="n">obj</span></div></div>
-
 <span class="nd">@properties</span><span class="p">(</span><span class="n">equip_slots</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
 <div class="viewcode-block" id="Equip"><a class="viewcode-back" href="../../../api/dracykeiton.common.html#dracykeiton.common.inventory.Equip">[docs]</a><span class="k">class</span> <span class="nc">Equip</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class for equip using simple slot model.</span>
@@ -101,6 +95,8 @@
             <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">equip_slots</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">equip_slots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cl</span></div>
+
+<span class="n">Wield</span> <span class="o">=</span> <span class="n">equip_slot</span><span class="p">(</span><span class="s1">&#39;wielded&#39;</span><span class="p">)</span>
 </pre></div>
 
           </div>

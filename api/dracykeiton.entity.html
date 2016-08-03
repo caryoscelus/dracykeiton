@@ -49,6 +49,12 @@
 <p>Tools to make Entity definitions more declarative</p>
 <p>This means more separation between data structures and actual code.</p>
 <dl class="function">
+<dt id="dracykeiton.entity.declarative.compound_entity">
+<code class="descclassname">dracykeiton.entity.declarative.</code><code class="descname">compound_entity</code><span class="sig-paren">(</span><em>*mods</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/declarative.html#compound_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.declarative.compound_entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make empty entity class which only depends on other mods</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="dracykeiton.entity.declarative.data_node">
 <code class="descclassname">dracykeiton.entity.declarative.</code><code class="descname">data_node</code><span class="sig-paren">(</span><em>tp</em>, <em>target</em>, <em>deps=()</em>, <em>priority=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/declarative.html#data_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.declarative.data_node" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator making simple node Entity mod from node function</p>
@@ -102,7 +108,7 @@ will result in every instance having same object!</p>
 
 <dl class="class">
 <dt id="dracykeiton.entity.entity.Entity">
-<em class="property">class </em><code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">Entity</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dracykeiton.entity.entity.</code><code class="descname">Entity</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/entity.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.entity.Entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Base entity, including dynamic property and modding mechanism.</p>
 <p>Do not create class hierarchy. All entity classes should inherit this
@@ -355,7 +361,7 @@ it&#8217;s dependency of multiple dependencies.</p>
 <span id="dracykeiton-entity-interpolate-module"></span><h2>dracykeiton.entity.interpolate module<a class="headerlink" href="#module-dracykeiton.entity.interpolate" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="dracykeiton.entity.interpolate.InterpolatingCache">
-<em class="property">class </em><code class="descclassname">dracykeiton.entity.interpolate.</code><code class="descname">InterpolatingCache</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/interpolate.html#InterpolatingCache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.interpolate.InterpolatingCache" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dracykeiton.entity.interpolate.</code><code class="descname">InterpolatingCache</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/interpolate.html#InterpolatingCache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.interpolate.InterpolatingCache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
 <dl class="method">
 <dt id="dracykeiton.entity.interpolate.InterpolatingCache.cache_interpolate_float">
@@ -384,7 +390,7 @@ it&#8217;s dependency of multiple dependencies.</p>
 <span id="dracykeiton-entity-proxyentity-module"></span><h2>dracykeiton.entity.proxyentity module<a class="headerlink" href="#module-dracykeiton.entity.proxyentity" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="dracykeiton.entity.proxyentity.CachedEntity">
-<em class="property">class </em><code class="descclassname">dracykeiton.entity.proxyentity.</code><code class="descname">CachedEntity</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#CachedEntity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.CachedEntity" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dracykeiton.entity.proxyentity.</code><code class="descname">CachedEntity</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#CachedEntity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.CachedEntity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
 <dl class="method">
 <dt id="dracykeiton.entity.proxyentity.CachedEntity.cache_listener">
@@ -421,7 +427,7 @@ it&#8217;s dependency of multiple dependencies.</p>
 
 <dl class="class">
 <dt id="dracykeiton.entity.proxyentity.ProxyEntity">
-<em class="property">class </em><code class="descclassname">dracykeiton.entity.proxyentity.</code><code class="descname">ProxyEntity</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#ProxyEntity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.ProxyEntity" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dracykeiton.entity.proxyentity.</code><code class="descname">ProxyEntity</code><span class="sig-paren">(</span><em>source=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dracykeiton/entity/proxyentity.html#ProxyEntity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dracykeiton.entity.proxyentity.ProxyEntity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#dracykeiton.entity.entity.Entity" title="dracykeiton.entity.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">dracykeiton.entity.entity.Entity</span></code></a></p>
 <p>Entity which gives values from other entity.</p>
 <p>It cannot be used as mod because it overrides __getstate__ and
